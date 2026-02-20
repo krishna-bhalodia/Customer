@@ -12,6 +12,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.harish.b2c.presentation.login.LoginScreen
+import com.harish.b2c.presentation.login.OtpScreen
+import com.harish.b2c.presentation.onboarding.DeliveryAddressScreen
 
 
 @Composable
@@ -36,7 +39,7 @@ fun AppNavHost(
     }
 
     NavHost(
-        navController = navController, startDestination = NavigationScreen.SplashScreen.route,
+        navController = navController, startDestination = NavigationScreen.Login.route,
         // Forward: New screen slides in from right
         enterTransition = {
             slideInHorizontally(initialOffsetX = { it })
@@ -54,10 +57,18 @@ fun AppNavHost(
             slideOutHorizontally(targetOffsetX = { it })
         }) {
 
-//        composable(NavigationScreen.Login.route) {
-//            val vm: LoginViewModel = hiltViewModel()
-//            LoginScreen(viewModel = vm, navController)
-//        }
+        composable(NavigationScreen.Login.route) {
+          //  val vm: LoginViewModel = hiltViewModel()
+            LoginScreen(navController)
+        }
+        composable(NavigationScreen.Otp.route) {
+          //  val vm: LoginViewModel = hiltViewModel()
+            OtpScreen(navController)
+        }
+        composable(NavigationScreen.DeliveryAddress.route) {
+          //  val vm: LoginViewModel = hiltViewModel()
+            DeliveryAddressScreen(navController)
+        }
 //        composable(NavigationScreen.HomeScreen.route) {
 //            val vm: HomeViewModel = hiltViewModel()
 //            HomeScreen(navController, vm)

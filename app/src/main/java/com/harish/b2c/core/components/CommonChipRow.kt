@@ -12,24 +12,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.harish.b2c.core.utils.glassShadow
-import com.harish.b2c.ui.theme.Gray900
-import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.White20
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.appSpacing
+import androidx.compose.ui.unit.sp
+import com.harish.b2c.R
 
 @Composable
 fun <T> CommonChipRow(
@@ -41,36 +41,32 @@ fun <T> CommonChipRow(
     isSearchOption: Boolean = false,
     onSearchClick: () -> Unit = {},
 ) {
-    val currentShapes = MaterialTheme.appShapes
-    val currentSpacing = MaterialTheme.appSpacing
+    // Base colors from Figma
+    val textBlack = Color(0xFF030304)
+    val chipShape = RoundedCornerShape(16.dp)
+
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(currentSpacing.medium)
+        // Adding 24.dp horizontal padding so the row starts from "left: 24px"
+        // as per your Figma Frame 1171275080, but allows smooth scrolling off-screen.
+        contentPadding = PaddingValues(horizontal = 24.dp)
     ) {
         if (isSearchOption) {
             item {
-                val searchShape = currentShapes.medium
-
                 Box(
                     modifier = Modifier
-                        .height(30.dp)
-                        .glassShadow(
-                            color = Color(0xFFEA0A2A),
-                            alpha = 0.12f,
-                            shape = searchShape,
-                            shadowRadius = 16.dp,
-                            offsetY = 4.dp
-                        )
-                        .clip(searchShape)
-                        .background(White20)
+                        .height(29.dp)
+                        .clip(chipShape)
                         .border(
-                            width = 2.dp,
-                            color = White.copy(alpha = 0.6f),
-                            shape = searchShape
+                            width = 1.dp,
+                            color = textBlack.copy(alpha = 0.1f), // rgba(3, 3, 4, 0.1)
+                            shape = chipShape
                         )
                         .clickable { onSearchClick() }
-                        .padding(horizontal = 12.dp, vertical = 6.dp)) {
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
                     CommonSvgImage(
                         modifier = Modifier.size(16.dp),
                         assetName = "images/ic_search.svg",
@@ -82,50 +78,49 @@ fun <T> CommonChipRow(
         items(categories) { category ->
             val isSelected = selectedCategory == category
 
-            // Define ONE shape for the category items
-            val chipShape = currentShapes.extraLarge
+            // Conditional styling based on selection state
+            val bgColor = if (isSelected) textBlack else Color.Transparent
+            val textColor = if (isSelected) Color.White else textBlack
+            val borderColor = if (isSelected) Color.Transparent else textBlack.copy(alpha = 0.1f)
 
             Box(
                 modifier = Modifier
-                    .glassShadow(
-                        color = Color(0xFFEA0A2A),
-                        alpha = 0.12f,
-                        shape = chipShape,
-                        shadowRadius = 16.dp,
-                        offsetY = 4.dp
-                    )
+                    .height(29.dp)
                     .clip(chipShape)
-                    .background(
-                        if (isSelected) Gray900 else White20
-                    )
+                    .background(bgColor)
                     .border(
-                        width = 2.dp,
-                        color = if (isSelected) Gray900 else White.copy(alpha = 0.6f),
+                        width = 1.dp,
+                        color = borderColor,
                         shape = chipShape
                     )
                     .clickable { onCategorySelected(category) }
-                    .padding(horizontal = 16.dp, vertical = 6.dp)) {
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
                     text = categoryToString(category),
-                    color = if (isSelected) White else Gray900
+                    color = textColor,
+                    fontSize = 14.sp,
+                    lineHeight = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)) // font-weight: 400
                 )
             }
         }
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF5F5F5, name = "With Search Option")
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF, name = "Figma Chip Row Spec")
 @Composable
-private fun PreviewCommonChipRowWithSearch() {
-    val categories = listOf("Pizza", "Burger", "Sushi", "Salad", "Dessert")
-    var selectedCategory by remember { mutableStateOf(categories[1]) }
+private fun PreviewCommonChipRow() {
+    val categories = listOf("All", "CSD", "Candy", "Lolly Pop", "Gum", "Energy Drink", "Juice", "Water")
+    var selectedCategory by remember { mutableStateOf(categories[0]) } // "All" selected by default
 
     Box(modifier = Modifier.padding(vertical = 24.dp)) {
         CommonChipRow(
             categories = categories,
             selectedCategory = selectedCategory,
             onCategorySelected = { selectedCategory = it },
-            isSearchOption = true
+            isSearchOption = false
         )
     }
 }

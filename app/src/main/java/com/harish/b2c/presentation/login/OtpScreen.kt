@@ -31,26 +31,26 @@ import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
-import com.harish.b2c.core.components.CommonPhoneNumberInput
+import com.harish.b2c.core.components.CommonOtpInput
 import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun OtpScreen(navController: NavController,
+    phoneNumber: String = "+256 94*****53" // Pass this dynamically in a real app
+) {
     val textBlack = Color(0xFF030304)
     val textGrey = Color(0xFF7C858C)
-    val brandRed = Color(0xFFEA0A2A)
 
-    var phoneNumber by remember { mutableStateOf("") }
+    var otpValue by remember { mutableStateOf("") }
 
-    // Wrap the entire screen in the custom gradient background
+    GradientBackground {
         Scaffold(
-            // Set transparent so the gradient shows through
             containerColor = Color.Transparent,
             topBar = {
                 CommonAppBar(
-                    title = "Login",
-                    onBackClick = { /* Handle Back Navigation */ },
+                    title = "Verify Number",
+                    onBackClick = { navController.navigateUp() },
                     modifier = Modifier.statusBarsPadding().padding(top = 20.dp)
                 )
             }
@@ -59,15 +59,14 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .padding(horizontal = 24.dp), // Screen-wide left/right padding
+                    .padding(horizontal = 24.dp), // Overall screen padding
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Spacer matching the gap from AppBar to the text frame (~40dp based on Figma)
                 Spacer(modifier = Modifier.height(40.dp))
 
-                // --- Frame 5: Header Texts ---
+                // --- Header Texts ---
                 Text(
-                    text = "Enter Your Mobile Number",
+                    text = "Enter Your 5-Digit Code",
                     color = textBlack,
                     fontSize = 24.sp,
                     fontFamily = FontFamily(Font(R.font.signika_semibold, FontWeight.SemiBold)),
@@ -75,64 +74,63 @@ fun LoginScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(8.dp)) // gap: 8px
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "We just send you 5-digit code to verify your mobile number",
+                    text = "We’ve send an SMS with an activation code to your phone $phoneNumber.",
                     color = textGrey,
                     fontSize = 16.sp,
-                    lineHeight = 22.4.sp, // 140% of 16px
+                    lineHeight = 22.4.sp,
                     fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Spacer matching gap between text and inputs (gap: 30px)
                 Spacer(modifier = Modifier.height(30.dp))
 
-                // --- Frame 8: Input & Button ---
-                CommonPhoneNumberInput(
-                    value = phoneNumber,
-                    onValueChange = { phoneNumber = it }
+                // --- OTP Input Row ---
+                CommonOtpInput(
+                    otpText = otpValue,
+                    onOtpTextChange = { otpValue = it },
+                    otpCount = 5
                 )
 
-                Spacer(modifier = Modifier.height(20.dp)) // gap: 20px
+                Spacer(modifier = Modifier.height(20.dp))
 
+                // --- Verify Button ---
                 CommonButton(
-                    text = "Continue",
-                    // Button is enabled only if they typed a 10-digit number
-                    isEnabled = phoneNumber.length == 10,
-                    onClick = {navController.navigate(NavigationScreen.Otp.route)}
+                    text = "Verify",
+                    // Button becomes red/active only when all 5 digits are entered
+                    isEnabled = otpValue.length == 5,
+                    onClick = { navController.navigate(NavigationScreen.DeliveryAddress.route) }
                 )
 
-                // --- Bottom Spacing ---
-                // Using weight(1f) to push the bottom row down, or a fixed spacer to match the ~100px gap in Figma
                 Spacer(modifier = Modifier.height(104.dp))
 
-                // --- Frame 3: Sign Up Section ---
+                // --- Bottom Resend Section ---
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Are you a new user?",
+                        text = "Send code again",
                         color = textBlack,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
+                        modifier = Modifier.clickable { /* Handle Resend */ }
+                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Text(
+                        text = "00:20", // You would tie this to a timer state in your ViewModel
+                        color = textGrey,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal))
                     )
-
-                    Spacer(modifier = Modifier.width(10.dp)) // gap: 10px
-
-                    Text(
-                        text = "Sign Up",
-                        color = brandRed,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
-                        modifier = Modifier.clickable { /* Handle Sign Up Navigation */ }
-                    )
                 }
             }
-
+        }
     }
 }
