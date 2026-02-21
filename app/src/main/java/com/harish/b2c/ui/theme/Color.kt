@@ -2,6 +2,8 @@ package com.harish.b2c.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val BrandRed = Color(0xFFEA0A2A)
+val BrandPurple = Color(0xFF850AEA)
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

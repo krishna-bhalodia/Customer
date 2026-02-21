@@ -1,6 +1,8 @@
 package com.harish.b2c.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -49,3 +51,19 @@ val Typography = Typography(
         fontSize = 11.sp
     )
 )
+
+
+val Typography.boldTitle: TextStyle
+    @Composable
+    @ReadOnlyComposable
+    get() = Typography.headlineLarge
+
+val Typography.regularBody: TextStyle
+    @Composable
+    @ReadOnlyComposable
+    get() = bodyLarge
+
+val Typography.mediumTitle: TextStyle
+    @Composable
+    @ReadOnlyComposable
+    get() = titleMedium

@@ -20,7 +20,10 @@ sealed class NavigationScreen(
 ) {
 
     data object SplashScreen : NavigationScreen("splash_screen")
+    data object OnBoardScreen : NavigationScreen("onboard_screen")
     data object Login : NavigationScreen("login_screen")
+    data object Otp : NavigationScreen("otp_screen")
+    data object DeliveryAddress : NavigationScreen("delivery_address_screen")
     data object HomeScreen : NavigationScreen("home_screen")
     data object ProfileScreen : NavigationScreen("profile_screen")
 }

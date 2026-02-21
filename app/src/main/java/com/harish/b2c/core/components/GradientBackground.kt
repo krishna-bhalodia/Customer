@@ -15,9 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.harish.b2c.ui.theme.GradientSoftPink
 import com.harish.b2c.ui.theme.GradientSoftPurple
 
-
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 375, heightDp = 812)
 fun GradientBackground(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {}
@@ -25,26 +24,25 @@ fun GradientBackground(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color.White) // background: #FFFFFF;
     ) {
         val density = LocalDensity.current
 
         Canvas(modifier = Modifier.fillMaxSize()) {
             with(density) {
-                // --- Ellipse 1 (Top-Left Pink Blob) ---
-                val blob1Width = 582.dp.toPx()
-                val blob1Radius = blob1Width / 2
-                val blob1Blur = 184.143.dp.toPx()
+                // --- Ellipse 1 (Top-Left Red) ---
+                // CSS: width: 294px, left: -204px, top: -90px, blur: 125px
+                val blob1Size = 294.dp.toPx()
+                val blob1Radius = blob1Size / 2
+                val blob1Blur = 125.dp.toPx()
 
-                val blob1Left = -352.dp.toPx()
-                val blob1Top = -163.dp.toPx()
                 val center1 = Offset(
-                    x = blob1Left + blob1Radius,
-                    y = blob1Top + blob1Radius
+                    x = (-204).dp.toPx() + blob1Radius,
+                    y = (-90).dp.toPx() + blob1Radius
                 )
 
                 val gradientRadius1 = blob1Radius + blob1Blur
-                val color1 = GradientSoftPink.copy(alpha = 0.8f)
+                val color1 = GradientSoftPink.copy(alpha = 0.8f) // opacity: 0.3
 
                 drawCircle(
                     brush = Brush.radialGradient(
@@ -65,20 +63,19 @@ fun GradientBackground(
                     radius = gradientRadius1
                 )
 
-                // --- Ellipse 2 (Bottom-Right Purple Blob) ---
-                val blob2Width = 934.dp.toPx()
-                val blob2Radius = blob2Width / 2
-                val blob2Blur = 295.515.dp.toPx()
+                // --- Ellipse 2 (Center-Right Purple) ---
+                // CSS: width: 294px, left: 248px, top: 139px, blur: 125px
+                val blob2Size = 294.dp.toPx()
+                val blob2Radius = blob2Size / 2
+                val blob2Blur = 125.dp.toPx()
 
-                val blob2RightOffset = 747.dp.toPx()
-                val blob2Top = 419.dp.toPx()
-
-                val center2X = size.width + blob2RightOffset - blob2Radius
-                val center2Y = blob2Top + blob2Radius
-                val center2 = Offset(x = center2X, y = center2Y)
+                val center2 = Offset(
+                    x = 248.dp.toPx() + blob2Radius,
+                    y = 139.dp.toPx() + blob2Radius
+                )
 
                 val gradientRadius2 = blob2Radius + blob2Blur
-                val color2 = GradientSoftPurple.copy(alpha = 0.8f)
+                val color2 = GradientSoftPurple.copy(alpha = 0.8f) // opacity: 0.3
 
                 drawCircle(
                     brush = Brush.radialGradient(
