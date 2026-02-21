@@ -1,75 +1,33 @@
 package com.harish.b2c.core.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.harish.b2c.R
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.tooling.preview.Preview
-
-@Preview(
-    name = "OTP Input - All States",
-    showBackground = true,
-    backgroundColor = 0xFFFFFFFF
-)
-@Composable
-fun CommonOtpInputPreview() {
-
-    Column(
-        modifier = Modifier
-            .background(Color.White)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-
-        // 1️⃣ Empty
-        CommonOtpInput(
-            otpText = "",
-            onOtpTextChange = {}
-        )
-
-        // 2️⃣ Partially Filled
-        CommonOtpInput(
-            otpText = "12",
-            onOtpTextChange = {}
-        )
-
-        // 3️⃣ Fully Filled
-        CommonOtpInput(
-            otpText = "12345",
-            onOtpTextChange = {}
-        )
-    }
-}
+import com.harish.b2c.ui.theme.TextBlack
+import com.harish.b2c.ui.theme.appShapes
+import com.harish.b2c.ui.theme.appSpacing
+import com.harish.b2c.ui.theme.regularBody
 
 @Composable
 fun CommonOtpInput(
     otpText: String,
     onOtpTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    componentHeight: Dp = 56.dp,
     otpCount: Int = 5
 ) {
-    val textBlack = Color(0xFF030304)
+    val spacing = MaterialTheme.appSpacing
+    val shape = MaterialTheme.appShapes.large
 
     BasicTextField(
         modifier = modifier.fillMaxWidth(),
@@ -83,34 +41,33 @@ fun CommonOtpInput(
         decorationBox = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween // Distributes the 5 boxes evenly
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 repeat(otpCount) { index ->
                     val char = when {
                         index < otpText.length -> otpText[index].toString()
                         else -> ""
                     }
-
-                    // Active/filled state border opacity: 0.6, Empty state opacity: 0.16
                     val borderAlpha = if (index < otpText.length || index == otpText.length) 0.6f else 0.16f
 
                     Box(
                         modifier = Modifier
-                            .width(56.dp)
-                            .height(56.dp)
+                            .width(componentHeight)
+                            .height(componentHeight)
                             .border(
                                 width = 1.dp,
-                                color = textBlack.copy(alpha = borderAlpha),
-                                shape = RoundedCornerShape(16.dp)
+                                color = TextBlack.copy(alpha = borderAlpha),
+                                shape = shape
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = char,
-                            color = textBlack,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
-                            lineHeight = 22.sp
+                            style = MaterialTheme.typography.regularBody.copy(
+                                fontSize = 18.sp,
+                                lineHeight = 22.sp,
+                                color = TextBlack
+                            )
                         )
                     }
                 }

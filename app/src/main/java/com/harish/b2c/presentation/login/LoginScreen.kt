@@ -36,12 +36,16 @@ import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,isSignUp: Boolean = false ) {
     val textBlack = Color(0xFF030304)
     val textGrey = Color(0xFF7C858C)
     val brandRed = Color(0xFFEA0A2A)
 
     var phoneNumber by remember { mutableStateOf("") }
+    val screenTitle = if (isSignUp) "Create an Account" else "Login"
+    val bottomPrimaryText = if (isSignUp) "Already have an account?" else "Are you a new user?"
+
+    val bottomActionText = if (isSignUp) "Login" else "Sign Up"
 
     // Wrap the entire screen in the custom gradient background
         Scaffold(
@@ -49,7 +53,7 @@ fun LoginScreen(navController: NavController) {
             containerColor = Color.Transparent,
             topBar = {
                 CommonAppBar(
-                    title = "Login",
+                    title = screenTitle,
                     onBackClick = { /* Handle Back Navigation */ },
                     modifier = Modifier.statusBarsPadding().padding(top = 20.dp)
                 )
@@ -102,7 +106,7 @@ fun LoginScreen(navController: NavController) {
                     text = "Continue",
                     // Button is enabled only if they typed a 10-digit number
                     isEnabled = phoneNumber.length == 10,
-                    onClick = {navController.navigate(NavigationScreen.Otp.route)}
+                    onClick = {navController.navigate(if (isSignUp) NavigationScreen.OtpforSignUp.route else NavigationScreen.Otp.route)}
                 )
 
                 // --- Bottom Spacing ---
@@ -116,7 +120,7 @@ fun LoginScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Are you a new user?",
+                        text = bottomPrimaryText,
                         color = textBlack,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal))
@@ -125,11 +129,11 @@ fun LoginScreen(navController: NavController) {
                     Spacer(modifier = Modifier.width(10.dp)) // gap: 10px
 
                     Text(
-                        text = "Sign Up",
+                        text = bottomActionText,
                         color = brandRed,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
-                        modifier = Modifier.clickable { /* Handle Sign Up Navigation */ }
+                        modifier = Modifier.clickable { if (isSignUp) navController.navigate(NavigationScreen.Login.route) else navController.navigate(NavigationScreen.SignUp.route) }
                     )
                 }
             }

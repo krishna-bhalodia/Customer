@@ -1,5 +1,6 @@
 package com.harish.b2c.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
@@ -18,33 +19,27 @@ val Signika = FontFamily(
     Font(R.font.signika_bold, FontWeight.Bold)
 )
 
-// 2. Map them to M3 Typography roles
 val Typography = Typography(
-    // Large Titles (Bold)
     headlineLarge = TextStyle(
         fontFamily = Signika,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp
     ),
-    // Standard Screen Titles (SemiBold)
     titleLarge = TextStyle(
         fontFamily = Signika,
         fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp
     ),
-    // Subtitles or Section Headers (Medium)
     titleMedium = TextStyle(
         fontFamily = Signika,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     ),
-    // Main Body Text (Regular)
     bodyLarge = TextStyle(
         fontFamily = Signika,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
-    // Small captions or hints (Light)
     labelSmall = TextStyle(
         fontFamily = Signika,
         fontWeight = FontWeight.Light,
@@ -52,18 +47,22 @@ val Typography = Typography(
     )
 )
 
-
 val Typography.boldTitle: TextStyle
     @Composable
     @ReadOnlyComposable
-    get() = Typography.headlineLarge
+    get() = this.headlineLarge
 
 val Typography.regularBody: TextStyle
     @Composable
     @ReadOnlyComposable
-    get() = bodyLarge
+    get() = this.bodyLarge
 
+// Add a global accessor for Typography too
+val AppTypography: Typography
+    @Composable
+    @ReadOnlyComposable
+    get() = MaterialTheme.typography
 val Typography.mediumTitle: TextStyle
     @Composable
     @ReadOnlyComposable
-    get() = titleMedium
+    get() = this.titleMedium

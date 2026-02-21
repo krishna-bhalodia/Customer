@@ -15,4 +15,11 @@ val AppShapes = Shapes(
 
 val MaterialTheme.appShapes: Shapes
     @Composable
+    @ReadOnlyComposable
     get() = AppShapes
+
+// Global accessor for direct use in UI
+val Shapes: Shapes
+    @Composable
+    @ReadOnlyComposable
+    get() = MaterialTheme.appShapes

@@ -3,6 +3,7 @@ package com.harish.b2c.presentation.signUp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -13,17 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
+import com.harish.b2c.presentation.navigation.NavigationScreen
+import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.TextBlack
+import com.harish.b2c.ui.theme.appSpacing
+import com.harish.b2c.ui.theme.regularBody
 
 @Composable
 fun DeliveryAddressScreen(navController: NavController) {
+    val spacing = MaterialTheme.appSpacing
     var currentStep by remember { mutableIntStateOf(1) }
 
     // Step 1 States
@@ -38,10 +42,10 @@ fun DeliveryAddressScreen(navController: NavController) {
     var postalCode by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
 
-    val labelStyle = TextStyle(
-        fontFamily = FontFamily(Font(R.font.signika_regular)),
+    // Using theme typography instead of hardcoded TextStyle
+    val labelStyle = MaterialTheme.typography.regularBody.copy(
         fontSize = 18.sp,
-        color = Color(0xFF030304)
+        color = TextBlack
     )
 
     GradientBackground {
@@ -55,14 +59,15 @@ fun DeliveryAddressScreen(navController: NavController) {
                     onBackClick = {
                         if (currentStep == 2) currentStep = 1 else navController.navigateUp()
                     },
-                    modifier = Modifier.statusBarsPadding().padding(top = 20.dp)
+                    modifier = Modifier.statusBarsPadding().padding(top = spacing.mediumLarge)
                 )
             },
             bottomBar = {
-                Box(modifier = Modifier.padding(24.dp)) {
+                Box(modifier = Modifier.padding(spacing.large)) {
                     CommonButton(
                         text = if (currentStep == 1) "Next" else "Submit",
-                        onClick = { if (currentStep == 1) currentStep = 2 else { /* Handle Submit */ } }
+                        onClick = { if (currentStep == 1) currentStep = 2 else { navController.navigate(
+                            NavigationScreen.HomeScreen.route)} }
                     )
                 }
             }
@@ -71,16 +76,16 @@ fun DeliveryAddressScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = spacing.large)
                     .verticalScroll(rememberScrollState())
             ) {
                 // --- Progress Bar ---
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .height(8.dp)
-                        .background(Color(0xFF030304).copy(alpha = 0.1f), RoundedCornerShape(100.dp))
+                        .padding(top = spacing.medium)
+                        .height(spacing.small)
+                        .background(TextBlack.copy(alpha = 0.1f), CircleShape)
                 ) {
                     Box(
                         modifier = Modifier
@@ -88,73 +93,73 @@ fun DeliveryAddressScreen(navController: NavController) {
                             .fillMaxHeight()
                             .background(
                                 brush = Brush.horizontalGradient(
-                                    colors = listOf(Color(0xFFFF7185), Color(0xFFEA0A2A))
+                                    colors = listOf(Color(0xFFFF7185), BrandRed) // Left the start color hardcoded as it wasn't in Color.kt
                                 ),
-                                shape = RoundedCornerShape(100.dp)
+                                shape = CircleShape
                             )
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
-                val text= if (currentStep == 1) "customer details" else "delivery address"
+                Spacer(modifier = Modifier.height(spacing.large))
+                val text = if (currentStep == 1) "customer details" else "delivery address"
+
                 Text(
                     text = "Please complete the $text in the form below.",
-                    color = Color(0xFF7C858C),
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.signika_regular))
+                    color = Color(0xFF7C858C), // Left hardcoded as it wasn't defined in Color.kt
+                    style = MaterialTheme.typography.regularBody.copy(fontSize = 16.sp)
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(spacing.large))
 
                 if (currentStep == 1) {
                     // --- STEP 1: Basic Information ---
-                    Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(spacing.mediumLarge)) {
 
                         // 1. Store Name
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("Store Name", style = labelStyle)
                             CommonInput(
                                 value = storeName,
                                 onValueChange = { storeName = it },
                                 placeholder = "Enter Store Name",
                                 leadingIcon = {
-                                    Icon(painterResource(R.drawable.store_front), "Store", tint = Color(0xFF030304))
+                                    Icon(painterResource(R.drawable.store_front), "Store", tint = TextBlack)
                                 }
                             )
                         }
 
                         // 2. Owner Name
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("Owner Name", style = labelStyle)
                             CommonInput(
                                 value = ownerName,
                                 onValueChange = { ownerName = it },
                                 placeholder = "Enter Owner Name",
                                 leadingIcon = {
-                                    Icon(painterResource(R.drawable.person), "Owner", tint = Color(0xFF030304))
+                                    Icon(painterResource(R.drawable.person), "Owner", tint = TextBlack)
                                 }
                             )
                         }
 
                         // 3. Email Address
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("Email Address", style = labelStyle)
                             CommonInput(
                                 value = email,
                                 onValueChange = { email = it },
                                 placeholder = "Enter Email Address",
                                 leadingIcon = {
-                                    Icon(painterResource(R.drawable.email), "Email", tint = Color(0xFF030304))
+                                    Icon(painterResource(R.drawable.email), "Email", tint = TextBlack)
                                 }
                             )
                         }
                     }
                 } else {
                     // --- STEP 2: Address Details ---
-                    Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(spacing.mediumLarge)) {
 
                         // 1. Address (Two Input Boxes Stacked)
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("Address", style = labelStyle)
                             CommonInput(
                                 value = addressLine1,
@@ -169,7 +174,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 2. City
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("City", style = labelStyle)
                             CommonInput(
                                 value = city,
@@ -179,7 +184,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 3. Postal Code
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("Postal code", style = labelStyle)
                             CommonInput(
                                 value = postalCode,
@@ -189,7 +194,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 4. State (With trailing dropdown icon)
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
                             Text("State", style = labelStyle)
                             CommonInput(
                                 value = state,
@@ -199,7 +204,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                                     Icon(
                                         Icons.Default.KeyboardArrowDown,
                                         contentDescription = "Select State",
-                                        tint = Color(0xFF030304)
+                                        tint = TextBlack
                                     )
                                 }
                             )

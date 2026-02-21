@@ -36,8 +36,8 @@ import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
 
 @Composable
-fun OtpScreen(navController: NavController,
-    phoneNumber: String = "+256 94*****53" // Pass this dynamically in a real app
+fun OtpScreen(navController: NavController,isSignUp: Boolean = false,
+        phoneNumber: String = "+256 94*****53" // Pass this dynamically in a real app
 ) {
     val textBlack = Color(0xFF030304)
     val textGrey = Color(0xFF7C858C)
@@ -102,7 +102,7 @@ fun OtpScreen(navController: NavController,
                     text = "Verify",
                     // Button becomes red/active only when all 5 digits are entered
                     isEnabled = otpValue.length == 5,
-                    onClick = { navController.navigate(NavigationScreen.DeliveryAddress.route) }
+                    onClick = { if (isSignUp) navController.navigate(NavigationScreen.DeliveryAddress.route) else navController.navigate(NavigationScreen.HomeScreen.route) }
                 )
 
                 Spacer(modifier = Modifier.height(104.dp))

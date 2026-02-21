@@ -43,7 +43,7 @@ fun AppNavHost(
     }
 
     NavHost(
-        navController = navController, startDestination = NavigationScreen.Login.route,
+        navController = navController, startDestination = NavigationScreen.HomeScreen.route,
         // Forward: New screen slides in from right
         enterTransition = {
             slideInHorizontally(initialOffsetX = { it })
@@ -69,11 +69,19 @@ fun AppNavHost(
         }
         composable(NavigationScreen.Login.route) {
             //  val vm: LoginViewModel = hiltViewModel()
-            LoginScreen(navController)
+            LoginScreen(navController = navController, isSignUp = false)
+        }
+        composable(NavigationScreen.SignUp.route) {
+            //  val vm: LoginViewModel = hiltViewModel()
+            LoginScreen(navController = navController, isSignUp = true)
         }
         composable(NavigationScreen.Otp.route) {
             //  val vm: LoginViewModel = hiltViewModel()
-            OtpScreen(navController)
+            OtpScreen(navController, isSignUp = false)
+        }
+        composable(NavigationScreen.OtpforSignUp.route) {
+            //  val vm: LoginViewModel = hiltViewModel()
+            OtpScreen(navController, isSignUp = true)
         }
         composable(NavigationScreen.DeliveryAddress.route) {
             //  val vm: LoginViewModel = hiltViewModel()
