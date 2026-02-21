@@ -12,6 +12,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.harish.b2c.presentation.home.HomeScreen
+import com.harish.b2c.presentation.splash.SplashScreen
+import com.harish.b2c.presentation.splash.SplashViewModel
 
 
 @Composable
@@ -53,15 +56,18 @@ fun AppNavHost(
         popExitTransition = {
             slideOutHorizontally(targetOffsetX = { it })
         }) {
+        composable(NavigationScreen.SplashScreen.route) {
+            val vm: SplashViewModel = hiltViewModel()
+            SplashScreen(navController, vm)
+        }
 
 //        composable(NavigationScreen.Login.route) {
 //            val vm: LoginViewModel = hiltViewModel()
 //            LoginScreen(viewModel = vm, navController)
 //        }
-//        composable(NavigationScreen.HomeScreen.route) {
-//            val vm: HomeViewModel = hiltViewModel()
-//            HomeScreen(navController, vm)
-//        }
+        composable(NavigationScreen.HomeScreen.route) {
+            HomeScreen()
+        }
 //        composable(NavigationScreen.ProfileScreen.route) {
 //            val vm: ProfileViewModel = hiltViewModel()
 //            MyProfileScreen(navController, vm)

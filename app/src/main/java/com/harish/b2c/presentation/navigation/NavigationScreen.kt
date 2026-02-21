@@ -19,6 +19,7 @@ sealed class NavigationScreen(
     val objectPath: String = ""
 ) {
 
+    data object SplashScreen : NavigationScreen("splash_screen")
     data object Login : NavigationScreen("login_screen")
     data object HomeScreen : NavigationScreen("home_screen")
     data object ProfileScreen : NavigationScreen("profile_screen")
