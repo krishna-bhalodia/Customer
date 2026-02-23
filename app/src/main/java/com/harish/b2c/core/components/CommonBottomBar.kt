@@ -6,12 +6,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,15 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.harish.b2c.R
 import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.Signika
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
 import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
-import androidx.compose.ui.tooling.preview.Preview
 
 // ----------------------
 // PREVIEW WRAPPER VERSION
@@ -39,14 +37,12 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 private fun PreviewBottomBar(selectedIndex: Int) {
-
     CommonBottomBar(
         selectedIndex = selectedIndex,
         onItemSelected = {},
         onFabClick = {}
     )
 }
-
 
 // ---------- ALL STATES PREVIEW ----------
 
@@ -83,21 +79,20 @@ fun CommonBottomBar(
 ) {
     val spacing = MaterialTheme.appSpacing
 
-    // CSS specified total height is 120px.
-    // The white rectangle starts at ~26px down (21.67%), and the FAB starts at 2px down.
+    // The entire menu block is 120dp tall according to the CSS.
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(120.dp)
     ) {
 
-        // 1. White Background Container
+        // 1. Bottom White Curved Bar
+        // Starts 26dp from the top (120 - 26 = 94dp height)
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(94.dp) // 120dp total - 26dp offset
+                .height(94.dp)
                 .align(Alignment.BottomCenter)
-                // Replicating: box-shadow: 0px -8px 24px rgba(0, 0, 0, 0.08);
                 .shadow(
                     elevation = 16.dp,
                     shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
@@ -107,37 +102,39 @@ fun CommonBottomBar(
             color = White,
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
         ) {
-            // Row for the 4 standard navigation items
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    // Leave space on the right for the floating action button
-                    .padding(end = 80.dp)
-                    // Leave space at the bottom for the Native Home Indicator
+                    // Leave 88dp padding on the right to make room for the right-aligned FAB
+                    .padding(start = 24.dp, end = 88.dp)
                     .padding(bottom = 12.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 BottomBarItem(
-                    icon = Icons.Default.Home,
+                    icon = R.drawable.store_front, // Use your correct home icon here
                     label = "Home",
                     isSelected = selectedIndex == 0,
                     onClick = { onItemSelected(0) }
                 )
+
                 BottomBarItem(
-                    icon = Icons.Default.List, // Replace with your exact Products SVG
+                    icon = R.drawable.products,
                     label = "Products",
                     isSelected = selectedIndex == 1,
                     onClick = { onItemSelected(1) }
                 )
+
                 BottomBarItem(
-                    icon = Icons.Default.Star, // Replace with your exact Promotions SVG
+                    icon = R.drawable.promotions,
                     label = "Promotions",
                     isSelected = selectedIndex == 2,
                     onClick = { onItemSelected(2) }
                 )
+
                 BottomBarItem(
-                    icon = Icons.Default.Person, // Replace with your exact Account SVG
+                    icon = R.drawable.person,
                     label = "Account",
                     isSelected = selectedIndex == 3,
                     onClick = { onItemSelected(3) }
@@ -145,64 +142,86 @@ fun CommonBottomBar(
             }
         }
 
-        // 2. Floating Action Button (Overlaps the top right)
+        // 2. FAB (Positioned at TopEnd)
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                // CSS: left: 80.8% maps roughly to 24dp end padding on a standard 375 width screen
-                .padding(end = spacing.large, top = 2.dp)
-                .size(48.dp)
-                // Replicating: drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.16))
-                .shadow(
-                    elevation = 8.dp,
-                    shape = CircleShape,
-                    spotColor = Color.Black.copy(alpha = 0.16f)
-                )
-                // Background combination: Linear gradient overlay + BrandRed solid base
-                .background(BrandRed, CircleShape)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            White.copy(alpha = 0.4f),
-                            White.copy(alpha = 0.0f)
-                        )
-                    ),
-                    shape = CircleShape
-                )
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null, // Custom ripple or none as preferred
-                    onClick = onFabClick
-                ),
-            contentAlignment = Alignment.Center
+                .padding(top = 2.dp, end = 24.dp) // Maps exactly to left: 80.8% and top: 2px
         ) {
-            // Placeholder for FAB Icon (e.g., Cart or Scan based on your app context)
-            Icon(
-                imageVector = Icons.Default.ShoppingCart,
-                contentDescription = "FAB Action",
-                tint = White,
-                modifier = Modifier.size(spacing.large)
-            )
+            // Main FAB Circle (48x48)
+            Box(
+                modifier = Modifier
+                    .padding(top = 4.dp, end = 4.dp) // Padding to accommodate the badge overlap
+                    .size(48.dp)
+                    .shadow(
+                        elevation = 16.dp,
+                        shape = CircleShape,
+                        spotColor = Color.Black.copy(alpha = 0.16f)
+                    )
+                    .background(BrandRed, CircleShape) // Solid red base
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                White.copy(alpha = 0.4f),
+                                Color.Transparent
+                            )
+                        ),
+                        shape = CircleShape
+                    )
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onFabClick
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.cart),
+                    contentDescription = "Cart",
+                    tint = White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+            // 3. FAB Badge (The black "0" button from CSS)
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp)
+                    .background(TextBlack, RoundedCornerShape(16.dp))
+                    .padding(horizontal = 4.dp, vertical = 2.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "0", // Map to dynamic state when you wire up logic
+                    fontFamily = Signika,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    color = White,
+                    lineHeight = 12.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun BottomBarItem(
-    icon: ImageVector,
+    icon: Int,
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
     val spacing = MaterialTheme.appSpacing
-    val inactiveIconColor = Color(0xFF7C858C) // Hardcoded grey from your CSS
+    val inactiveIconColor = Color(0xFF7C858C)
 
     val iconColor = if (isSelected) BrandRed else inactiveIconColor
     val textColor = if (isSelected) BrandRed else TextBlack
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(spacing.extraSmall), // CSS: gap: 4px
+        verticalArrangement = Arrangement.spacedBy(spacing.extraSmall),
         modifier = Modifier.clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
@@ -210,16 +229,14 @@ private fun BottomBarItem(
         )
     ) {
         Icon(
-            imageVector = icon,
+            painter = painterResource(icon),
             contentDescription = label,
             tint = iconColor,
-            modifier = Modifier.size(spacing.large) // CSS: width 24px, height 24px
+            modifier = Modifier.size(24.dp)
         )
-
         Text(
             text = label,
             color = textColor,
-            // Strictly uses regularBody but scales down to exactly 12sp per CSS
             style = MaterialTheme.typography.regularBody.copy(
                 fontSize = 12.sp,
                 lineHeight = 12.sp

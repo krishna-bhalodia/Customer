@@ -19,60 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.regularBody
-import androidx.compose.ui.tooling.preview.Preview
+import com.harish.b2c.ui.theme.*
 
-
-// ------------------------------
-// DEFAULT PREVIEW
-// ------------------------------
-@Preview(showBackground = true, widthDp = 375)
-@Composable
-fun RecentOrderCard_Preview_Default() {
-    MaterialTheme {
-        CommonRecentOrderCard(
-            orderId = "#MHO00300010",
-            date = "Placed on 17 Oct, 2025",
-            amount = "1240.00",
-            status = "Order delivered"
-        )
-    }
-}
-
-// ------------------------------
-// LONG TEXT PREVIEW
-// ------------------------------
-@Preview(showBackground = true, widthDp = 375)
-@Composable
-fun RecentOrderCard_Preview_LongText() {
-    MaterialTheme {
-        CommonRecentOrderCard(
-            orderId = "#MHO003000109999999",
-            date = "Placed on 17 October, 2025 at 10:30 AM",
-            amount = "9999.00",
-            status = "Order delivered successfully"
-        )
-    }
-}
-
-// ------------------------------
-// DIFFERENT STATUS PREVIEW
-// ------------------------------
-@Preview(showBackground = true, widthDp = 375)
-@Composable
-fun RecentOrderCard_Preview_Pending() {
-    MaterialTheme {
-        CommonRecentOrderCard(
-            orderId = "#MHO00300011",
-            date = "Placed on 20 Oct, 2025",
-            amount = "340.00",
-            status = "Order processing"
-        )
-    }
-}
 @Composable
 fun CommonRecentOrderCard(
     orderId: String,
@@ -81,19 +29,15 @@ fun CommonRecentOrderCard(
     status: String,
     modifier: Modifier = Modifier
 ) {
-    val greyText = Color(0xFF7C858C)
-    val successGreen = Color(0xFF52B96C)
-    val orangeIconColor = Color(0xFFFC9E15)
-    val orangeIconBg = orangeIconColor.copy(alpha = 0.2f)
+    val spacing = Spacing // Accessing theme spacing
 
-    // Main Container (Column)
     Column(
         modifier = modifier
             .width(327.dp)
-            .background(White, MaterialTheme.appShapes.large)
-            .border(1.dp, TextBlack.copy(alpha = 0.1f), MaterialTheme.appShapes.large)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .background(White, MaterialTheme.appShapes.large) // Use AppShapes
+            .border(1.dp, BorderLight, MaterialTheme.appShapes.large)
+            .padding(spacing.mediumSmall), // 12.dp from theme
+        verticalArrangement = Arrangement.spacedBy(spacing.mediumSmall)
     ) {
 
         // Top Row: Icon, Order Info, and Price/Arrow
@@ -105,40 +49,41 @@ fun CommonRecentOrderCard(
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(spacing.mediumSmall)
             ) {
                 // Cart Icon Box
                 Box(
                     modifier = Modifier
                         .size(38.dp)
-                        .background(orangeIconBg, CircleShape),
+                        .background(OrderIconBg, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ShoppingCart, // Replace with your custom SVG if needed
+                        imageVector = Icons.Default.ShoppingCart,
                         contentDescription = "Order",
-                        tint = orangeIconColor,
+                        tint = OrderIconOrange,
                         modifier = Modifier.size(20.dp)
                     )
                 }
 
                 // Text Column
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(spacing.extraSmall)
                 ) {
                     Text(
                         text = orderId,
                         color = TextBlack,
-                        style = MaterialTheme.typography.regularBody.copy(
-                            fontSize = 14.sp
-                        )
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        ) // Uses Signika Regular/Medium
                     )
                     Text(
                         text = date,
-                        color = greyText,
-                        style = MaterialTheme.typography.regularBody.copy(
+                        color = TextGrey,
+                        style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 12.sp
-                        )
+                        ) // Uses Signika Light
                     )
                 }
             }
@@ -146,28 +91,24 @@ fun CommonRecentOrderCard(
             // Right Side: Amount and Next Arrow
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(spacing.mediumSmall)
             ) {
                 Column(
                     horizontalAlignment = Alignment.End,
                 ) {
                     Text(
                         text = "AED",
-                        color = greyText,
-                        style = MaterialTheme.typography.regularBody.copy(
-                            fontSize = 12.sp
-                        ),
-                        lineHeight = 14.sp
+                        color = TextGrey,
+                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp)
                     )
 
                     Text(
-                        text = amount, // pass only numeric part if possible
+                        text = amount,
                         color = TextBlack,
-                        style = MaterialTheme.typography.regularBody.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold
-                        ),
-                        lineHeight = 16.sp
+                        )
                     )
                 }
 
@@ -175,7 +116,7 @@ fun CommonRecentOrderCard(
                 Box(
                     modifier = Modifier
                         .size(24.dp)
-                        .background(TextBlack.copy(alpha = 0.08f), CircleShape)
+                        .background(White20, CircleShape) // Using White.copy(alpha=0.2f) from Color.kt
                         .border(1.dp, White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
@@ -192,14 +133,12 @@ fun CommonRecentOrderCard(
         // Bottom Row: Status Indicator
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(spacing.extraSmall)
         ) {
             Text(
                 text = status,
                 color = TextBlack,
-                style = MaterialTheme.typography.regularBody.copy(
-                    fontSize = 12.sp
-                )
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 12.sp)
             )
 
             // Custom Status Checkmark Circle
@@ -207,12 +146,12 @@ fun CommonRecentOrderCard(
                 modifier = Modifier
                     .size(14.dp)
                     .shadow(
-                        elevation = 24.dp,
+                        elevation = spacing.large,
                         shape = CircleShape,
                         spotColor = Color.Black.copy(alpha = 0.08f)
                     )
-                    .background(successGreen, CircleShape)
-                    .border(1.dp, successGreen.copy(alpha = 0.1f), CircleShape),
+                    .background(SuccessGreen, CircleShape)
+                    .border(1.dp, SuccessGreen.copy(alpha = 0.1f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

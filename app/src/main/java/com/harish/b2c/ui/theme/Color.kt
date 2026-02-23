@@ -29,3 +29,15 @@ val GradientSoftPurple = Color(0xFFF3E8FF)
 // Custom Backgrounds
 val LightBackground = Color(0xFFF8F9FA)
 val DarkBackground = Color(0xFF121212)
+val TextGrey = Color(0xFF7C858C) // Added for secondary text
+val BorderWhite = Color(0x99FFFFFF) // White 60% for glass borders
+val ShadowRed = Color(0x14EA0A2A) // BrandRed 8% for shadows
+
+val LoyaltyBg = Color(0xFFFFF5DC)
+val LoyaltyBorder = Color(0xFFFFC50B).copy(alpha = 0.3f)
+val DarkGrey = Color(0xFF212121)
+
+val SuccessGreen = Color(0xFF52B96C)
+val OrderIconOrange = Color(0xFFFC9E15)
+val OrderIconBg = OrderIconOrange.copy(alpha = 0.2f)
+val BorderLight = Color(0x1A030304) // TextBlack with 10% alpha

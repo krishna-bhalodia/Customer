@@ -12,11 +12,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.harish.b2c.presentation.checkout.CheckoutScreen
+import com.harish.b2c.presentation.checkout.OrderSuccessScreen
 import com.harish.b2c.presentation.home.HomeScreen
 import com.harish.b2c.presentation.splash.SplashScreen
 import com.harish.b2c.presentation.login.LoginScreen
 import com.harish.b2c.presentation.login.OtpScreen
 import com.harish.b2c.presentation.onboarding.OnboardingScreen
+import com.harish.b2c.presentation.products.ProductsScreen
 import com.harish.b2c.presentation.signUp.DeliveryAddressScreen
 import com.harish.b2c.presentation.splash.SplashViewModel
 
@@ -88,12 +91,36 @@ fun AppNavHost(
             DeliveryAddressScreen(navController)
         }
         composable(NavigationScreen.HomeScreen.route) {
-            HomeScreen()
+            HomeScreen(
+                navController = navController
+            )
         }
 //        composable(NavigationScreen.ProfileScreen.route) {
 //            val vm: ProfileViewModel = hiltViewModel()
 //            MyProfileScreen(navController, vm)
 //        }
+        composable(NavigationScreen.ProductsScreen.route) {
+            ProductsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(NavigationScreen.CheckoutScreen.route) {
+            CheckoutScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(NavigationScreen.SuccessScreen.route) {
+            OrderSuccessScreen(
+                onDownloadInvoice = { /* Handle Invoice Logic */ },
+                onBackToHome = {
+                    navController.navigate(NavigationScreen.HomeScreen.route) {
+                        popUpTo(NavigationScreen.HomeScreen.route) { inclusive = true }
+                    }
+                }
+            )
+        }
     }
 }
 @Composable
