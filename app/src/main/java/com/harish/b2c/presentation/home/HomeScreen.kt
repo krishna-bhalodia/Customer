@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,16 +22,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
+import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
 import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
 
 @Composable
 fun HomeScreen() {
-    val spacing = MaterialTheme.appSpacing
     var searchQuery by remember { mutableStateOf("") }
     var bottomNavIndex by remember { mutableIntStateOf(0) }
 
@@ -55,13 +54,13 @@ fun HomeScreen() {
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            Spacer(modifier = Modifier.height(spacing.extraLarge)) // Status bar padding equivalent
+            Spacer(modifier = Modifier.height(Spacing.extraLarge)) // Status bar padding equivalent
 
             // --- 1. Top Header Area ---
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = spacing.large),
+                    .padding(horizontal = Spacing.large),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -69,7 +68,7 @@ fun HomeScreen() {
                     Text(
                         text = "Hi Nicholas,",
                         color = TextBlack,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = AppTypography.titleLarge.copy(
                             fontSize = 24.sp,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -77,7 +76,7 @@ fun HomeScreen() {
                     Text(
                         text = "Good Morning!",
                         color = BrandRed,
-                        style = MaterialTheme.typography.regularBody.copy(
+                        style = AppTypography.regularBody.copy(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -110,10 +109,10 @@ fun HomeScreen() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(spacing.large))
+            Spacer(modifier = Modifier.height(Spacing.large))
 
             // --- 2. Search Bar ---
-            Box(modifier = Modifier.padding(horizontal = spacing.large)) {
+            Box(modifier = Modifier.padding(horizontal = Spacing.large)) {
                 CommonSearchBar(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
@@ -122,11 +121,11 @@ fun HomeScreen() {
                 )
             }
 
-            Spacer(modifier = Modifier.height(spacing.large))
+            Spacer(modifier = Modifier.height(Spacing.large))
 
             // --- 3. Delivery Address ---
             Column(
-                modifier = Modifier.padding(horizontal = spacing.large),
+                modifier = Modifier.padding(horizontal = Spacing.large),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
@@ -152,12 +151,12 @@ fun HomeScreen() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(spacing.large))
+            Spacer(modifier = Modifier.height(Spacing.large))
 
             // --- 4. Banners ---
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = PaddingValues(horizontal = spacing.large)
+                contentPadding = PaddingValues(horizontal = Spacing.large)
             ) {
                 items(4) { // 4 Banners as per original implementation
                     Box(
@@ -209,30 +208,30 @@ fun HomeScreen() {
                 )
             }
 
-            Spacer(modifier = Modifier.height(spacing.large))
+            Spacer(modifier = Modifier.height(Spacing.large))
 
             // --- 5. Loyalty Points Statistics Card ---
             CommonLoyaltyCard(
                 points = 957,
                 onRedeemClick = { /* Handle Redeem Action */ },
-                modifier = Modifier.padding(horizontal = spacing.large)
+                modifier = Modifier.padding(horizontal = Spacing.large)
             )
 
-            Spacer(modifier = Modifier.height(spacing.large))
+            Spacer(modifier = Modifier.height(Spacing.large))
 
             // --- 6. Recent Orders ---
             CommonSectionHeader(
                 title = "Recent Order",
                 actionText = "View All",
                 onActionClick = { /* Handle View All Action */ },
-                modifier = Modifier.padding(horizontal = spacing.large)
+                modifier = Modifier.padding(horizontal = Spacing.large)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             // Order Card List
             LazyRow(
-                contentPadding = PaddingValues(horizontal = spacing.large),
+                contentPadding = PaddingValues(horizontal = Spacing.large),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(2) {
