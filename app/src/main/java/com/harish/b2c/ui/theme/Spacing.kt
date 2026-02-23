@@ -13,9 +13,13 @@ data class AppSpacing(
     val default: Dp = 0.dp,
     val extraSmall: Dp = 4.dp,
     val small: Dp = 8.dp,
+    val mediumSmall: Dp = 10.dp,     // Required for Button icon spacing
     val medium: Dp = 16.dp,
+    val mediumLarge: Dp = 20.dp,
     val large: Dp = 24.dp,
-    val extraLarge: Dp = 32.dp
+    val extraLarge: Dp = 32.dp,
+    val extraExtraLarge: Dp = 40.dp,
+    val huge: Dp = 48.dp
 )
 
 val LocalSpacing = staticCompositionLocalOf { AppSpacing() }
@@ -24,3 +28,8 @@ val MaterialTheme.appSpacing: AppSpacing
     @Composable
     @ReadOnlyComposable
     get() = LocalSpacing.current
+
+val Spacing: AppSpacing
+    @Composable
+    @ReadOnlyComposable
+    get() = MaterialTheme.appSpacing
