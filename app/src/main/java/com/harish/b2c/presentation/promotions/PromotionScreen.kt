@@ -12,33 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.harish.b2c.core.components.*
-import com.harish.b2c.ui.theme.AppTypography
-import com.harish.b2c.ui.theme.B2CTheme
-import com.harish.b2c.ui.theme.Shapes
-import com.harish.b2c.ui.theme.TextBlack
+import com.harish.b2c.ui.theme.*
 
 @Composable
-fun PromotionsScreen(
-    onBackClick: () -> Unit = {}
-) {
-    // State for managing the search query
+fun PromotionsScreen(onBackClick: () -> Unit = {}) {
     var searchQuery by remember { mutableStateOf("") }
-
-    // Filtered list based on search query
-    val allBanners = listOf(
-        "oner_banner.svg",
-        "energy_banner.svg",
-        "soft_drink_banner.svg",
-        "pulpe_banner.svg"
-    )
-
+    val allBanners = listOf("oner_banner.svg", "energy_banner.svg", "soft_drink_banner.svg", "pulpe_banner.svg")
     val filteredBanners = remember(searchQuery) {
-        if (searchQuery.isEmpty()) allBanners
-        else allBanners.filter { it.contains(searchQuery, ignoreCase = true) }
+        if (searchQuery.isEmpty()) allBanners else allBanners.filter { it.contains(searchQuery, ignoreCase = true) }
     }
 
     Scaffold(
@@ -47,77 +31,51 @@ fun PromotionsScreen(
             CommonAppBar(
                 title = "Promotions",
                 onBackClick = onBackClick,
-                modifier = Modifier.statusBarsPadding().padding(top = 20.dp)
+                modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge)
             )
         },
         bottomBar = {
             CommonBottomBar(
-                selectedIndex = 2, // 2 representing the 'promotion' tab
-                onItemSelected = { index ->
-                    // Handle Navigation based on index
-                },
-                onFabClick = {
-                    // Handle FAB (e.g., Cart) click
-                }, modifier = Modifier.navigationBarsPadding()
+                selectedIndex = 2,
+                onItemSelected = { },
+                onFabClick = { },
+                modifier = Modifier.navigationBarsPadding()
             )
         }
-
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier = Modifier.fillMaxSize().padding(paddingValues)
         ) {
-            // Improved Search Bar Integration
             CommonSearchBar(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 placeholder = "Search promotions...",
-                modifier = Modifier
-                    .padding(horizontal = 24.dp, vertical = 8.dp),
-                onSearch = { /* Handle explicit search if needed */ }
+                modifier = Modifier.padding(horizontal = Spacing.large, vertical = Spacing.small)
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(Spacing.medium))
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                    )
+                    .background(color = White, shape = RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large))
             ) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(), // Removed horizontal padding here
-                    contentPadding = PaddingValues(top = 24.dp, bottom = 0.dp),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(top = Spacing.large, bottom = 0.dp),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.large),
                     horizontalAlignment = Alignment.CenterHorizontally
-
                 ) {
                     items(filteredBanners) { bannerUrl ->
-//                    CommonSvgImage(
-//                        assetName = bannerUrl,
-//                        contentDescription = "Promotion Banner",
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(180.dp)
-//                            .padding(horizontal = 16.dp)
-//                            .clip(Shapes.large),
-//                        contentScale = ContentScale.FillBounds
-//                    )
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth().padding(horizontal = 24.dp)
+                                .fillMaxWidth()
+                                .padding(horizontal = Spacing.large)
                                 .height(150.dp)
-                                .clip(Shapes.large) // Uses AppShapes from Shape.kt
+                                .clip(Shapes.large)
                                 .background(TextBlack.copy(alpha = 0.1f))
                         ) {
-                            Text(
-                                "Banner Image Placeholder",
-                                style = AppTypography.bodyLarge,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
+                            Text("Banner Image Placeholder", style = AppTypography.bodyLarge, modifier = Modifier.align(Alignment.Center))
                         }
                     }
                 }

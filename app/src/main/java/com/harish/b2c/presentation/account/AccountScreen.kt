@@ -29,61 +29,62 @@ import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.core.components.QuickActionCard
 import com.harish.b2c.ui.theme.*
 import com.harish.b2c.R
+
 @Preview(
     showBackground = true,
-    showSystemUi = true)
+    showSystemUi = true
+)
 @Composable
 fun AccountScreenPreview() {
     GradientBackground {
         AccountScreen()
     }
 }
-@Composable
-fun AccountScreen(
-) {
-    Scaffold(
-        containerColor = Color.Transparent, // Let GradientBackground show through if added later
 
+@Composable
+fun AccountScreen() {
+    Scaffold(
+        containerColor = Color.Transparent, // Let GradientBackground show through
         bottomBar = {
             CommonBottomBar(
-                selectedIndex = 1, // 1 representing the 'Products' tab
+                selectedIndex = 3, // 3 representing the 'Account' tab
                 onItemSelected = { index ->
                     // Handle Navigation based on index
                 },
                 onFabClick = {
                     // Handle FAB (e.g., Cart) click
-                }, modifier = Modifier.navigationBarsPadding()
+                },
+                modifier = Modifier.navigationBarsPadding()
             )
-
         }
-
-    ) {paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxSize().padding(paddingValues)
+                .fillMaxSize()
+                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
 
-            // Top App Bar Area (Custom for this screen as per Figma)
             // Top Section with Overlapping Profile
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp).statusBarsPadding()
+                    .padding(top = Spacing.mediumLarge)
+                    .statusBarsPadding()
             ) {
 
                 // Top Row (Back + Points)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                        .padding(horizontal = Spacing.large),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Back Button
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
+                            .size(Spacing.extraExtraLarge)
                             .border(1.dp, TextBlack.copy(alpha = 0.08f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
@@ -97,17 +98,17 @@ fun AccountScreen(
                     // Loyalty Points Badge
                     Row(
                         modifier = Modifier
-                            .background(LoyaltyBg, RoundedCornerShape(16.dp))
-                            .border(2.dp, LoyaltyBorder, RoundedCornerShape(16.dp))
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .background(LoyaltyBg, RoundedCornerShape(Spacing.medium))
+                            .border(2.dp, LoyaltyBorder, RoundedCornerShape(Spacing.medium))
+                            .padding(horizontal = 12.dp, vertical = 6.dp), // Kept specific inner component padding
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = "Coin",
                             tint = OrderIconOrange,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(Spacing.mediumLarge)
                         )
                         Text(
                             text = "1080",
@@ -120,35 +121,36 @@ fun AccountScreen(
                 // Profile Image (Overlapping)
                 Box(
                     modifier = Modifier
-                        .size(124.dp)
+                        .size(124.dp) // Specific profile image wrapper size
                         .align(Alignment.BottomCenter)
-                        .offset(y = 20.dp) // 👈 controls how much it overlaps
+                        .offset(y = Spacing.mediumLarge) // Controls overlap
                         .background(White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.dark_man),
                         contentDescription = null,
-                        modifier = Modifier.size(50.dp),
+                        modifier = Modifier.size(50.dp), // Specific icon size
                         tint = TextBlack.copy(alpha = 0.7f)
                     )
                 }
             }
+
             // Profile Header
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = Spacing.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(Spacing.medium))
 
                 Text(
                     text = "Jorden Smith",
                     style = AppTypography.headlineLarge.copy(fontSize = 24.sp),
                     color = TextBlack
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(Spacing.extraSmall))
                 Text(
                     text = "+256 78 45 61230",
                     style = AppTypography.bodyLarge.copy(fontSize = 18.sp),
@@ -162,8 +164,8 @@ fun AccountScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(19.dp)
+                    .padding(horizontal = Spacing.large),
+                horizontalArrangement = Arrangement.spacedBy(19.dp) // Specific component gap
             ) {
                 QuickActionCard(
                     modifier = Modifier.weight(1f),
@@ -183,72 +185,64 @@ fun AccountScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(Spacing.large))
 
             // Bottom Menu Sheet (White Background with Top Rounded Corners)
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    // Use weight or minHeight if you want it to stretch down exactly,
-                    // but wrapContentHeight allows it to scale with items.
                     .wrapContentHeight(),
                 color = White,
-                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+                shape = RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large),
             ) {
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = 24.dp,
-                            bottom = 120.dp
-                        ), // Extra bottom padding for Bottom Nav visibility
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                            top = Spacing.large,
+                            bottom = 120.dp // Extra bottom padding for Bottom Nav visibility
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
                 ) {
                     AccountMenuItem(
                         title = "Personal Info",
-                        icon = { Icon(painter = painterResource(R.drawable.man), null, tint = Color(0xFFFB9400)) },
-                        iconBgColor = Color(0xFFFB9400),
+                        icon = { Icon(painter = painterResource(R.drawable.man), null, tint = MenuOrange) },
+                        iconBgColor = MenuOrange,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(
                         title = "Delivery Address",
-                        icon = { Icon(painter = painterResource(R.drawable.location), null, tint = Color(0xFF6949FF)) },
-                        iconBgColor = Color(0xFF6949FF),
+                        icon = { Icon(painter = painterResource(R.drawable.location), null, tint = MenuPurple) },
+                        iconBgColor = MenuPurple,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(
                         title = "Payment Methods",
-                        icon = { Icon(painter = painterResource(R.drawable.payment_card), null, tint = Color(0xFF246BFD)) },
-                        iconBgColor = Color(0xFF246BFD),
+                        icon = { Icon(painter = painterResource(R.drawable.payment_card), null, tint = MenuBlue) },
+                        iconBgColor = MenuBlue,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(
                         title = "Notifications",
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.notify),
-                                null,
-                                tint = Color(0xFFFF5A5F)
-                            )
-                        },
-                        iconBgColor = Color(0xFFFF5A5F),
+                        icon = { Icon(painter = painterResource(R.drawable.notify), null, tint = MenuRed) },
+                        iconBgColor = MenuRed,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(
                         title = "Terms of use",
-                        icon = { Icon(painter = painterResource(R.drawable.file), null, tint = Color(0xFF12D18E)) },
-                        iconBgColor = Color(0xFF12D18E),
+                        icon = { Icon(painter = painterResource(R.drawable.file), null, tint = MenuGreen) },
+                        iconBgColor = MenuGreen,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(
                         title = "Privacy policy",
-                        icon = { Icon(painter = painterResource(R.drawable.shield), null, tint = Color(0xFFFB9400)) },
-                        iconBgColor = Color(0xFFFB9400),
+                        icon = { Icon(painter = painterResource(R.drawable.shield), null, tint = MenuOrange) },
+                        iconBgColor = MenuOrange,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(
                         title = "About Us",
-                        icon = { Icon(painter = painterResource(R.drawable.info), null, tint = Color(0xFF6949FF)) },
-                        iconBgColor = Color(0xFF6949FF),
+                        icon = { Icon(painter = painterResource(R.drawable.info), null, tint = MenuPurple) },
+                        iconBgColor = MenuPurple,
                         onClick = { /* Navigate */ }
                     )
                     AccountMenuItem(

@@ -18,13 +18,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -39,11 +37,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,10 +50,16 @@ import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonProductCard
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
-import com.harish.b2c.ui.theme.Signika
+import com.harish.b2c.ui.theme.Shapes
+import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.TextGrey
+import com.harish.b2c.ui.theme.White
+
+// Local constant for the promo code section
+private val PromoBlue = Color(0xFF0088FF)
 
 // Dummy Data Class specific to Checkout
 data class CheckoutProductItem(
@@ -79,7 +81,7 @@ fun CheckoutScreenPreview() {
 fun CheckoutScreen(
     onBackClick: () -> Unit
 ) {
-    // Dummy Data mapping to your CSS
+    // Dummy Data
     var checkoutItems by remember {
         mutableStateOf(
             listOf(
@@ -120,28 +122,28 @@ fun CheckoutScreen(
                 title = "Checkout",
                 modifier = Modifier
                     .statusBarsPadding()
-                    .padding(top = 20.dp),
+                    .padding(top = Spacing.mediumLarge),
                 onBackClick = onBackClick
             )
         }
-        // Removed fixed BottomBar so it scrolls
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding).navigationBarsPadding()
+                .padding(innerPadding)
+                .navigationBarsPadding()
         ) {
-            // Top section elements (overlapping the gradient background)
+            // Top section elements
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                modifier = Modifier.padding(horizontal = Spacing.large),
+                verticalArrangement = Arrangement.spacedBy(Spacing.medium)
             ) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(Spacing.small))
 
                 // Order Info Card
                 CustomerInfoCard(name = "Rahman", phone = "7894561230")
 
-                // Specific Input Field mapped from CSS
+                // Specific Input Field
                 CheckoutInputField(
                     label = "Choose delivery date",
                     placeholder = "Today, 28 Dec 2025",
@@ -151,23 +153,23 @@ fun CheckoutScreen(
                     trailingIcon = R.drawable.calender
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(Spacing.small))
             }
 
-            // White Bottom Sheet-like Container matching CSS Rectangle 6
+            // White Bottom Sheet-like Container
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                        color = White,
+                        shape = RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large)
                     )
             ) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(), // Removed horizontal padding here
-                    contentPadding = PaddingValues(top = 24.dp, bottom = 0.dp),
-                    verticalArrangement = Arrangement.spacedBy(24.dp)
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(top = Spacing.large, bottom = 0.dp),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.large)
                 ) {
 
                     // 1. Selected Products List
@@ -175,20 +177,12 @@ fun CheckoutScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 24.dp) // Applied padding to the item instead
-                                .background(
-                                    Color.White,
-                                    RoundedCornerShape(16.dp)
-                                )
-                                .border(
-                                    1.dp,
-                                    TextBlack.copy(alpha = 0.1f),
-                                    RoundedCornerShape(16.dp)
-                                )
-                                .padding(20.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                                .padding(horizontal = Spacing.large)
+                                .background(White, Shapes.medium)
+                                .border(1.dp, TextBlack.copy(alpha = 0.1f), Shapes.medium)
+                                .padding(Spacing.mediumLarge),
+                            verticalArrangement = Arrangement.spacedBy(Spacing.medium)
                         ) {
-
                             checkoutItems.forEachIndexed { index, product ->
                                 CommonProductCard(
                                     title = product.title,
@@ -220,7 +214,7 @@ fun CheckoutScreen(
                                     }
                                 )
 
-                                // 🔥 Divider (except last item)
+                                // Divider (except last item)
                                 if (index != checkoutItems.lastIndex) {
                                     HorizontalDivider(
                                         thickness = 1.dp,
@@ -230,44 +224,37 @@ fun CheckoutScreen(
                                 }
                             }
 
-                            // 🔥 Bottom Summary Section
+                            // Bottom Summary Section ("Add More Items")
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(36.dp)
-                                    .background(
-                                        TextBlack.copy(alpha = 0.05f),
-                                        RoundedCornerShape(16.dp)
-                                    )
-                                    .padding(8.dp),
+                                    .background(TextBlack.copy(alpha = 0.05f), Shapes.medium)
+                                    .padding(Spacing.small),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = "Add More Items",
-                                    fontFamily = Signika,
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Normal,
+                                    style = AppTypography.bodyLarge,
                                     color = TextBlack
                                 )
                             }
                         }
                     }
 
-                    // 2. Mode of Payment
-
-                    // 3. Promo Code
+                    // 2. Promo Code
                     item {
                         PromoCodeCard(
-                            modifier = Modifier.padding(horizontal = 24.dp),
+                            modifier = Modifier.padding(horizontal = Spacing.large),
                             title = "Applied 10% OFF on 100 PCS",
                             subtitle = "of SM Tang Orange Tub (6x2kg)"
                         )
                     }
 
-                    // 4. Invoice Summary
+                    // 3. Invoice Summary
                     item {
                         InvoiceSummaryCard(
-                            modifier = Modifier.padding(horizontal = 24.dp),
+                            modifier = Modifier.padding(horizontal = Spacing.large),
                             itemsTotal = "AED 15360.00",
                             vat = "AED 1500.00",
                             discount = "AED 0.00",
@@ -275,24 +262,22 @@ fun CheckoutScreen(
                         )
                     }
 
-                    // 5. Delivery Address
+                    // 4. Delivery Address
                     item {
                         DeliveryAddressCard(
-                            modifier = Modifier.padding(horizontal = 24.dp),
+                            modifier = Modifier.padding(horizontal = Spacing.large),
                             address = "S12, Kira Rd, Kampala Capital City, Central Region, 2121",
                             onChangeClick = { /* Handle Change Address */ }
                         )
                     }
 
-
-                    // 6. Scrollable Bottom Bar (Full Width)
+                    // 5. Scrollable Bottom Bar
                     item {
                         CheckoutBottomBar(
                             totalAmount = "AED 16860.00",
                             onPlaceOrder = { /* Handle Place Order */ }
                         )
                     }
-
                 }
             }
         }
@@ -308,14 +293,13 @@ private fun CustomerInfoCard(name: String, phone: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(16.dp))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .background(White, Shapes.medium)
+            .padding(horizontal = Spacing.medium, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = "Order for $name, $phone",
-            fontFamily = Signika,
-            fontSize = 14.sp,
+            style = AppTypography.bodyLarge.copy(fontSize = 14.sp),
             color = TextBlack
         )
     }
@@ -331,16 +315,15 @@ private fun CheckoutInputField(
     trailingIcon: Int? = null
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(Spacing.small)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(20.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(Spacing.small)
         ) {
             if (leadingIcon != null) {
                 Icon(
@@ -352,10 +335,7 @@ private fun CheckoutInputField(
             }
             Text(
                 text = label,
-                fontFamily = Signika,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                lineHeight = 20.sp,
+                style = AppTypography.bodyLarge,
                 color = TextBlack
             )
         }
@@ -363,33 +343,20 @@ private fun CheckoutInputField(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
-                .background(
-                    Color.White.copy(alpha = 0.3f),
-                    RoundedCornerShape(16.dp)
-                )
-                .border(
-                    1.dp,
-                    TextBlack.copy(alpha = 0.16f),
-                    RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .height(Spacing.huge) // 48.dp
+                .background(White.copy(alpha = 0.3f), Shapes.medium)
+                .border(1.dp, TextBlack.copy(alpha = 0.16f), Shapes.medium)
+                .padding(horizontal = Spacing.mediumLarge, vertical = 12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
             ) {
                 BasicTextField(
                     value = value,
                     onValueChange = onValueChange,
-                    textStyle = TextStyle(
-                        fontFamily = Signika,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        lineHeight = 20.sp,
-                        color = TextBlack
-                    ),
+                    textStyle = AppTypography.bodyLarge.copy(color = TextBlack),
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     cursorBrush = SolidColor(TextBlack),
@@ -397,10 +364,7 @@ private fun CheckoutInputField(
                         if (value.isEmpty()) {
                             Text(
                                 text = placeholder,
-                                fontFamily = Signika,
-                                fontSize = 16.sp,
-                                lineHeight = 20.sp,
-                                color = TextBlack.copy(alpha = 0.4f)
+                                style = AppTypography.bodyLarge.copy(color = TextBlack.copy(alpha = 0.4f))
                             )
                         }
                         innerTextField()
@@ -412,7 +376,7 @@ private fun CheckoutInputField(
                         painter = painterResource(id = trailingIcon),
                         contentDescription = null,
                         tint = TextBlack,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(Spacing.large)
                     )
                 }
             }
@@ -430,8 +394,7 @@ private fun PaymentMethodRow(modifier: Modifier = Modifier) {
         Text(
             text = "Mode of Payment",
             color = TextGrey,
-            fontFamily = Signika,
-            fontSize = 14.sp
+            style = AppTypography.bodyLarge.copy(fontSize = 14.sp)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -440,15 +403,13 @@ private fun PaymentMethodRow(modifier: Modifier = Modifier) {
             Text(
                 text = "MTN Mobile Money",
                 color = TextBlack,
-                fontFamily = Signika,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp
+                style = AppTypography.titleMedium.copy(fontSize = 14.sp)
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
                 contentDescription = "Select Payment",
                 tint = TextBlack,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(Spacing.medium)
             )
         }
     }
@@ -463,36 +424,32 @@ private fun PromoCodeCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .border(1.dp, TextBlack.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
+            .clip(Shapes.medium)
+            .border(1.dp, TextBlack.copy(alpha = 0.1f), Shapes.medium)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF0088FF).copy(alpha = 0.08f))
+                .background(PromoBlue.copy(alpha = 0.08f))
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
         ) {
             Icon(
-                painterResource(R.drawable.check), // Fallback if Check doesn't exist use Icons.Default.Star
+                painter = painterResource(R.drawable.check),
                 contentDescription = "Promo",
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(Spacing.extraLarge), // 32.dp
                 tint = Color.Unspecified
             )
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = title,
-                    fontFamily = Signika,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
-                    color = Color(0xFF0088FF)
+                    style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = PromoBlue
                 )
                 Text(
                     text = subtitle,
-                    fontFamily = Signika,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
+                    style = AppTypography.bodyLarge.copy(fontSize = 14.sp),
                     color = TextGrey
                 )
             }
@@ -503,8 +460,8 @@ private fun PromoCodeCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
-                .padding(20.dp)
+                .background(White)
+                .padding(Spacing.mediumLarge)
         ) {
             CommonProductCard(
                 title = "SM Tang Orange Tub (6x2kg)",
@@ -530,25 +487,23 @@ private fun InvoiceSummaryCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .border(1.dp, TextBlack.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
+            .clip(Shapes.medium)
+            .border(1.dp, TextBlack.copy(alpha = 0.1f), Shapes.medium)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
-                .padding(20.dp, 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .background(White)
+                .padding(horizontal = Spacing.mediumLarge, vertical = Spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(Spacing.medium)
         ) {
             Text(
                 text = "Invoice Summary",
-                fontFamily = Signika,
-                fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
+                style = AppTypography.titleMedium.copy(fontSize = 18.sp),
                 color = TextBlack
             )
 
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                 InvoiceRow("Items Total", itemsTotal)
                 InvoiceRow("Vat", vat)
                 InvoiceRow("Discount", discount)
@@ -558,28 +513,24 @@ private fun InvoiceSummaryCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF7C858C).copy(alpha = 0.08f))
+                .background(TextGrey.copy(alpha = 0.08f))
                 .border(
                     1.dp,
                     TextBlack.copy(alpha = 0.1f),
                     RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
                 )
-                .padding(20.dp, 16.dp),
+                .padding(horizontal = Spacing.mediumLarge, vertical = Spacing.medium),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Grand Total",
-                fontFamily = Signika,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = TextBlack
             )
             Text(
                 text = grandTotal,
-                fontFamily = Signika,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = TextBlack
             )
         }
@@ -592,13 +543,15 @@ private fun InvoiceRow(label: String, amount: String) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, fontFamily = Signika, color = TextGrey, fontSize = 14.sp)
+        Text(
+            text = label,
+            style = AppTypography.bodyLarge.copy(fontSize = 14.sp),
+            color = TextGrey
+        )
         Text(
             text = amount,
-            fontFamily = Signika,
-            color = TextBlack,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp
+            style = AppTypography.titleMedium.copy(fontSize = 14.sp),
+            color = TextBlack
         )
     }
 }
@@ -608,15 +561,15 @@ private fun DeliveryAddressCard(modifier: Modifier = Modifier, address: String, 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(16.dp))
-            .border(1.dp, TextBlack.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
-            .padding(16.dp),
+            .background(White, Shapes.medium)
+            .border(1.dp, TextBlack.copy(alpha = 0.1f), Shapes.medium)
+            .padding(Spacing.medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(id = R.drawable.truck2),
             contentDescription = null,
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier.size(Spacing.extraExtraLarge), // 40.dp
             tint = Color.Unspecified
         )
 
@@ -625,15 +578,12 @@ private fun DeliveryAddressCard(modifier: Modifier = Modifier, address: String, 
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "Delivery to",
-                fontFamily = Signika,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
+                style = AppTypography.titleMedium.copy(fontSize = 14.sp),
                 color = TextBlack
             )
             Text(
                 text = address,
-                fontFamily = Signika,
-                fontSize = 12.sp,
+                style = AppTypography.bodyLarge.copy(fontSize = 12.sp),
                 color = TextGrey,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -642,8 +592,7 @@ private fun DeliveryAddressCard(modifier: Modifier = Modifier, address: String, 
 
         Text(
             text = "Change",
-            fontFamily = Signika,
-            fontSize = 14.sp,
+            style = AppTypography.bodyLarge.copy(fontSize = 14.sp),
             color = BrandRed,
             modifier = Modifier.clickable { onChangeClick() }
         )
@@ -651,7 +600,7 @@ private fun DeliveryAddressCard(modifier: Modifier = Modifier, address: String, 
 }
 
 // ------------------------------------------------------------------------
-// REFACTORED SCROLLABLE BOTTOM BAR
+// CHECKOUT BOTTOM BAR
 // ------------------------------------------------------------------------
 @Composable
 private fun CheckoutBottomBar(totalAmount: String, onPlaceOrder: () -> Unit) {
@@ -659,55 +608,53 @@ private fun CheckoutBottomBar(totalAmount: String, onPlaceOrder: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 24.dp,
+                elevation = Spacing.large,
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
                 spotColor = Color.Black.copy(alpha = 0.08f),
                 ambientColor = Color.Black.copy(alpha = 0.08f)
             ),
-        color = Color.White,
+        color = White,
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
     ) {
         Column {
-             PaymentMethodRow(Modifier.padding(horizontal = 24.dp))
-            Spacer(modifier = Modifier.height(8.dp))
-            // Divider replicating Line 3 from CSS
+            PaymentMethodRow(Modifier.padding(horizontal = Spacing.large, vertical = Spacing.medium))
+
             HorizontalDivider(thickness = 1.dp, color = TextBlack.copy(alpha = 0.1f))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 20.dp)
-                    .navigationBarsPadding(), // Ensures it doesn't collide with system nav
+                    .padding(horizontal = Spacing.large, vertical = Spacing.mediumLarge)
+                    .navigationBarsPadding(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
                         text = "Total",
-                        fontFamily = Signika,
-                        color = TextGrey,
-                        fontSize = 14.sp
+                        style = AppTypography.bodyLarge.copy(fontSize = 14.sp),
+                        color = TextGrey
                     )
                     Text(
                         text = totalAmount,
-                        fontFamily = Signika,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp,
+                        style = AppTypography.titleMedium.copy(fontSize = 16.sp),
                         color = TextBlack
                     )
                 }
 
-                // Place Order Button explicitly matching the 157x42 constraints & gradients
-                CommonButton(text = "Place Order",
+                CommonButton(
+                    text = "Place Order",
                     modifier = Modifier.width(157.dp).height(42.dp),
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                             contentDescription = "Place Order",
-                            tint = Color.White,
-                            modifier = Modifier.size(20.dp)
+                            tint = White,
+                            modifier = Modifier.size(Spacing.mediumLarge)
                         )
-                    },onClick={})
+                    },
+                    onClick = onPlaceOrder
+                )
             }
         }
     }

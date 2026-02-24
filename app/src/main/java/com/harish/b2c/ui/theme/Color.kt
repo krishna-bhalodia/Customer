@@ -44,3 +44,12 @@ val BorderLight = Color(0x1A030304) // TextBlack with 10% alpha
 val BaseGray = Color(0xFFD9D9D9)
 val GradientRed = Color(0xFFEA0A2A)
 val GradientPurple = Color(0xFF850AEA)
+
+// Add these to your existing Color.kt
+val MenuOrange = Color(0xFFFB9400)
+val MenuPurple = Color(0xFF6949FF)
+val MenuBlue = Color(0xFF246BFD)
+val MenuRed = Color(0xFFFF5A5F)
+val MenuGreen = Color(0xFF12D18E)
+
+val PromoBlue = Color(0xFF0088FF)

@@ -31,4 +31,5 @@ sealed class NavigationScreen(
     data object ProductsScreen : NavigationScreen("products_screen")
     data object CheckoutScreen : NavigationScreen("checkout_screen")
     data object SuccessScreen : NavigationScreen("success_screen")
+    data object AccountScreen : NavigationScreen("account_screen")
 }

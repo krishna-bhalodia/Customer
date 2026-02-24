@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.harish.b2c.presentation.account.AccountScreen
 import com.harish.b2c.presentation.checkout.CheckoutScreen
 import com.harish.b2c.presentation.checkout.OrderSuccessScreen
 import com.harish.b2c.presentation.home.HomeScreen
@@ -109,6 +110,9 @@ fun AppNavHost(
             CheckoutScreen(
                 onBackClick = { navController.popBackStack() }
             )
+        }
+        composable(NavigationScreen.AccountScreen.route) {
+            AccountScreen()
         }
 
         composable(NavigationScreen.SuccessScreen.route) {

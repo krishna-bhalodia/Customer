@@ -27,130 +27,67 @@ import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.ui.theme.*
 
 @Composable
-fun AddressSelectionContent(
-    onAddNewAddress: () -> Unit = {}
-) {
+fun AddressSelectionContent(onAddNewAddress: () -> Unit = {}) {
     var selectedStore by remember { mutableStateOf("Store Name 1") }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 34.dp), // Home Indicator padding
+            .padding(horizontal = Spacing.large)
+            .padding(bottom = 34.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Select Delivery Address",
-            style = AppTypography.titleLarge.copy(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
-            ),
+            style = AppTypography.titleLarge.copy(fontSize = 20.sp),
             color = TextBlack,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier.padding(vertical = Spacing.small)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(Spacing.large))
 
-        // Address List Container
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(BorderStroke(1.dp, Color(0x1A030304)), Shapes.large)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .border(BorderStroke(1.dp, TextBlack.copy(alpha = 0.1f)), Shapes.large)
+                .padding(Spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(Spacing.mediumSmall)
         ) {
-            AddressItem(
-                title = "Store Name 1",
-                address = "S12, Kira Rd, Kampala Capital City, Central Region, 2121",
-                isSelected = selectedStore == "Store Name 1",
-                onSelect = { selectedStore = "Store Name 1" }
-            )
-
-            HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp), thickness = 0.5.dp, color = TextBlack.copy(alpha = 0.1f))
-
-            AddressItem(
-                title = "Store Name 2",
-                address = "U6, Ugan Rd, Kampala Capital City, Central Region, 2121",
-                isSelected = selectedStore == "Store Name 2",
-                onSelect = { selectedStore = "Store Name 2" }
-            )
+            AddressItem("Store Name 1", "S12, Kira Rd, Kampala", selectedStore == "Store Name 1") { selectedStore = "Store Name 1" }
+            HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.extraSmall), thickness = 0.5.dp, color = TextBlack.copy(alpha = 0.1f))
+            AddressItem("Store Name 2", "U6, Ugan Rd, Kampala", selectedStore == "Store Name 2") { selectedStore = "Store Name 2" }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(Spacing.large))
 
-        // Add New Address Button
         OutlinedButton(
             onClick = onAddNewAddress,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(46.dp),
+            modifier = Modifier.fillMaxWidth().height(46.dp),
             shape = Shapes.large,
             border = BorderStroke(1.5.dp, BrandRed),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = BrandRed)
         ) {
-            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(20.dp))
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = "Add New Address",
-                style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
-            )
+            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(Spacing.mediumLarge))
+            Spacer(modifier = Modifier.width(Spacing.mediumSmall))
+            Text("Add New Address", style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
         }
     }
 }
 
 @Composable
-fun AddressItem(
-    title: String,
-    address: String,
-    isSelected: Boolean,
-    onSelect: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onSelect() },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Icon with Purple Background (0.08 alpha as per Figma)
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .background(Color(0x146949FF), CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.location),
-                contentDescription = null,
-                modifier = Modifier.size(18.dp),
-                tint = Color(0xFF6949FF)
-            )
+fun AddressItem(title: String, address: String, isSelected: Boolean, onSelect: () -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth().clickable { onSelect() }, verticalAlignment = Alignment.CenterVertically) {
+        Box(modifier = Modifier.size(32.dp).background(MenuPurple.copy(alpha = 0.08f), CircleShape), contentAlignment = Alignment.Center) {
+            Icon(painterResource(R.drawable.location), null, modifier = Modifier.size(18.dp), tint = MenuPurple)
         }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
+        Spacer(modifier = Modifier.width(Spacing.medium))
         Column(modifier = Modifier.weight(1f)) {
             Text(title, style = AppTypography.titleMedium.copy(fontSize = 14.sp), color = TextBlack)
             Text(address, style = AppTypography.bodyLarge.copy(fontSize = 12.sp, lineHeight = 16.sp), color = TextGrey)
         }
-
-        // Custom Radio Button
-        Box(
-            modifier = Modifier
-                .size(20.dp)
-                .border(
-                    BorderStroke(2.dp, if (isSelected) BrandRed else TextBlack.copy(alpha = 0.2f)),
-                    CircleShape
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isSelected) {
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(BrandRed, CircleShape)
-                )
-            }
+        Box(modifier = Modifier.size(20.dp).border(BorderStroke(2.dp, if (isSelected) BrandRed else TextBlack.copy(alpha = 0.2f)), CircleShape), contentAlignment = Alignment.Center) {
+            if (isSelected) Box(modifier = Modifier.size(10.dp).background(BrandRed, CircleShape))
         }
     }
 }

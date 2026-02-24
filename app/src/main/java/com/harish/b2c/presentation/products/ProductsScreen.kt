@@ -30,6 +30,8 @@ import com.harish.b2c.core.components.CommonChipRow
 import com.harish.b2c.core.components.CommonProductCard
 import com.harish.b2c.core.components.CommonSearchBar
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.ui.theme.Spacing
+import com.harish.b2c.ui.theme.White
 
 @Preview(
     name = "Products Screen Preview"
@@ -128,68 +130,47 @@ fun ProductsScreen(
 
 
     Scaffold(
-        containerColor = Color.Transparent, // Let GradientBackground show through if added later
+        containerColor = Color.Transparent,
         topBar = {
             CommonAppBar(
                 title = "Products",
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(top = 20.dp),
+                modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge),
                 onBackClick = onBackClick
             )
         },
         bottomBar = {
             CommonBottomBar(
-                selectedIndex = 1, // 1 representing the 'Products' tab
-                onItemSelected = { index ->
-                    // Handle Navigation based on index
-                },
-                onFabClick = {
-                    // Handle FAB (e.g., Cart) click
-                }, modifier = Modifier.navigationBarsPadding()
+                selectedIndex = 1,
+                onItemSelected = { },
+                onFabClick = { },
+                modifier = Modifier.navigationBarsPadding()
             )
         }
     ) { innerPadding ->
-
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier = Modifier.fillMaxSize().padding(innerPadding)
         ) {
-
-            // Search Bar
-            Box(modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)) {
-                CommonSearchBar(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    placeholder = "Search..."
-                )
+            Box(modifier = Modifier.padding(horizontal = Spacing.large, vertical = Spacing.small)) {
+                CommonSearchBar(value = searchQuery, onValueChange = { searchQuery = it }, placeholder = "Search...")
             }
 
-            // Category Chips
             CommonChipRow(
                 categories = categories,
                 selectedCategory = selectedCategory,
                 onCategorySelected = { selectedCategory = it },
-                modifier = Modifier.padding(vertical = 16.dp)
+                modifier = Modifier.padding(vertical = Spacing.medium)
             )
 
-            // White Content Area with Top Rounded Corners mimicking Figma
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(
-                        Color.White,
-                        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                    )
+                    .background(White, shape = RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large))
             ) {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 24.dp),
-                    contentPadding = PaddingValues(top = 24.dp, bottom = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    modifier = Modifier.fillMaxSize().padding(horizontal = Spacing.large),
+                    contentPadding = PaddingValues(top = Spacing.large, bottom = Spacing.large),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.mediumSmall)
                 ) {
                     items(productList, key = { it.id }) { product ->
                         CommonProductCard(
