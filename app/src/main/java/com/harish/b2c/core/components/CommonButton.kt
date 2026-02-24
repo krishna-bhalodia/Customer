@@ -18,17 +18,17 @@ import androidx.compose.ui.unit.sp
 import com.harish.b2c.ui.theme.BrandRed
 import com.harish.b2c.ui.theme.DisabledGray
 import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.appSpacing
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.ui.tooling.preview.Preview
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.Shapes
+import com.harish.b2c.ui.theme.Spacing
 
 @Preview(
     name = "CommonButton - All States",
@@ -132,33 +132,31 @@ fun CommonButton(
     trailingIcon: @Composable (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
-    val spacing = MaterialTheme.appSpacing
     val actualHeight = height ?: componentHeight
-    val actualIconSpacing = iconSpacing ?: spacing.mediumSmall
+    val actualIconSpacing = iconSpacing ?: Spacing.mediumSmall
 
     val mainColor = if (isEnabled) BrandRed else DisabledGray
     val contentColor = if (isOutlined) mainColor else White
-    val buttonShape = MaterialTheme.appShapes.large // Uses 16.dp from Shape.kt
 
     var buttonModifier = modifier
         .fillMaxWidth()
         .height(actualHeight)
 
     if (isOutlined) {
-        buttonModifier = buttonModifier.border(BorderStroke(1.dp, mainColor), buttonShape)
+        buttonModifier = buttonModifier.border(BorderStroke(1.dp, mainColor), Shapes.large)
     } else {
         val gradientBrush = Brush.verticalGradient(
             colors = listOf(White.copy(alpha = 0.4f), White.copy(alpha = 0.0f))
         )
         buttonModifier = buttonModifier
-            .background(mainColor, buttonShape)
-            .background(gradientBrush, buttonShape)
+            .background(mainColor, Shapes.large)
+            .background(gradientBrush, Shapes.large)
     }
 
     Button(
         onClick = onClick,
         enabled = isEnabled,
-        shape = buttonShape,
+        shape = Shapes.large,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
             disabledContainerColor = Color.Transparent,
@@ -182,7 +180,7 @@ fun CommonButton(
                 Text(
                     text = text,
                     color = contentColor,
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = AppTypography.titleLarge.copy(
                         fontSize = fontSize,
                         letterSpacing = 0.2.sp
                     )

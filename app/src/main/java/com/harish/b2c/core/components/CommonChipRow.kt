@@ -16,10 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -27,6 +24,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.Shapes
+import com.harish.b2c.ui.theme.Spacing
 
 @Preview(
     name = "CommonChipRow - All States",
@@ -77,13 +77,12 @@ fun <T> CommonChipRow(
     onSearchClick: () -> Unit = {},
     chipHeight: Dp = 29.dp,
 ) {
-    val spacing = MaterialTheme.appSpacing
-    val chipShape = MaterialTheme.appShapes.large // 16.dp rounded corners
+    val chipShape = Shapes.large // 16.dp rounded corners
 
     LazyRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(spacing.small),
-        contentPadding = PaddingValues(horizontal = spacing.large)
+        horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+        contentPadding = PaddingValues(horizontal = Spacing.large)
     ) {
         if (isSearchOption) {
             item {
@@ -93,11 +92,11 @@ fun <T> CommonChipRow(
                         .clip(chipShape)
                         .border(1.dp, TextBlack.copy(alpha = 0.1f), chipShape)
                         .clickable { onSearchClick() }
-                        .padding(horizontal = spacing.medium),
+                        .padding(horizontal = Spacing.medium),
                     contentAlignment = Alignment.Center
                 ) {
                     CommonSvgImage(
-                        modifier = Modifier.size(spacing.medium),
+                        modifier = Modifier.size(Spacing.medium),
                         assetName = "images/ic_search.svg",
                         contentDescription = "Search",
                     )
@@ -117,13 +116,13 @@ fun <T> CommonChipRow(
                     .background(bgColor)
                     .border(1.dp, borderColor, chipShape)
                     .clickable { onCategorySelected(category) }
-                    .padding(horizontal = spacing.medium),
+                    .padding(horizontal = Spacing.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = categoryToString(category),
                     color = textColor,
-                    style = MaterialTheme.typography.regularBody.copy(
+                    style = AppTypography.regularBody.copy(
                         fontSize = 14.sp,
                         lineHeight = 14.sp
                     )

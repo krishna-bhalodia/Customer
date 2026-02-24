@@ -28,4 +28,7 @@ sealed class NavigationScreen(
     data object DeliveryAddress : NavigationScreen("delivery_address_screen")
     data object HomeScreen : NavigationScreen("home_screen")
     data object ProfileScreen : NavigationScreen("profile_screen")
+    data object ProductsScreen : NavigationScreen("products_screen")
+    data object CheckoutScreen : NavigationScreen("checkout_screen")
+    data object SuccessScreen : NavigationScreen("success_screen")
 }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.mediumTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +23,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.Spacing
 
 @Preview(
     name = "CommonAppBar - All States",
@@ -70,13 +70,12 @@ fun CommonAppBar(
     componentHeight: Dp = 56.dp,
     onBackClick: () -> Unit
 ) {
-    val spacing = MaterialTheme.appSpacing
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(componentHeight)
-            .padding(horizontal = spacing.large)
+            .padding(horizontal = Spacing.large)
     ) {
         // Back Button
         Box(
@@ -96,7 +95,7 @@ fun CommonAppBar(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
                 tint = TextBlack,
-                modifier = Modifier.size(spacing.mediumLarge)
+                modifier = Modifier.size(Spacing.mediumLarge)
             )
         }
 
@@ -104,7 +103,7 @@ fun CommonAppBar(
         Text(
             text = title,
             color = TextBlack,
-            style = MaterialTheme.typography.mediumTitle.copy(fontSize = 20.sp),
+            style = AppTypography.mediumTitle.copy(fontSize = 20.sp),
             modifier = Modifier.align(Alignment.Center)
         )
     }

@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,9 +28,10 @@ import androidx.compose.ui.unit.sp
 import com.harish.b2c.ui.theme.BrandRed
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
 import androidx.compose.ui.tooling.preview.Preview
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.Spacing
 
 // ----------------------
 // PREVIEW WRAPPER VERSION
@@ -81,7 +81,6 @@ fun CommonBottomBar(
     onFabClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val spacing = MaterialTheme.appSpacing
 
     // CSS specified total height is 120px.
     // The white rectangle starts at ~26px down (21.67%), and the FAB starts at 2px down.
@@ -150,7 +149,7 @@ fun CommonBottomBar(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 // CSS: left: 80.8% maps roughly to 24dp end padding on a standard 375 width screen
-                .padding(end = spacing.large, top = 2.dp)
+                .padding(end = Spacing.large, top = 2.dp)
                 .size(48.dp)
                 // Replicating: drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.16))
                 .shadow(
@@ -181,7 +180,7 @@ fun CommonBottomBar(
                 imageVector = Icons.Default.ShoppingCart,
                 contentDescription = "FAB Action",
                 tint = White,
-                modifier = Modifier.size(spacing.large)
+                modifier = Modifier.size(Spacing.large)
             )
         }
     }
@@ -194,7 +193,6 @@ private fun BottomBarItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val spacing = MaterialTheme.appSpacing
     val inactiveIconColor = Color(0xFF7C858C) // Hardcoded grey from your CSS
 
     val iconColor = if (isSelected) BrandRed else inactiveIconColor
@@ -202,7 +200,7 @@ private fun BottomBarItem(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(spacing.extraSmall), // CSS: gap: 4px
+        verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall), // CSS: gap: 4px
         modifier = Modifier.clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
@@ -213,14 +211,14 @@ private fun BottomBarItem(
             imageVector = icon,
             contentDescription = label,
             tint = iconColor,
-            modifier = Modifier.size(spacing.large) // CSS: width 24px, height 24px
+            modifier = Modifier.size(Spacing.large) // CSS: width 24px, height 24px
         )
 
         Text(
             text = label,
             color = textColor,
             // Strictly uses regularBody but scales down to exactly 12sp per CSS
-            style = MaterialTheme.typography.regularBody.copy(
+            style = AppTypography.regularBody.copy(
                 fontSize = 12.sp,
                 lineHeight = 12.sp
             )

@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
 import com.harish.b2c.ui.theme.TextBlack
 
@@ -25,7 +26,7 @@ fun CommonSectionHeader(
         Text(
             text = title,
             color = TextBlack,
-            style = MaterialTheme.typography.titleLarge.copy(
+            style = AppTypography.titleLarge.copy(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -35,7 +36,7 @@ fun CommonSectionHeader(
             Text(
                 text = actionText,
                 color = BrandRed,
-                style = MaterialTheme.typography.titleLarge.copy(
+                style = AppTypography.titleLarge.copy(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )

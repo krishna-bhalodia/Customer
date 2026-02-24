@@ -20,14 +20,14 @@ import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
 import com.harish.b2c.presentation.navigation.NavigationScreen
+import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
 
 @Composable
 fun DeliveryAddressScreen(navController: NavController) {
-    val spacing = MaterialTheme.appSpacing
     var currentStep by remember { mutableIntStateOf(1) }
 
     // Step 1 States
@@ -43,7 +43,7 @@ fun DeliveryAddressScreen(navController: NavController) {
     var state by remember { mutableStateOf("") }
 
     // Using theme typography instead of hardcoded TextStyle
-    val labelStyle = MaterialTheme.typography.regularBody.copy(
+    val labelStyle = AppTypography.regularBody.copy(
         fontSize = 18.sp,
         color = TextBlack
     )
@@ -59,11 +59,11 @@ fun DeliveryAddressScreen(navController: NavController) {
                     onBackClick = {
                         if (currentStep == 2) currentStep = 1 else navController.navigateUp()
                     },
-                    modifier = Modifier.statusBarsPadding().padding(top = spacing.mediumLarge)
+                    modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge)
                 )
             },
             bottomBar = {
-                Box(modifier = Modifier.padding(spacing.large)) {
+                Box(modifier = Modifier.padding(Spacing.large)) {
                     CommonButton(
                         text = if (currentStep == 1) "Next" else "Submit",
                         onClick = { if (currentStep == 1) currentStep = 2 else { navController.navigate(
@@ -76,15 +76,15 @@ fun DeliveryAddressScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(horizontal = spacing.large)
+                    .padding(horizontal = Spacing.large)
                     .verticalScroll(rememberScrollState())
             ) {
                 // --- Progress Bar ---
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = spacing.medium)
-                        .height(spacing.small)
+                        .padding(top = Spacing.medium)
+                        .height(Spacing.small)
                         .background(TextBlack.copy(alpha = 0.1f), CircleShape)
                 ) {
                     Box(
@@ -100,23 +100,23 @@ fun DeliveryAddressScreen(navController: NavController) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(spacing.large))
+                Spacer(modifier = Modifier.height(Spacing.large))
                 val text = if (currentStep == 1) "customer details" else "delivery address"
 
                 Text(
                     text = "Please complete the $text in the form below.",
                     color = Color(0xFF7C858C), // Left hardcoded as it wasn't defined in Color.kt
-                    style = MaterialTheme.typography.regularBody.copy(fontSize = 16.sp)
+                    style = AppTypography.regularBody.copy(fontSize = 16.sp)
                 )
 
-                Spacer(modifier = Modifier.height(spacing.large))
+                Spacer(modifier = Modifier.height(Spacing.large))
 
                 if (currentStep == 1) {
                     // --- STEP 1: Basic Information ---
-                    Column(verticalArrangement = Arrangement.spacedBy(spacing.mediumLarge)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.mediumLarge)) {
 
                         // 1. Store Name
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("Store Name", style = labelStyle)
                             CommonInput(
                                 value = storeName,
@@ -129,7 +129,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 2. Owner Name
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("Owner Name", style = labelStyle)
                             CommonInput(
                                 value = ownerName,
@@ -142,7 +142,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 3. Email Address
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("Email Address", style = labelStyle)
                             CommonInput(
                                 value = email,
@@ -156,10 +156,10 @@ fun DeliveryAddressScreen(navController: NavController) {
                     }
                 } else {
                     // --- STEP 2: Address Details ---
-                    Column(verticalArrangement = Arrangement.spacedBy(spacing.mediumLarge)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.mediumLarge)) {
 
                         // 1. Address (Two Input Boxes Stacked)
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("Address", style = labelStyle)
                             CommonInput(
                                 value = addressLine1,
@@ -174,7 +174,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 2. City
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("City", style = labelStyle)
                             CommonInput(
                                 value = city,
@@ -184,7 +184,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 3. Postal Code
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("Postal code", style = labelStyle)
                             CommonInput(
                                 value = postalCode,
@@ -194,7 +194,7 @@ fun DeliveryAddressScreen(navController: NavController) {
                         }
 
                         // 4. State (With trailing dropdown icon)
-                        Column(verticalArrangement = Arrangement.spacedBy(spacing.small)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
                             Text("State", style = labelStyle)
                             CommonInput(
                                 value = state,

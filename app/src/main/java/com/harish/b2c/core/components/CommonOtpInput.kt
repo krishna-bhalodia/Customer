@@ -4,7 +4,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,9 +12,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.Shapes
 import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
 
 @Composable
@@ -26,9 +25,6 @@ fun CommonOtpInput(
     componentHeight: Dp = 56.dp,
     otpCount: Int = 5
 ) {
-    val spacing = MaterialTheme.appSpacing
-    val shape = MaterialTheme.appShapes.large
-
     BasicTextField(
         modifier = modifier.fillMaxWidth(),
         value = otpText,
@@ -57,13 +53,13 @@ fun CommonOtpInput(
                             .border(
                                 width = 1.dp,
                                 color = TextBlack.copy(alpha = borderAlpha),
-                                shape = shape
+                                shape = Shapes.large
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = char,
-                            style = MaterialTheme.typography.regularBody.copy(
+                            style = AppTypography.regularBody.copy(
                                 fontSize = 18.sp,
                                 lineHeight = 22.sp,
                                 color = TextBlack

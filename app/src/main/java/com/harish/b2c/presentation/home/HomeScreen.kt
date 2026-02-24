@@ -17,34 +17,40 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
-import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.presentation.navigation.NavigationScreen
+import com.harish.b2c.ui.theme.*
 import com.harish.b2c.ui.theme.BrandRed
 import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.regularBody
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
+
     var searchQuery by remember { mutableStateOf("") }
     var bottomNavIndex by remember { mutableIntStateOf(0) }
-
-    // Colors derived from CSS used in this top-level screen
-    val greyText = Color(0xFF7C858C)
 
     Scaffold(
         containerColor = Color.Transparent,
         bottomBar = {
             CommonBottomBar(
                 selectedIndex = bottomNavIndex,
-                onItemSelected = { bottomNavIndex = it },
-                onFabClick = { /* Handle FAB click */ }
+                onItemSelected = { index ->
+                    when (index) {
+                        0 -> {  navController.navigate(NavigationScreen.HomeScreen.route) }
+                        1 -> {
+                            navController.navigate(NavigationScreen.ProductsScreen.route)
+                        } // Calls the lambda defined in AppNavHost
+                        2 -> {  navController.navigate(NavigationScreen.CheckoutScreen.route) }
+                        3 -> { /* Navigate to Account/Profile */ }
+                    }
+                },
+                onFabClick = { }, modifier = Modifier.navigationBarsPadding()
             )
         }
     ) { paddingValues ->
@@ -64,41 +70,43 @@ fun HomeScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)) {
                     Text(
                         text = "Hi Nicholas,",
-                        color = TextBlack,
-                        style = AppTypography.titleLarge.copy(
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        color = TextBlack, // Centralized color
+                        style = AppTypography.headlineLarge.copy(
+                            fontSize = 24.sp
+                        ) // Uses Signika Bold from Type.kt
                     )
                     Text(
                         text = "Good Morning!",
-                        color = BrandRed,
-                        style = AppTypography.regularBody.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                        color = BrandRed, // Centralized Brand color
+                        style = AppTypography.titleMedium.copy(
+                            fontSize = 14.sp
+                        ) // Uses Signika Medium from Type.kt
                     )
                 }
 
-                // Notification Glassmorphism Bell
+                // Notification Bell with Theme-based Glassmorphism
                 Box(
                     modifier = Modifier
                         .size(44.dp)
-                        .shadow(16.dp, CircleShape, spotColor = BrandRed.copy(alpha = 0.08f))
+                        .shadow(
+                            elevation = Spacing.medium,
+                            shape = CircleShape,
+                            spotColor = BrandRed.copy(alpha = 0.1f)
+                        )
                         .background(White.copy(alpha = 0.3f), CircleShape)
                         .border(1.dp, White.copy(alpha = 0.6f), CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painterResource(R.drawable.notification),
+                        painter = painterResource(R.drawable.notification),
                         contentDescription = "Notifications",
                         tint = TextBlack,
                         modifier = Modifier.size(20.dp)
                     )
-                    // Red Dot
+                    // Notification Indicator
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -117,7 +125,7 @@ fun HomeScreen() {
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     placeholder = "Search...",
-                    trailingIcon = null // Optional filter icon if needed
+                    trailingIcon = null
                 )
             }
 
@@ -126,21 +134,21 @@ fun HomeScreen() {
             // --- 3. Delivery Address ---
             Column(
                 modifier = Modifier.padding(horizontal = Spacing.large),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
             ) {
                 Text(
                     text = "Delivery to",
-                    color = greyText,
-                    style = MaterialTheme.typography.regularBody.copy(fontSize = 12.sp)
+                    color = DisabledGray, // Used centralized gray
+                    style = AppTypography.labelSmall.copy(fontSize = 12.sp)
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
                 ) {
                     Text(
                         text = "S12, Kira Rd, Kampala Capital City",
                         color = TextBlack,
-                        style = MaterialTheme.typography.regularBody.copy(fontSize = 14.sp)
+                        style = AppTypography.bodyLarge.copy(fontSize = 14.sp)
                     )
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
@@ -155,20 +163,20 @@ fun HomeScreen() {
 
             // --- 4. Banners ---
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.mediumSmall),
                 contentPadding = PaddingValues(horizontal = Spacing.large)
             ) {
-                items(4) { // 4 Banners as per original implementation
+                items(4) {
                     Box(
                         modifier = Modifier
                             .width(327.dp)
                             .height(150.dp)
-                            .clip(MaterialTheme.appShapes.large)
-                            .background(TextBlack.copy(alpha = 0.1f)) // Placeholder for image
+                            .clip(Shapes.large) // Uses AppShapes from Shape.kt
+                            .background(TextBlack.copy(alpha = 0.1f))
                     ) {
-                        // Replace with AsyncImage or Image for "banner"
                         Text(
                             "Banner Image Placeholder",
+                            style = AppTypography.bodyLarge,
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
@@ -179,7 +187,7 @@ fun HomeScreen() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = Spacing.medium),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -188,24 +196,14 @@ fun HomeScreen() {
                         .size(width = 12.dp, height = 6.dp)
                         .background(TextBlack, CircleShape)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(TextBlack.copy(alpha = 0.2f), CircleShape)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(TextBlack.copy(alpha = 0.2f), CircleShape)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(TextBlack.copy(alpha = 0.2f), CircleShape)
-                )
+                repeat(3) {
+                    Spacer(modifier = Modifier.width(Spacing.extraSmall))
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .background(TextBlack.copy(alpha = 0.2f), CircleShape)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(Spacing.large))
@@ -227,12 +225,12 @@ fun HomeScreen() {
                 modifier = Modifier.padding(horizontal = Spacing.large)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(Spacing.mediumSmall))
 
             // Order Card List
             LazyRow(
                 contentPadding = PaddingValues(horizontal = Spacing.large),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
             ) {
                 items(2) {
                     CommonRecentOrderCard(
@@ -244,7 +242,8 @@ fun HomeScreen() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(40.dp)) // Extra padding so bottom bar doesn't cover content
+            // Extra padding for scrollability above bottom bar
+            Spacer(modifier = Modifier.height(Spacing.huge))
         }
     }
 }

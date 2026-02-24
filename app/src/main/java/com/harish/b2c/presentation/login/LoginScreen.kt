@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,109 +35,107 @@ import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonPhoneNumberInput
 import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.Spacing
+import com.harish.b2c.ui.theme.TextGrey
+
 
 @Composable
-fun LoginScreen(navController: NavController,isSignUp: Boolean = false ) {
-    val textBlack = Color(0xFF030304)
-    val textGrey = Color(0xFF7C858C)
-    val brandRed = Color(0xFFEA0A2A)
-
+fun LoginScreen(navController: NavController, isSignUp: Boolean = false) {
+    val spacing = Spacing // Using your custom Spacing accessor
     var phoneNumber by remember { mutableStateOf("") }
+
     val screenTitle = if (isSignUp) "Create an Account" else "Login"
     val bottomPrimaryText = if (isSignUp) "Already have an account?" else "Are you a new user?"
-
     val bottomActionText = if (isSignUp) "Login" else "Sign Up"
 
-    // Wrap the entire screen in the custom gradient background
-        Scaffold(
-            // Set transparent so the gradient shows through
-            containerColor = Color.Transparent,
-            topBar = {
-                CommonAppBar(
-                    title = screenTitle,
-                    onBackClick = { /* Handle Back Navigation */ },
-                    modifier = Modifier.statusBarsPadding().padding(top = 20.dp)
-                )
-            }
-        ) { innerPadding ->
-            Column(
+    Scaffold(
+        containerColor = Color.Transparent,
+        topBar = {
+            CommonAppBar(
+                title = screenTitle,
+                onBackClick = { navController.popBackStack() },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 24.dp), // Screen-wide left/right padding
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Spacer matching the gap from AppBar to the text frame (~40dp based on Figma)
-                Spacer(modifier = Modifier.height(40.dp))
+                    .statusBarsPadding()
+                    .padding(top = spacing.mediumLarge) // Use theme spacing
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = spacing.large), // 24.dp from theme
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(spacing.extraExtraLarge)) // 40.dp
 
-                // --- Frame 5: Header Texts ---
-                Text(
-                    text = "Enter Your Mobile Number",
-                    color = textBlack,
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.signika_semibold, FontWeight.SemiBold)),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            Text(
+                text = "Enter Your Mobile Number",
+                color = MaterialTheme.colorScheme.onBackground, // Dynamic color
+                style = AppTypography.headlineLarge, // Signika Bold
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                Spacer(modifier = Modifier.height(8.dp)) // gap: 8px
+            Spacer(modifier = Modifier.height(spacing.small))
 
-                Text(
-                    text = "We just send you 5-digit code to verify your mobile number",
-                    color = textGrey,
-                    fontSize = 16.sp,
-                    lineHeight = 22.4.sp, // 140% of 16px
-                    fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            Text(
+                text = "We just send you 5-digit code to verify your mobile number",
+                color = TextGrey, // From centralized colors
+                style = AppTypography.bodyLarge, // Signika Regular
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                // Spacer matching gap between text and inputs (gap: 30px)
-                Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(spacing.extraLarge))
 
-                // --- Frame 8: Input & Button ---
-                CommonPhoneNumberInput(
-                    value = phoneNumber,
-                    onValueChange = { phoneNumber = it }
-                )
+            CommonPhoneNumberInput(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it }
+            )
 
-                Spacer(modifier = Modifier.height(20.dp)) // gap: 20px
+            Spacer(modifier = Modifier.height(spacing.mediumLarge))
 
-                CommonButton(
-                    text = "Continue",
-                    // Button is enabled only if they typed a 10-digit number
-                    isEnabled = phoneNumber.length == 10,
-                    onClick = {navController.navigate(if (isSignUp) NavigationScreen.OtpforSignUp.route else NavigationScreen.Otp.route)}
-                )
-
-                // --- Bottom Spacing ---
-                // Using weight(1f) to push the bottom row down, or a fixed spacer to match the ~100px gap in Figma
-                Spacer(modifier = Modifier.height(104.dp))
-
-                // --- Frame 3: Sign Up Section ---
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = bottomPrimaryText,
-                        color = textBlack,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal))
-                    )
-
-                    Spacer(modifier = Modifier.width(10.dp)) // gap: 10px
-
-                    Text(
-                        text = bottomActionText,
-                        color = brandRed,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.signika_regular, FontWeight.Normal)),
-                        modifier = Modifier.clickable { if (isSignUp) navController.navigate(NavigationScreen.Login.route) else navController.navigate(NavigationScreen.SignUp.route) }
+            CommonButton(
+                text = "Continue",
+                isEnabled = phoneNumber.length == 10,
+                onClick = {
+                    navController.navigate(
+                        if (isSignUp) NavigationScreen.OtpforSignUp.route
+                        else NavigationScreen.Otp.route
                     )
                 }
-            }
+            )
 
+            Spacer(modifier = Modifier.weight(1f)) // Push bottom row down
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = spacing.large),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = bottomPrimaryText,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = AppTypography.bodyLarge
+                )
+
+                Spacer(modifier = Modifier.width(spacing.mediumSmall))
+
+                Text(
+                    text = bottomActionText,
+                    color = BrandRed, // Brand color
+                    style = AppTypography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                    modifier = Modifier.clickable {
+                        if (isSignUp) navController.navigate(NavigationScreen.Login.route)
+                        else navController.navigate(NavigationScreen.SignUp.route)
+                    }
+                )
+            }
+        }
     }
 }

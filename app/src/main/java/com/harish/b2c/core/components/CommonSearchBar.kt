@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,11 +26,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.Shapes
+import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
-import com.harish.b2c.ui.theme.appShapes
-import com.harish.b2c.ui.theme.appSpacing
 import com.harish.b2c.ui.theme.regularBody
 
 @Preview(showBackground = true, widthDp = 375)
@@ -84,11 +83,9 @@ fun CommonSearchBar(
     onSearch: () -> Unit = {},
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
-    val spacing = MaterialTheme.appSpacing
-    val shape = MaterialTheme.appShapes.large // 16.dp rounded corners
 
     // CSS specified font: Signika 16px
-    val textStyle = MaterialTheme.typography.regularBody.copy(
+    val textStyle = AppTypography.regularBody.copy(
         fontSize = 16.sp,
         lineHeight = 20.sp,
         color = TextBlack
@@ -107,15 +104,15 @@ fun CommonSearchBar(
                 // Replicating: box-shadow: 0px 8px 24px rgba(234, 10, 42, 0.08);
                 .shadow(
                     elevation = 8.dp,
-                    shape = shape,
+                    shape = Shapes.large ,
                     spotColor = BrandRed.copy(alpha = 0.08f),
                     ambientColor = BrandRed.copy(alpha = 0.08f)
                 )
                 // Replicating: background: rgba(255, 255, 255, 0.3);
-                .background(White.copy(alpha = 0.3f), shape)
+                .background(White.copy(alpha = 0.3f), Shapes.large )
                 // Replicating: border: 1px solid rgba(255, 255, 255, 0.6);
-                .border(1.dp, White.copy(alpha = 0.6f), shape)
-                .padding(horizontal = spacing.medium), // 16.dp padding from CSS
+                .border(1.dp, White.copy(alpha = 0.6f), Shapes.large )
+                .padding(horizontal = Spacing.medium), // 16.dp padding from CSS
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Search Leading Icon
@@ -126,7 +123,7 @@ fun CommonSearchBar(
                 modifier = Modifier.size(24.dp)
             )
 
-            Spacer(modifier = Modifier.width(spacing.small)) // 8.dp gap from CSS
+            Spacer(modifier = Modifier.width(Spacing.small)) // 8.dp gap from CSS
 
             // Search Text Input
             BasicTextField(
@@ -155,7 +152,7 @@ fun CommonSearchBar(
 
         // Optional Trailing Icon (OUTSIDE the search box)
         if (trailingIcon != null) {
-            Spacer(modifier = Modifier.width(spacing.medium)) // 16.dp gap between search bar and icon
+            Spacer(modifier = Modifier.width(Spacing.medium)) // 16.dp gap between search bar and icon
             Box(
                 modifier = Modifier
                     .size(24.dp) // Fixed size for the clickable area

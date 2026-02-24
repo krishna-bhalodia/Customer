@@ -57,12 +57,13 @@ val Typography.regularBody: TextStyle
     @ReadOnlyComposable
     get() = this.bodyLarge
 
+val Typography.mediumTitle: TextStyle
+    @Composable
+    @ReadOnlyComposable
+    get() = this.titleMedium
+
 // Add a global accessor for Typography too
 val AppTypography: Typography
     @Composable
     @ReadOnlyComposable
     get() = MaterialTheme.typography
-val Typography.mediumTitle: TextStyle
-    @Composable
-    @ReadOnlyComposable
-    get() = this.titleMedium
