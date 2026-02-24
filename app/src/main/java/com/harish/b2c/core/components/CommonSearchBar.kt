@@ -1,5 +1,5 @@
 package com.harish.b2c.core.components
-
+import com.harish.b2c.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -117,7 +117,7 @@ fun CommonSearchBar(
         ) {
             // Search Leading Icon
             Icon(
-                imageVector = Icons.Default.Search,
+                painter = painterResource(R.drawable.search),
                 contentDescription = "Search Icon",
                 tint = TextBlack,
                 modifier = Modifier.size(24.dp)

@@ -41,3 +41,6 @@ val SuccessGreen = Color(0xFF52B96C)
 val OrderIconOrange = Color(0xFFFC9E15)
 val OrderIconBg = OrderIconOrange.copy(alpha = 0.2f)
 val BorderLight = Color(0x1A030304) // TextBlack with 10% alpha
+val BaseGray = Color(0xFFD9D9D9)
+val GradientRed = Color(0xFFEA0A2A)
+val GradientPurple = Color(0xFF850AEA)

@@ -129,7 +129,7 @@ fun CheckoutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding).navigationBarsPadding()
         ) {
             // Top section elements (overlapping the gradient background)
             Column(
@@ -292,6 +292,7 @@ fun CheckoutScreen(
                             onPlaceOrder = { /* Handle Place Order */ }
                         )
                     }
+
                 }
             }
         }
