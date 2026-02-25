@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,12 +33,12 @@ fun LogoutBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = White,
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+        shape = RoundedCornerShape(topStart = Spacing.extraLarge, topEnd = Spacing.extraLarge),
         dragHandle = {
-            // Custom grey drag handle from Figma
+            // Custom grey drag handle
             Box(
                 modifier = Modifier
-                    .padding(top = 8.dp, bottom = 24.dp)
+                    .padding(top = Spacing.extraSmall, bottom = Spacing.large)
                     .width(38.dp)
                     .height(3.dp)
                     .background(TextGrey, CircleShape)
@@ -51,16 +49,16 @@ fun LogoutBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 34.dp), // Bottom padding for home indicator space
+                .padding(horizontal = Spacing.large)
+                .padding(bottom = 34.dp), // System nav bar clearance
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(Spacing.large)
         ) {
 
             // Header Section: Icon + Text
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
             ) {
                 Box(
                     modifier = Modifier
@@ -69,19 +67,16 @@ fun LogoutBottomSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.logout), // Make sure you have the logout.xml
+                        painter = painterResource(id = R.drawable.logout),
                         contentDescription = "Logout",
                         tint = BrandRed,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(Spacing.large)
                     )
                 }
 
                 Text(
                     text = "Logout",
-                    style = AppTypography.headlineMedium.copy(
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Normal
-                    ),
+                    style = AppTypography.headlineMedium.copy(fontSize = 22.sp, fontWeight = FontWeight.Normal),
                     color = BrandRed
                 )
             }
@@ -95,11 +90,7 @@ fun LogoutBottomSheet(
             // Confirmation Text
             Text(
                 text = "Are you sure you want to log out?",
-                style = AppTypography.titleLarge.copy(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center
-                ),
+                style = AppTypography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center),
                 color = TextBlack,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -107,25 +98,23 @@ fun LogoutBottomSheet(
             // Buttons Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(Spacing.small)
             ) {
                 // Secondary Cancel Button
                 Row(
-                    modifier =Modifier.weight(1f).height(54.dp)
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(54.dp)
                         .background(TextBlack.copy(alpha = 0.05f), Shapes.large)
                         .clip(Shapes.large)
-                        .clickable { /* Add new number logic */ }
+                        .clickable { onDismiss() }
                         .padding(horizontal = Spacing.small),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-
                     Text(
-                        text = "Cancel", // Matching the "Label" placeholder
-                        style = AppTypography.bodyLarge.copy(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                        text = "Cancel",
+                        style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                         color = TextBlack
                     )
                 }
@@ -141,7 +130,6 @@ fun LogoutBottomSheet(
     }
 }
 
-// Preview to check the layout
 @Preview(showBackground = true)
 @Composable
 fun LogoutBottomSheetPreview() {

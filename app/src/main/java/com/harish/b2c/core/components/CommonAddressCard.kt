@@ -5,25 +5,16 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.harish.b2c.R
-import com.harish.b2c.ui.theme.PrimaryPurple
-import com.harish.b2c.ui.theme.PrimaryPurpleBg
-import com.harish.b2c.ui.theme.Signika
-import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.TextGrey
-import com.harish.b2c.ui.theme.White
+import com.harish.b2c.ui.theme.*
 
 @Composable
 fun CommonAddressCard(
@@ -35,57 +26,52 @@ fun CommonAddressCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(White, RoundedCornerShape(16.dp))
-            .border(1.dp, TextBlack.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
-            .padding(16.dp),
+            .background(White, Shapes.large)
+            .border(1.dp, BorderLight, Shapes.large)
+            .padding(Spacing.medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left Icon Box (Store)
+        // Left Icon Box
         Box(
             modifier = Modifier
-                .size(42.dp)
+                .size(42.dp) // Specific UI size for the avatar-style circle
                 .background(PrimaryPurpleBg, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.location), // Using existing store_front.xml
+                painter = painterResource(id = R.drawable.location),
                 contentDescription = "Store",
                 tint = PrimaryPurple,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(Spacing.large)
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(Spacing.medium))
 
         // Center Text
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
         ) {
             Text(
                 text = storeName,
-                fontFamily = Signika,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
+                style = AppTypography.titleMedium, // Removed hardcoded Signika/14.sp
                 color = TextBlack
             )
             Text(
                 text = address,
-                fontFamily = Signika,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp,
-                color = TextGrey,
-                lineHeight = 16.sp
+                style = AppTypography.labelSmall, // Removed hardcoded Signika/12.sp
+                color = TextGrey
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(Spacing.medium))
 
         // Right Edit Button
         Box(
             modifier = Modifier
-                .size(32.dp)
-                .background(TextBlack.copy(alpha = 0.08f), CircleShape)
+                .size(Spacing.extraLarge)
+                .background(BorderLight, CircleShape)
                 .clickable { onEditClick() },
             contentAlignment = Alignment.Center
         ) {
@@ -93,8 +79,20 @@ fun CommonAddressCard(
                 painter = painterResource(id = R.drawable.edit),
                 contentDescription = "Edit Address",
                 tint = TextBlack,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(Spacing.medium)
             )
         }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF8F9FA)
+@Composable
+private fun CommonAddressCardPreview() {
+    Box(modifier = Modifier.padding(16.dp)) {
+        CommonAddressCard(
+            storeName = "S12, Kira Rd",
+            address = "Kampala Capital City, Uganda",
+            onEditClick = {}
+        )
     }
 }

@@ -18,16 +18,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
 import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.*
-import com.harish.b2c.ui.theme.BrandRed
-import com.harish.b2c.ui.theme.Spacing
-import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.White
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -36,21 +31,20 @@ fun HomeScreen(navController: NavController) {
     var bottomNavIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
-        containerColor = Color.Transparent,
+        containerColor = Color.Transparent, // Managed by GradientBackground usually
         bottomBar = {
             CommonBottomBar(
                 selectedIndex = bottomNavIndex,
                 onItemSelected = { index ->
                     when (index) {
-                        0 -> {  navController.navigate(NavigationScreen.HomeScreen.route) }
-                        1 -> {
-                            navController.navigate(NavigationScreen.ProductsScreen.route)
-                        } // Calls the lambda defined in AppNavHost
-                        2 -> {  navController.navigate(NavigationScreen.CheckoutScreen.route) }
-                        3 -> { /* Navigate to Account/Profile */ }
+                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
+                        1 -> { navController.navigate(NavigationScreen.ProductsScreen.route) }
+                        2 -> { navController.navigate(NavigationScreen.CheckoutScreen.route) }
+                        3 -> { /* Navigate to Account */ }
                     }
                 },
-                onFabClick = { }, modifier = Modifier.navigationBarsPadding()
+                onFabClick = { },
+                modifier = Modifier.navigationBarsPadding()
             )
         }
     ) { paddingValues ->
@@ -60,7 +54,7 @@ fun HomeScreen(navController: NavController) {
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            Spacer(modifier = Modifier.height(Spacing.extraLarge)) // Status bar padding equivalent
+            Spacer(modifier = Modifier.height(Spacing.extraLarge))
 
             // --- 1. Top Header Area ---
             Row(
@@ -73,45 +67,41 @@ fun HomeScreen(navController: NavController) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)) {
                     Text(
                         text = "Hi Nicholas,",
-                        color = TextBlack, // Centralized color
-                        style = AppTypography.headlineLarge.copy(
-                            fontSize = 24.sp
-                        ) // Uses Signika Bold from Type.kt
+                        color = TextBlack,
+                        style = AppTypography.headlineLarge // Removed hardcoded 24.sp
                     )
                     Text(
                         text = "Good Morning!",
-                        color = BrandRed, // Centralized Brand color
-                        style = AppTypography.titleMedium.copy(
-                            fontSize = 14.sp
-                        ) // Uses Signika Medium from Type.kt
+                        color = BrandRed,
+                        style = AppTypography.titleMedium // Removed hardcoded 14.sp
                     )
                 }
 
-                // Notification Bell with Theme-based Glassmorphism
+                // Notification Bell
                 Box(
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(Spacing.huge) // Replaced 44.dp with 48.dp (huge) for consistency
                         .shadow(
                             elevation = Spacing.medium,
                             shape = CircleShape,
-                            spotColor = BrandRed.copy(alpha = 0.1f)
+                            spotColor = ShadowRed
                         )
-                        .background(White.copy(alpha = 0.3f), CircleShape)
-                        .border(1.dp, White.copy(alpha = 0.6f), CircleShape),
+                        .background(White20, CircleShape)
+                        .border(1.dp, BorderWhite, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.notification),
                         contentDescription = "Notifications",
                         tint = TextBlack,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(Spacing.mediumLarge)
                     )
                     // Notification Indicator
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(top = 8.dp, end = 10.dp)
-                            .size(8.dp)
+                            .padding(top = Spacing.small, end = Spacing.mediumSmall)
+                            .size(Spacing.small)
                             .background(BrandRed, CircleShape)
                     )
                 }
@@ -138,8 +128,8 @@ fun HomeScreen(navController: NavController) {
             ) {
                 Text(
                     text = "Delivery to",
-                    color = DisabledGray, // Used centralized gray
-                    style = AppTypography.labelSmall.copy(fontSize = 12.sp)
+                    color = DisabledGray,
+                    style = AppTypography.labelSmall
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -148,13 +138,13 @@ fun HomeScreen(navController: NavController) {
                     Text(
                         text = "S12, Kira Rd, Kampala Capital City",
                         color = TextBlack,
-                        style = AppTypography.bodyLarge.copy(fontSize = 14.sp)
+                        style = AppTypography.bodyLarge
                     )
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = "Change Address",
                         tint = TextBlack,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(Spacing.mediumLarge)
                     )
                 }
             }
@@ -169,9 +159,9 @@ fun HomeScreen(navController: NavController) {
                 items(4) {
                     Box(
                         modifier = Modifier
-                            .width(327.dp)
+                            .width(327.dp) // Specific UI design width
                             .height(150.dp)
-                            .clip(Shapes.large) // Uses AppShapes from Shape.kt
+                            .clip(Shapes.large)
                             .background(TextBlack.copy(alpha = 0.1f))
                     ) {
                         Text(
@@ -193,7 +183,7 @@ fun HomeScreen(navController: NavController) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(width = 12.dp, height = 6.dp)
+                        .size(width = Spacing.mediumSmall, height = 6.dp)
                         .background(TextBlack, CircleShape)
                 )
                 repeat(3) {
@@ -201,33 +191,30 @@ fun HomeScreen(navController: NavController) {
                     Box(
                         modifier = Modifier
                             .size(6.dp)
-                            .background(TextBlack.copy(alpha = 0.2f), CircleShape)
+                            .background(BorderLight, CircleShape)
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(Spacing.large))
 
-            // --- 5. Loyalty Points Statistics Card ---
             CommonLoyaltyCard(
                 points = 957,
-                onRedeemClick = { /* Handle Redeem Action */ },
+                onRedeemClick = { /* Handle */ },
                 modifier = Modifier.padding(horizontal = Spacing.large)
             )
 
             Spacer(modifier = Modifier.height(Spacing.large))
 
-            // --- 6. Recent Orders ---
             CommonSectionHeader(
                 title = "Recent Order",
                 actionText = "View All",
-                onActionClick = { /* Handle View All Action */ },
+                onActionClick = { /* Handle */ },
                 modifier = Modifier.padding(horizontal = Spacing.large)
             )
 
             Spacer(modifier = Modifier.height(Spacing.mediumSmall))
 
-            // Order Card List
             LazyRow(
                 contentPadding = PaddingValues(horizontal = Spacing.large),
                 horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
@@ -243,7 +230,6 @@ fun HomeScreen(navController: NavController) {
                 }
             }
 
-            // Extra padding for scrollability above bottom bar
             Spacer(modifier = Modifier.height(Spacing.huge))
         }
     }

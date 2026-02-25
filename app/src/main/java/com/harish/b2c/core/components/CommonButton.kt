@@ -40,8 +40,8 @@ fun CommonButtonPreview() {
         Column(
             modifier = Modifier
                 .background(Color.White)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(Spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(Spacing.medium)
         ) {
 
             // Filled Enabled
@@ -118,7 +118,7 @@ fun CommonButtonPreview() {
         }
     }
 
-val componentHeight: Dp = 56.dp
+
 @Composable
 fun CommonButton(
     text: String,
@@ -127,6 +127,7 @@ fun CommonButton(
     isOutlined: Boolean = false,
     height: Dp? = null,
     fontSize: TextUnit = 18.sp,
+    componentHeight: Dp = 56.dp,
     iconSpacing: Dp? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,

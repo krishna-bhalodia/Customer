@@ -4,17 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.harish.b2c.ui.theme.AppTypography
-import com.harish.b2c.ui.theme.TextBlack
-import com.harish.b2c.ui.theme.White
+import com.harish.b2c.ui.theme.*
 
 enum class ActionIconPosition {
     Leading, Trailing
@@ -33,19 +29,18 @@ fun CommonActionInput(
     var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .background(White.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
-                .border(1.dp, TextBlack.copy(alpha = 0.16f), RoundedCornerShape(16.dp))
+                .height(56.dp) // Standard component height
+                .background(White20, Shapes.large)
+                .border(1.dp, BorderLight, Shapes.large)
                 .clickable {
                     if (iconPosition == ActionIconPosition.Trailing && options.isNotEmpty()) {
                         expanded = true
                     }
                 }
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = Spacing.mediumLarge),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -54,25 +49,25 @@ fun CommonActionInput(
                     imageVector = icon,
                     contentDescription = null,
                     tint = TextBlack,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(Spacing.mediumLarge)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(Spacing.medium))
             }
 
             Text(
                 text = value.ifEmpty { placeholder },
-                style = AppTypography.bodyLarge.copy(fontSize = 18.sp),
-                color = if (value.isEmpty()) TextBlack.copy(alpha = 0.3f) else TextBlack,
+                style = AppTypography.bodyLarge, // Removed hardcoded 18.sp
+                color = if (value.isEmpty()) TextGrey else TextBlack,
                 modifier = Modifier.weight(1f)
             )
 
             if (iconPosition == ActionIconPosition.Trailing) {
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(Spacing.medium))
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = TextBlack,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(Spacing.mediumLarge)
                 )
             }
         }
@@ -82,14 +77,17 @@ fun CommonActionInput(
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth(0.9f)
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .background(White)
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(
                         text = {
                             Text(
                                 text = option,
-                                style = AppTypography.bodyLarge
+                                style = AppTypography.bodyLarge,
+                                color = TextBlack
                             )
                         },
                         onClick = {

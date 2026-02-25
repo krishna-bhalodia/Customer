@@ -2,6 +2,7 @@ package com.harish.b2c.core.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,7 +30,7 @@ fun CommonBottomSheet(
                     .padding(vertical = 12.dp)
                     .width(38.dp)
                     .height(3.dp)
-                    .background(Color(0xFF7C858C), androidx.compose.foundation.shape.CircleShape)
+                    .background(Color(0xFF7C858C), CircleShape)
             )
         },
         content = content
