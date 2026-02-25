@@ -1,5 +1,6 @@
 package com.harish.b2c.core.components
 
+import androidx.annotation.RawRes
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -9,11 +10,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 
 @Composable
 fun CommonSvgImage(
-    assetName: String,
+    @RawRes resId: Int,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     tint: Color? = null,
@@ -21,11 +23,10 @@ fun CommonSvgImage(
 ) {
     val context = LocalContext.current
 
-    // Optimize: Create the request only when assetName changes.
-    // The ImageLoader is now handled globally by RihamApp.
-    val model = remember(assetName) {
+    val model = remember(resId) {
         ImageRequest.Builder(context)
-            .data("file:///android_asset/$assetName")
+            .data(resId)
+            .decoderFactory(SvgDecoder.Factory())
             .build()
     }
 
@@ -34,7 +35,6 @@ fun CommonSvgImage(
         contentDescription = contentDescription,
         contentScale = contentScale,
         modifier = modifier,
-        // Apply tint if provided, otherwise leave null to show original colors
         colorFilter = tint?.let { ColorFilter.tint(it) }
     )
 }

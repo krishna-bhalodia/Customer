@@ -2,23 +2,37 @@ package com.harish.b2c.core.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.harish.b2c.ui.theme.*
+import com.harish.b2c.R
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.BorderLight
+import com.harish.b2c.ui.theme.OrderIconBg
+import com.harish.b2c.ui.theme.OrderIconOrange
+import com.harish.b2c.ui.theme.Shapes
+import com.harish.b2c.ui.theme.Spacing
+import com.harish.b2c.ui.theme.TextBlack
+import com.harish.b2c.ui.theme.TextGrey
+import com.harish.b2c.ui.theme.White
+import com.harish.b2c.ui.theme.White20
 
 @Composable
 fun CommonRecentOrderCard(
@@ -26,13 +40,14 @@ fun CommonRecentOrderCard(
     date: String,
     amount: String,
     status: String,
+    deliveryIcon: Int = R.drawable.green_check,
     modifier: Modifier = Modifier
 ) {
     val spacing = Spacing // Accessing theme spacing
 
     Column(
         modifier = modifier
-            .width(327.dp)
+            .fillMaxWidth()
             .background(White, Shapes.large) // Use AppShapes
             .border(1.dp, BorderLight, Shapes.large)
             .padding(spacing.mediumSmall), // 12.dp from theme
@@ -58,7 +73,7 @@ fun CommonRecentOrderCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ShoppingCart,
+                        painter = painterResource(R.drawable.cart),
                         contentDescription = "Order",
                         tint = OrderIconOrange,
                         modifier = Modifier.size(20.dp)
@@ -115,12 +130,15 @@ fun CommonRecentOrderCard(
                 Box(
                     modifier = Modifier
                         .size(24.dp)
-                        .background(White20, CircleShape) // Using White.copy(alpha=0.2f) from Color.kt
+                        .background(
+                            White20,
+                            CircleShape
+                        ) // Using White.copy(alpha=0.2f) from Color.kt
                         .border(1.dp, White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.KeyboardArrowRight,
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = "View Details",
                         tint = TextBlack,
                         modifier = Modifier.size(16.dp)
@@ -140,26 +158,15 @@ fun CommonRecentOrderCard(
                 style = AppTypography.bodyLarge.copy(fontSize = 12.sp)
             )
 
-            // Custom Status Checkmark Circle
-            Box(
-                modifier = Modifier
-                    .size(14.dp)
-                    .shadow(
-                        elevation = spacing.large,
-                        shape = CircleShape,
-                        spotColor = Color.Black.copy(alpha = 0.08f)
-                    )
-                    .background(SuccessGreen, CircleShape)
-                    .border(1.dp, SuccessGreen.copy(alpha = 0.1f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = "Status",
-                    tint = White,
-                    modifier = Modifier.size(10.dp)
-                )
-            }
+
+
+            Icon(
+                painterResource(deliveryIcon),
+                contentDescription = "Status",
+                tint = Color.Unspecified,
+                modifier = Modifier.size(14.dp)
+            )
+
         }
     }
 }

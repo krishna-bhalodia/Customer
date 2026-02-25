@@ -237,7 +237,8 @@ fun HomeScreen(navController: NavController) {
                         orderId = "#MHO00300010",
                         date = "Placed on 17 Oct, 2025",
                         amount = "1240.00",
-                        status = "Order delivered"
+                        status = "Order delivered",
+                        modifier = Modifier.width(327.dp)
                     )
                 }
             }

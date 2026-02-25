@@ -48,10 +48,13 @@ import androidx.compose.ui.unit.sp
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
+import com.harish.b2c.core.components.CommonInvoiceSummaryCard
 import com.harish.b2c.core.components.CommonProductCard
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.products.ProductItem
 import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
+import com.harish.b2c.ui.theme.PromoBlue
 import com.harish.b2c.ui.theme.Shapes
 import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
@@ -59,17 +62,7 @@ import com.harish.b2c.ui.theme.TextGrey
 import com.harish.b2c.ui.theme.White
 
 // Local constant for the promo code section
-private val PromoBlue = Color(0xFF0088FF)
-
 // Dummy Data Class specific to Checkout
-data class CheckoutProductItem(
-    val id: Int,
-    val title: String,
-    val subtitle: String,
-    val price: String,
-    var quantity: Int,
-    val imageUrl: Int
-)
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -85,7 +78,7 @@ fun CheckoutScreen(
     var checkoutItems by remember {
         mutableStateOf(
             listOf(
-                CheckoutProductItem(
+                ProductItem(
                     1,
                     "Oner Apple 1 LTR * 6",
                     "10 CSE • 12 PCS",
@@ -93,7 +86,7 @@ fun CheckoutScreen(
                     10,
                     R.drawable.oner_apple
                 ),
-                CheckoutProductItem(
+                ProductItem(
                     2,
                     "SM Tang Orange Tub (6x2kg)",
                     "1 CSE • 1 PCS",
@@ -101,7 +94,7 @@ fun CheckoutScreen(
                     5,
                     R.drawable.sm_tang
                 ),
-                CheckoutProductItem(
+                ProductItem(
                     3,
                     "Predator Energy Gold, 250ml",
                     "5 CSE • 120 PCS",
@@ -253,7 +246,7 @@ fun CheckoutScreen(
 
                     // 3. Invoice Summary
                     item {
-                        InvoiceSummaryCard(
+                        CommonInvoiceSummaryCard(
                             modifier = Modifier.padding(horizontal = Spacing.large),
                             itemsTotal = "AED 15360.00",
                             vat = "AED 1500.00",
@@ -476,66 +469,6 @@ private fun PromoCodeCard(
     }
 }
 
-@Composable
-private fun InvoiceSummaryCard(
-    modifier: Modifier = Modifier,
-    itemsTotal: String,
-    vat: String,
-    discount: String,
-    grandTotal: String
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(Shapes.medium)
-            .border(1.dp, TextBlack.copy(alpha = 0.1f), Shapes.medium)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(White)
-                .padding(horizontal = Spacing.mediumLarge, vertical = Spacing.medium),
-            verticalArrangement = Arrangement.spacedBy(Spacing.medium)
-        ) {
-            Text(
-                text = "Invoice Summary",
-                style = AppTypography.titleMedium.copy(fontSize = 18.sp),
-                color = TextBlack
-            )
-
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
-                InvoiceRow("Items Total", itemsTotal)
-                InvoiceRow("Vat", vat)
-                InvoiceRow("Discount", discount)
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(TextGrey.copy(alpha = 0.08f))
-                .border(
-                    1.dp,
-                    TextBlack.copy(alpha = 0.1f),
-                    RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
-                )
-                .padding(horizontal = Spacing.mediumLarge, vertical = Spacing.medium),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Grand Total",
-                style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = TextBlack
-            )
-            Text(
-                text = grandTotal,
-                style = AppTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = TextBlack
-            )
-        }
-    }
-}
 
 @Composable
 private fun InvoiceRow(label: String, amount: String) {

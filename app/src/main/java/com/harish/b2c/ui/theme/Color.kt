@@ -53,3 +53,20 @@ val MenuRed = Color(0xFFFF5A5F)
 val MenuGreen = Color(0xFF12D18E)
 
 val PromoBlue = Color(0xFF0088FF)
+
+val PromoBlueBg = PromoBlue.copy(alpha = 0.08f)
+val HelpPurple = Color(0xFF983EE2)
+val HelpPurpleBg = HelpPurple.copy(alpha = 0.12f)
+
+val PrimaryPurple = Color(0xFF6949FF)
+val PrimaryPurpleBg = PrimaryPurple.copy(alpha = 0.08f)
+val WarningOrange = Color(0xFFFC9E15)
+val WarningOrangeBg = WarningOrange.copy(alpha = 0.2f)
+
+val RewardGreen = Color(0xFFD9FFE3)
+val RewardPurple = Color(0xFFD7D7FF)
+val RewardOrange = Color(0xFFFFEACA)
+val RewardBlue = Color(0xFFCAE7FF)
+val RewardDisabled = Color(0xFFF0F0F0)
+val PrimaryBlue = androidx.compose.ui.graphics.Color(0xFF246BFD)
+val PrimaryBlueBg = PrimaryBlue.copy(alpha = 0.08f)

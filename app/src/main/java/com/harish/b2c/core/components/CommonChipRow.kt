@@ -20,13 +20,16 @@ import com.harish.b2c.ui.theme.regularBody
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.Shapes
 import com.harish.b2c.ui.theme.Spacing
+import com.harish.b2c.R
 
 @Preview(
     name = "CommonChipRow - All States",
@@ -95,11 +98,7 @@ fun <T> CommonChipRow(
                         .padding(horizontal = Spacing.medium),
                     contentAlignment = Alignment.Center
                 ) {
-                    CommonSvgImage(
-                        modifier = Modifier.size(Spacing.medium),
-                        assetName = "images/ic_search.svg",
-                        contentDescription = "Search",
-                    )
+                    Icon(painter = painterResource(R.drawable.search), contentDescription = null)
                 }
             }
         }
