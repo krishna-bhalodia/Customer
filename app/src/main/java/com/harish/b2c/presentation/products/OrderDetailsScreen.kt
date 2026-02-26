@@ -2,75 +2,78 @@ package com.harish.b2c.presentation.products
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.R
-import com.harish.b2c.core.components.*
-import com.harish.b2c.ui.theme.*
+import com.harish.b2c.core.components.CommonAppBar
+import com.harish.b2c.core.components.CommonInvoiceSummaryCard
+import com.harish.b2c.core.components.CommonOrderInfoCard
+import com.harish.b2c.core.components.CommonOrderItemCard
+import com.harish.b2c.core.components.CommonSupportCard
+import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
+import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.PromoBlue
+import com.harish.b2c.ui.theme.PromoBlueBg
+import com.harish.b2c.ui.theme.Shapes
+import com.harish.b2c.ui.theme.Spacing
+import com.harish.b2c.ui.theme.SuccessGreen
+import com.harish.b2c.ui.theme.TextBlack
+import com.harish.b2c.ui.theme.TextGrey
+import com.harish.b2c.ui.theme.White
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun OrderDetailsScreenPreview() {
     GradientBackground {
-        OrderDetailsScreen(onBackClick = {})
+        OrderDetailsScreen(navController = NavController(LocalContext.current))
     }
 }
 
 @Composable
 fun OrderDetailsScreen(
-    onBackClick: () -> Unit
+    navController: NavController
 ) {
     Scaffold(
         containerColor = Color.Transparent,
         topBar = {
-            Box(
+            CommonAppBar(
+                title = "Order Details", onBackClick = { navController.popBackStack() },
                 modifier = Modifier
-                    .fillMaxWidth()
                     .statusBarsPadding()
-                    .height(88.dp) // Standard AppBar Size
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(start = Spacing.large, top = Spacing.large)
-                        .size(40.dp)
-                        .border(1.dp, TextBlack.copy(alpha = 0.08f), CircleShape)
-                        .clip(CircleShape)
-                        .background(Color.Transparent)
-                        .padding(Spacing.extraSmall),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
-                        tint = TextBlack
-                    )
-                }
-
-                Text(
-                    text = "Order Details",
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(top = Spacing.extraLarge),
-                    style = AppTypography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.Medium),
-                    color = TextBlack
-                )
-            }
+                    .padding(top = 20.dp)
+            )
         }
     ) { paddingValues ->
         Column(
@@ -86,8 +89,16 @@ fun OrderDetailsScreen(
                     .padding(horizontal = Spacing.large, vertical = Spacing.extraSmall),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Order #MHO00300010", style = AppTypography.bodyMedium, color = TextBlack)
-                Text(text = "Placed on 17 Oct, 2025", style = AppTypography.bodyMedium, color = TextGrey)
+                Text(
+                    text = "Order #MHO00300010",
+                    style = AppTypography.bodyMedium,
+                    color = TextBlack
+                )
+                Text(
+                    text = "Placed on 17 Oct, 2025",
+                    style = AppTypography.bodyMedium,
+                    color = TextGrey
+                )
             }
 
             Spacer(modifier = Modifier.height(Spacing.medium))
@@ -100,7 +111,11 @@ fun OrderDetailsScreen(
                     .background(White, Shapes.large)
                     .padding(Spacing.medium)
             ) {
-                Text(text = "Order for Rahman, 7894561230", style = AppTypography.bodyLarge, color = TextBlack)
+                Text(
+                    text = "Order for Rahman, 7894561230",
+                    style = AppTypography.bodyLarge,
+                    color = TextBlack
+                )
             }
 
             Spacer(modifier = Modifier.height(Spacing.large))
@@ -110,7 +125,10 @@ fun OrderDetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(White, RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large))
+                    .background(
+                        White,
+                        RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large)
+                    )
             ) {
                 LazyColumn(
                     contentPadding = PaddingValues(Spacing.large),
@@ -119,7 +137,10 @@ fun OrderDetailsScreen(
                 ) {
                     // Status Row
                     item {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(16.dp)
@@ -127,9 +148,18 @@ fun OrderDetailsScreen(
                                     .border(1.dp, SuccessGreen.copy(alpha = 0.1f), CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Icon(Icons.Default.Check, contentDescription = null, tint = White, modifier = Modifier.size(10.dp))
+                                Icon(
+                                    Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = White,
+                                    modifier = Modifier.size(10.dp)
+                                )
                             }
-                            Text("Delivered on 18 Oct", style = AppTypography.bodyLarge, color = TextBlack)
+                            Text(
+                                "Delivered on 18 Oct",
+                                style = AppTypography.bodyLarge,
+                                color = TextBlack
+                            )
                         }
                     }
 
@@ -184,7 +214,13 @@ fun OrderDetailsScreen(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(PromoBlueBg, RoundedCornerShape(topStart = Spacing.medium, topEnd = Spacing.medium))
+                                    .background(
+                                        PromoBlueBg,
+                                        RoundedCornerShape(
+                                            topStart = Spacing.medium,
+                                            topEnd = Spacing.medium
+                                        )
+                                    )
                                     .padding(Spacing.small),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -223,9 +259,29 @@ fun OrderDetailsScreen(
                     }
 
                     // Summaries & Support
-                    item { CommonInvoiceSummaryCard(itemsTotal = "15360.00", vat = "1500.00", discount = "0.00", grandTotal = "16860.00") }
-                    item { CommonOrderInfoCard(orderId = "#MHO00300010", paymentMethod = "Via MTN Mobile Money", deliveryAddress = "S12, Kira Rd, Kampala Capital City, Central Region, 2121", orderDate = "Placed on 17 Oct, 2025") }
-                    item { CommonSupportCard() }
+                    item {
+                        CommonInvoiceSummaryCard(
+                            itemsTotal = "15360.00",
+                            vat = "1500.00",
+                            discount = "0.00",
+                            grandTotal = "16860.00"
+                        )
+                    }
+                    item {
+                        CommonOrderInfoCard(
+                            orderId = "#MHO00300010",
+                            paymentMethod = "Via MTN Mobile Money",
+                            deliveryAddress = "S12, Kira Rd, Kampala Capital City, Central Region, 2121",
+                            orderDate = "Placed on 17 Oct, 2025"
+                        )
+                    }
+                    item {
+                        CommonSupportCard(modifier = Modifier.clickable {
+                            navController.navigate(
+                                NavigationScreen.RaiseComplaint.route
+                            )
+                        })
+                    }
                     item { Spacer(modifier = Modifier.height(Spacing.large)) }
                 }
             }

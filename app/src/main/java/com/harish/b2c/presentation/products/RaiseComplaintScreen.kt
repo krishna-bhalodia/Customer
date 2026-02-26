@@ -1,34 +1,24 @@
 package com.harish.b2c.presentation.products
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonComplaintCard
 import com.harish.b2c.core.components.GradientBackground
-import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
-import com.harish.b2c.ui.theme.TextBlack
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.harish.b2c.core.components.CommonAppBar
-import com.harish.b2c.ui.theme.B2CTheme // Change if your theme name is different
+import com.harish.b2c.presentation.navigation.NavigationScreen
 
 @Preview(
     showBackground = true,
@@ -38,20 +28,20 @@ import com.harish.b2c.ui.theme.B2CTheme // Change if your theme name is differen
 fun RaiseComplaintScreenPreview() {
     GradientBackground {   // Replace with your actual theme wrapper if needed
         RaiseComplaintScreen(
-            onBackClick = {},
-            onCreateComplaintClick = {}
+            navController = NavController(LocalContext.current)
         )
     }
 }
 
 @Composable
 fun RaiseComplaintScreen(
-    onBackClick: () -> Unit,
-    onCreateComplaintClick: () -> Unit
+    navController: NavController
 ) {
         Scaffold(
             containerColor = Color.Transparent,
-            topBar = {CommonAppBar(title = "Raise Complaint", onBackClick = onBackClick , modifier = Modifier.statusBarsPadding().padding(top = 20.dp))} ,
+            topBar = {CommonAppBar(title = "Raise Complaint", onBackClick = {  navController.popBackStack()  } , modifier = Modifier
+                .statusBarsPadding()
+                .padding(top = 20.dp))} ,
             bottomBar = {
                 // Outlined Bottom Button
                 Box(
@@ -71,7 +61,9 @@ fun RaiseComplaintScreen(
                                 modifier = Modifier.size(20.dp)
                             )
                         },
-                        onClick = onCreateComplaintClick
+                        onClick = {
+                            navController.navigate(NavigationScreen.RaiseComplaintForm.route)
+                         }
                     )
                 }
             }

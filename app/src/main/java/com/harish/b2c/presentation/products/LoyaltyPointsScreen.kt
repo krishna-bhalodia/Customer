@@ -15,38 +15,47 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonRewardCard
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.*
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoyaltyPointsScreenPreview() {
-    GradientBackground { LoyaltyPointsScreen(onBackClick = {}, onRedeemHistoryClick = {})}
+    GradientBackground { LoyaltyPointsScreen(navController = NavController(LocalContext.current))}
 }
 
 @Composable
 fun LoyaltyPointsScreen(
-    onBackClick: () -> Unit,
-    onRedeemHistoryClick: () -> Unit
+   navController: NavController
 ) {
+    var showRedeemPopup by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()
+        .blur(radius = if (showRedeemPopup) 12.dp else 0.dp) // Apply blur effect
+    ) {
 
         Canvas(
             modifier = Modifier
@@ -92,7 +101,7 @@ fun LoyaltyPointsScreen(
             topBar = {
                 CommonAppBar(
                     title = "Loyalty Points",
-                    onBackClick = onBackClick,
+                    onBackClick = { navController.popBackStack() },
                     modifier = Modifier
                         .statusBarsPadding()
                         .padding(top = Spacing.mediumLarge)
@@ -135,7 +144,7 @@ fun LoyaltyPointsScreen(
                     modifier = Modifier
                         .clip(Shapes.large)
                         .background(White)
-                        .clickable { onRedeemHistoryClick() }
+                        .clickable{navController.navigate(NavigationScreen.RedeemHistory.route)}
                         .padding(horizontal = Spacing.medium, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
@@ -181,7 +190,7 @@ fun LoyaltyPointsScreen(
                                 coinCost = "2500",
                                 imageRes = R.drawable.sm_tang, // Sample Image
                                 backgroundColor = Color(0xFFD9FFE3), // RewardGreen
-                                onClick = { /* Handle Click */ }
+                                onClick = { showRedeemPopup = true}
                             )
                         }
 
@@ -192,7 +201,7 @@ fun LoyaltyPointsScreen(
                                 coinCost = "3000",
                                 imageRes = R.drawable.oner_apple, // Sample Image
                                 backgroundColor = Color(0xFFD7D7FF), // RewardPurple
-                                onClick = { /* Handle Click */ }
+                                onClick = { showRedeemPopup = true }
                             )
                         }
 
@@ -203,7 +212,7 @@ fun LoyaltyPointsScreen(
                                 coinCost = "10000",
                                 imageRes = R.drawable.orchid, // Sample Image
                                 backgroundColor = Color(0xFFFFEACA), // RewardOrange
-                                onClick = { /* Handle Click */ }
+                                onClick = { showRedeemPopup = true }
                             )
                         }
 
@@ -214,7 +223,7 @@ fun LoyaltyPointsScreen(
                                 coinCost = "1500",
                                 imageRes = R.drawable.predator, // Sample Image
                                 backgroundColor = Color(0xFFCAE7FF), // RewardBlue
-                                onClick = { /* Handle Click */ }
+                                onClick = { showRedeemPopup = true }
                             )
                         }
 
@@ -243,4 +252,13 @@ fun LoyaltyPointsScreen(
                 }
             }
         }
+    if (showRedeemPopup) {
+        RedeemPointsPopup(
+            onDismiss = { showRedeemPopup = false },
+            onRedeem = {
+                showRedeemPopup = false
+                /* Add API call or navigation here later */
+            }
+        )
+    }
     }

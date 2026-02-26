@@ -75,7 +75,7 @@ fun CommonBottomBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(120.dp) // Structural component height (kept hardcoded)
+            .height(94.dp) // Structural component height (kept hardcoded)
     ) {
 
         // 1. Bottom White Curved Bar
@@ -135,7 +135,7 @@ fun CommonBottomBar(
         // 2. FAB (Positioned at TopEnd)
         Box(
             modifier = Modifier
-                .align(Alignment.TopEnd)
+                .align(Alignment.TopEnd).offset(y = (-24).dp)
                 .padding(top = 2.dp, end = Spacing.large) // 24.dp -> Spacing.large
         ) {
             // Main FAB Circle (48x48)

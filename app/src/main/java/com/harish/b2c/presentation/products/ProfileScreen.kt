@@ -13,9 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
 import com.harish.b2c.ui.theme.*
@@ -25,16 +27,14 @@ import com.harish.b2c.ui.theme.*
 fun ProfileScreenPreview() {
     GradientBackground {
         ProfileScreen(
-            onBackClick = {},
-            onUpdateClick = {}
+            navController = NavController(LocalContext.current)
         )
     }
 }
 
 @Composable
 fun ProfileScreen(
-    onBackClick: () -> Unit,
-    onUpdateClick: () -> Unit
+   navController: NavController
 ) {
     var name by remember { mutableStateOf("John Doe") }
     var email by remember { mutableStateOf("johndoe@email.com") }
@@ -45,7 +45,7 @@ fun ProfileScreen(
         topBar = {
             CommonAppBar(
                 title = "Personal Info",
-                onBackClick = onBackClick,
+                onBackClick = { navController.popBackStack() },
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(top = Spacing.mediumLarge)
@@ -61,7 +61,7 @@ fun ProfileScreen(
             ) {
                 CommonButton(
                     text = "Update",
-                    onClick = onUpdateClick,
+                    onClick = {  },
                     isEnabled = false
                 )
             }
@@ -115,7 +115,10 @@ fun ProfileScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(White, RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large))
+                    .background(
+                        White,
+                        RoundedCornerShape(topStart = Spacing.large, topEnd = Spacing.large)
+                    )
                     .padding(horizontal = Spacing.large, vertical = Spacing.large)
             ) {
                 Column(

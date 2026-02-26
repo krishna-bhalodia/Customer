@@ -13,14 +13,26 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.harish.b2c.presentation.account.AccountScreen
+import com.harish.b2c.presentation.account.AddNewAddressScreen
 import com.harish.b2c.presentation.checkout.CheckoutScreen
 import com.harish.b2c.presentation.checkout.OrderSuccessScreen
 import com.harish.b2c.presentation.home.HomeScreen
 import com.harish.b2c.presentation.splash.SplashScreen
 import com.harish.b2c.presentation.login.LoginScreen
 import com.harish.b2c.presentation.login.OtpScreen
+import com.harish.b2c.presentation.loyalty.LoyaltyPointsScreen
 import com.harish.b2c.presentation.onboarding.OnboardingScreen
+import com.harish.b2c.presentation.products.NotificationsScreen
+import com.harish.b2c.presentation.products.OrderDetailsScreen
+import com.harish.b2c.presentation.products.OrdersScreen
+import com.harish.b2c.presentation.products.PaymentMethodScreen
 import com.harish.b2c.presentation.products.ProductsScreen
+import com.harish.b2c.presentation.products.ProfileScreen
+import com.harish.b2c.presentation.products.RaiseComplaintFormScreen
+import com.harish.b2c.presentation.products.RaiseComplaintScreen
+import com.harish.b2c.presentation.products.RedeemHistoryScreen
+import com.harish.b2c.presentation.products.SavedAddressesScreen
+import com.harish.b2c.presentation.promotions.PromotionsScreen
 import com.harish.b2c.presentation.signUp.DeliveryAddressScreen
 import com.harish.b2c.presentation.splash.SplashViewModel
 
@@ -91,39 +103,59 @@ fun AppNavHost(
             //  val vm: LoginViewModel = hiltViewModel()
             DeliveryAddressScreen(navController)
         }
+        // --- Bottom Bar Screens ---
         composable(NavigationScreen.HomeScreen.route) {
-            HomeScreen(
-                navController = navController
-            )
+            HomeScreen(navController)
         }
-//        composable(NavigationScreen.ProfileScreen.route) {
-//            val vm: ProfileViewModel = hiltViewModel()
-//            MyProfileScreen(navController, vm)
-//        }
         composable(NavigationScreen.ProductsScreen.route) {
-            ProductsScreen(
-                onBackClick = { navController.popBackStack() }
-            )
+            ProductsScreen(navController)
         }
-
-        composable(NavigationScreen.CheckoutScreen.route) {
-            CheckoutScreen(
-                onBackClick = { navController.popBackStack() }
-            )
+        composable(NavigationScreen.PromotionsScreen.route) {
+            PromotionsScreen(navController)
         }
         composable(NavigationScreen.AccountScreen.route) {
-            AccountScreen()
+            AccountScreen(navController)
         }
 
+        // --- Other Screens ---
+        composable(NavigationScreen.CheckoutScreen.route) {
+            CheckoutScreen(navController)
+        }
         composable(NavigationScreen.SuccessScreen.route) {
-            OrderSuccessScreen(
-                onDownloadInvoice = { /* Handle Invoice Logic */ },
-                onBackToHome = {
-                    navController.navigate(NavigationScreen.HomeScreen.route) {
-                        popUpTo(NavigationScreen.HomeScreen.route) { inclusive = true }
-                    }
-                }
-            )
+            OrderSuccessScreen(navController)
+        }
+        composable(NavigationScreen.OrdersScreen.route) {
+            OrdersScreen(navController)
+        }
+        composable(NavigationScreen.OrderDetailsScreen.route) {
+            OrderDetailsScreen(navController)
+        }
+        composable(NavigationScreen.ProfileScreen.route) {
+            ProfileScreen(navController)
+        }
+        composable(NavigationScreen.SavedAddressesScreen.route) {
+            SavedAddressesScreen(navController)
+        }
+        composable(NavigationScreen.PaymentMethodScreen.route) {
+            PaymentMethodScreen(navController)
+        }
+        composable(NavigationScreen.NotificationsScreen.route) {
+            NotificationsScreen(navController)
+        }
+        composable(NavigationScreen.LoyaltyPointsScreen.route) {
+            LoyaltyPointsScreen(navController)
+        }
+        composable(NavigationScreen.RaiseComplaint.route) {
+            RaiseComplaintScreen(navController)
+        }
+        composable(NavigationScreen.RaiseComplaintForm.route) {
+            RaiseComplaintFormScreen(navController)
+        }
+        composable(NavigationScreen.RedeemHistory.route) {
+            RedeemHistoryScreen(navController)
+        }
+        composable(NavigationScreen.AddNewAddressScreen.route) {
+            AddNewAddressScreen(navController)
         }
     }
 }

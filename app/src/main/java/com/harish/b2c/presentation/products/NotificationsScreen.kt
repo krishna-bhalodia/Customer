@@ -7,7 +7,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.harish.b2c.core.components.*
 import com.harish.b2c.ui.theme.Spacing
 
@@ -15,19 +17,19 @@ import com.harish.b2c.ui.theme.Spacing
 @Composable
 fun NotificationsScreenPreview() {
     GradientBackground {
-        NotificationsScreen(onBackClick = {})}
+        NotificationsScreen(navController = NavController(LocalContext.current))}
 }
 
 @Composable
 fun NotificationsScreen(
-    onBackClick: () -> Unit
+    navController: NavController
 ) {
         Scaffold(
             containerColor = Color.Transparent,
             topBar = {
                 CommonAppBar(
                     title = "Notifications",
-                    onBackClick = onBackClick,
+                    onBackClick = { navController.popBackStack() },
                     modifier = Modifier
                         .statusBarsPadding()
                         .padding(top = Spacing.mediumLarge)

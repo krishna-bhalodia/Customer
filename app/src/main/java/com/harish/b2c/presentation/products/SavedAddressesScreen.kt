@@ -9,8 +9,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.harish.b2c.core.components.CommonAddressCard
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
@@ -22,24 +24,20 @@ import com.harish.b2c.ui.theme.BrandRed
 fun SavedAddressesScreenPreview() {
     GradientBackground{
     SavedAddressesScreen(
-        onBackClick = {},
-        onAddNewAddressClick = {},
-        onEditAddressClick = {}
+        navController = NavController(LocalContext.current)
     )}
 }
 
 @Composable
 fun SavedAddressesScreen(
-    onBackClick: () -> Unit,
-    onAddNewAddressClick: () -> Unit,
-    onEditAddressClick: (String) -> Unit
+    navController: NavController
 ) {
         Scaffold(
             containerColor = Color.Transparent,
             topBar = {
                 CommonAppBar(
                     title = "Saved Addresses",
-                    onBackClick = onBackClick,
+                    onBackClick = { navController.popBackStack() },
                     modifier = Modifier
                         .statusBarsPadding()
                         .padding(top = 20.dp)
@@ -64,7 +62,7 @@ fun SavedAddressesScreen(
                                 modifier = Modifier.size(20.dp)
                             )
                         },
-                        onClick = onAddNewAddressClick
+                        onClick = { }
                     )
                 }
             }
@@ -81,7 +79,7 @@ fun SavedAddressesScreen(
                     CommonAddressCard(
                         storeName = "Store Name 1",
                         address = "S12, Kira Rd, Kampala Capital City, Central Region, 2121",
-                        onEditClick = { onEditAddressClick("store_1") }
+                        onEditClick = { }
                     )
                 }
 
@@ -89,7 +87,7 @@ fun SavedAddressesScreen(
                     CommonAddressCard(
                         storeName = "Store Name 2",
                         address = "S12, Kira Rd, Kampala Capital City, Central Region, 2121",
-                        onEditClick = { onEditAddressClick("store_2") }
+                        onEditClick = {  }
                     )
                 }
             }

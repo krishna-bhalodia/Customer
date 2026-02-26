@@ -12,13 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.harish.b2c.core.components.*
+import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.*
 
 @Composable
-fun PromotionsScreen(onBackClick: () -> Unit = {}) {
+fun PromotionsScreen(navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     val allBanners = listOf("oner_banner.svg", "energy_banner.svg", "soft_drink_banner.svg", "pulpe_banner.svg")
     val filteredBanners = remember(searchQuery) {
@@ -29,16 +32,23 @@ fun PromotionsScreen(onBackClick: () -> Unit = {}) {
         containerColor = Color.Transparent,
         topBar = {
             CommonAppBar(
-                title = "Promotions",
-                onBackClick = onBackClick,
+                title = "Checkout",
+                onBackClick = { navController.popBackStack() },
                 modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge)
             )
         },
         bottomBar = {
             CommonBottomBar(
                 selectedIndex = 2,
-                onItemSelected = { },
-                onFabClick = { },
+                onItemSelected = { index ->
+                    when (index) {
+                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
+                        1 -> { navController.navigate(NavigationScreen.ProductsScreen.route) }
+                        2 -> { /* Already on Promotions */ }
+                        3 -> { navController.navigate(NavigationScreen.AccountScreen.route) }
+                    }
+                },
+                onFabClick = { navController.navigate(NavigationScreen.CheckoutScreen.route)},
                 modifier = Modifier.navigationBarsPadding()
             )
         }
@@ -88,6 +98,6 @@ fun PromotionsScreen(onBackClick: () -> Unit = {}) {
 @Composable
 fun PromotionsScreenPreview() {
         GradientBackground {
-            PromotionsScreen()
+            PromotionsScreen(navController = NavController(LocalContext.current))
         }
 }

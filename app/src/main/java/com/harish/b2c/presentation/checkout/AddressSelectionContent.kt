@@ -15,26 +15,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonBottomSheet
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.*
 
 @Composable
-fun AddressSelectionContent(onAddNewAddress: () -> Unit = {}) {
+fun AddressSelectionContent(navController: NavController, onDismiss: () -> Unit) {
     var selectedStore by remember { mutableStateOf("Store Name 1") }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = Spacing.large)
-            .padding(bottom = 34.dp),
+            .padding(bottom = Spacing.extraLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -62,8 +65,10 @@ fun AddressSelectionContent(onAddNewAddress: () -> Unit = {}) {
         Spacer(modifier = Modifier.height(Spacing.large))
 
         OutlinedButton(
-            onClick = onAddNewAddress,
-            modifier = Modifier.fillMaxWidth().height(46.dp),
+            onClick = { navController.navigate(NavigationScreen.AddNewAddressScreen.route) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(46.dp),
             shape = Shapes.large,
             border = BorderStroke(1.5.dp, BrandRed),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = BrandRed)
@@ -77,8 +82,12 @@ fun AddressSelectionContent(onAddNewAddress: () -> Unit = {}) {
 
 @Composable
 fun AddressItem(title: String, address: String, isSelected: Boolean, onSelect: () -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth().clickable { onSelect() }, verticalAlignment = Alignment.CenterVertically) {
-        Box(modifier = Modifier.size(32.dp).background(MenuPurple.copy(alpha = 0.08f), CircleShape), contentAlignment = Alignment.Center) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .clickable { onSelect() }, verticalAlignment = Alignment.CenterVertically) {
+        Box(modifier = Modifier
+            .size(32.dp)
+            .background(MenuPurple.copy(alpha = 0.08f), CircleShape), contentAlignment = Alignment.Center) {
             Icon(painterResource(R.drawable.location), null, modifier = Modifier.size(18.dp), tint = MenuPurple)
         }
         Spacer(modifier = Modifier.width(Spacing.medium))
@@ -86,8 +95,15 @@ fun AddressItem(title: String, address: String, isSelected: Boolean, onSelect: (
             Text(title, style = AppTypography.titleMedium.copy(fontSize = 14.sp), color = TextBlack)
             Text(address, style = AppTypography.bodyLarge.copy(fontSize = 12.sp, lineHeight = 16.sp), color = TextGrey)
         }
-        Box(modifier = Modifier.size(20.dp).border(BorderStroke(2.dp, if (isSelected) BrandRed else TextBlack.copy(alpha = 0.2f)), CircleShape), contentAlignment = Alignment.Center) {
-            if (isSelected) Box(modifier = Modifier.size(10.dp).background(BrandRed, CircleShape))
+        Box(modifier = Modifier
+            .size(20.dp)
+            .border(
+                BorderStroke(2.dp, if (isSelected) BrandRed else TextBlack.copy(alpha = 0.2f)),
+                CircleShape
+            ), contentAlignment = Alignment.Center) {
+            if (isSelected) Box(modifier = Modifier
+                .size(10.dp)
+                .background(BrandRed, CircleShape))
         }
     }
 }
@@ -96,7 +112,7 @@ fun AddressItem(title: String, address: String, isSelected: Boolean, onSelect: (
 @Composable
 fun AddressSelectionPreview() {
     GradientBackground {
-        AddressSelectionContent()
+        AddressSelectionContent(navController = NavController(LocalContext.current), onDismiss = {})
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +139,7 @@ fun AddressSelectionScreen() {
                 sheetState = sheetState,
                 onDismissRequest = { showSheet = false }
             ) {
-                AddressSelectionContent(onAddNewAddress = { /* Navigate */ })
+                AddressSelectionContent(navController = NavController(LocalContext.current), onDismiss = { showSheet = false })
             }
         }
     }

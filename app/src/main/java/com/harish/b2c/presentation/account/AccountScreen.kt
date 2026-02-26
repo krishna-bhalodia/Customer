@@ -2,6 +2,7 @@ package com.harish.b2c.presentation.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -15,37 +16,53 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.core.components.AccountMenuItem
 import com.harish.b2c.core.components.CommonBottomBar
 import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.core.components.QuickActionCard
 import com.harish.b2c.ui.theme.*
 import com.harish.b2c.R
+import com.harish.b2c.presentation.navigation.NavigationScreen
+import com.harish.b2c.presentation.products.LogoutBottomSheet
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun AccountScreenPreview() {
     GradientBackground {
-        AccountScreen()
+        AccountScreen(navController = NavController(LocalContext.current))
     }
 }
 
 @Composable
-fun AccountScreen() {
+fun AccountScreen(navController: NavController) {
+    var showLogoutSheet by remember { mutableStateOf(false) }
     Scaffold(
         containerColor = Color.Transparent,
         bottomBar = {
             CommonBottomBar(
                 selectedIndex = 3,
-                onItemSelected = { },
-                onFabClick = { },
+                onItemSelected = { index ->
+                    when (index) {
+                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
+                        1 -> { navController.navigate(NavigationScreen.ProductsScreen.route) }
+                        2 -> { navController.navigate(NavigationScreen.PromotionsScreen.route) }
+                        3 -> { /* Already on Account */ }
+                    }
+                },
+                onFabClick = {navController.navigate(NavigationScreen.CheckoutScreen.route) },
                 modifier = Modifier.navigationBarsPadding()
             )
         }
@@ -59,8 +76,8 @@ fun AccountScreen() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = Spacing.mediumLarge)
-                    .statusBarsPadding()
+                   // .padding(top = Spacing.mediumLarge)
+                    .statusBarsPadding(),
             ) {
                 Row(
                     modifier = Modifier
@@ -71,7 +88,7 @@ fun AccountScreen() {
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(Spacing.extraExtraLarge)
+                            .size(Spacing.extraExtraLarge).clickable( onClick = { navController.popBackStack() } )
                             .border(1.dp, TextBlack.copy(alpha = 0.08f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
@@ -86,7 +103,7 @@ fun AccountScreen() {
                         modifier = Modifier
                             .background(LoyaltyBg, Shapes.medium)
                             .border(2.dp, LoyaltyBorder, Shapes.medium)
-                            .padding(horizontal = Spacing.small, vertical = 6.dp),
+                            .padding(horizontal = Spacing.small, vertical = 6.dp).clickable{navController.navigate(NavigationScreen.LoyaltyPointsScreen.route)} ,
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
                     ) {
@@ -155,7 +172,7 @@ fun AccountScreen() {
                     icon = { Icon(painter = painterResource(R.drawable.cart), null, tint = OrderIconOrange) },
                     bgColor = OrderIconOrange.copy(alpha = 0.2f),
                     borderColor = OrderIconOrange,
-                    onClick = { /* Navigate */ }
+                    onClick = { navController.navigate(NavigationScreen.OrdersScreen.route) }
                 )
                 QuickActionCard(
                     modifier = Modifier.weight(1f),
@@ -179,21 +196,29 @@ fun AccountScreen() {
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = Spacing.large,
-                            bottom = 120.dp
+                            top = Spacing.large
                         ),
                     verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
                 ) {
-                    AccountMenuItem(title = "Personal Info", icon = { Icon(painter = painterResource(R.drawable.man), null, tint = MenuOrange) }, iconBgColor = MenuOrange, onClick = { })
-                    AccountMenuItem(title = "Delivery Address", icon = { Icon(painter = painterResource(R.drawable.location), null, tint = MenuPurple) }, iconBgColor = MenuPurple, onClick = { })
-                    AccountMenuItem(title = "Payment Methods", icon = { Icon(painter = painterResource(R.drawable.payment_card), null, tint = MenuBlue) }, iconBgColor = MenuBlue, onClick = { })
-                    AccountMenuItem(title = "Notifications", icon = { Icon(painter = painterResource(R.drawable.notify), null, tint = MenuRed) }, iconBgColor = MenuRed, onClick = { })
+                    AccountMenuItem(title = "Personal Info", icon = { Icon(painter = painterResource(R.drawable.man), null, tint = MenuOrange) }, iconBgColor = MenuOrange, onClick = {navController.navigate(NavigationScreen.ProfileScreen.route) })
+                    AccountMenuItem(title = "Delivery Address", icon = { Icon(painter = painterResource(R.drawable.location), null, tint = MenuPurple) }, iconBgColor = MenuPurple, onClick = {navController.navigate(NavigationScreen.SavedAddressesScreen.route) })
+                    AccountMenuItem(title = "Payment Methods", icon = { Icon(painter = painterResource(R.drawable.payment_card), null, tint = MenuBlue) }, iconBgColor = MenuBlue, onClick = { navController.navigate(NavigationScreen.PaymentMethodScreen.route)})
+                    AccountMenuItem(title = "Notifications", icon = { Icon(painter = painterResource(R.drawable.notify), null, tint = MenuRed) }, iconBgColor = MenuRed, onClick = { navController.navigate(NavigationScreen.NotificationsScreen.route)})
                     AccountMenuItem(title = "Terms of use", icon = { Icon(painter = painterResource(R.drawable.file), null, tint = MenuGreen) }, iconBgColor = MenuGreen, onClick = { })
                     AccountMenuItem(title = "Privacy policy", icon = { Icon(painter = painterResource(R.drawable.shield), null, tint = MenuOrange) }, iconBgColor = MenuOrange, onClick = { })
                     AccountMenuItem(title = "About Us", icon = { Icon(painter = painterResource(R.drawable.info), null, tint = MenuPurple) }, iconBgColor = MenuPurple, onClick = { })
-                    AccountMenuItem(title = "Logout", icon = { Icon(painter = painterResource(R.drawable.logout), null, tint = BrandRed) }, iconBgColor = BrandRed, titleColor = BrandRed, onClick = { })
+                    AccountMenuItem(title = "Logout", icon = { Icon(painter = painterResource(R.drawable.logout), null, tint = BrandRed) }, iconBgColor = BrandRed, titleColor = BrandRed, onClick = { showLogoutSheet = true })
                 }
             }
+        }
+        if (showLogoutSheet) {
+            LogoutBottomSheet(
+                onDismiss = { showLogoutSheet = false },
+                onConfirmLogout = {
+                    showLogoutSheet = false
+                    // navController.navigate(NavigationScreen.LoginScreen.route) { popUpTo(0) }
+                }
+            )
         }
     }
 }

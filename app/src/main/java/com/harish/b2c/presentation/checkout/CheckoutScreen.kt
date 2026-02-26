@@ -23,8 +23,11 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,18 +42,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonInvoiceSummaryCard
 import com.harish.b2c.core.components.CommonProductCard
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.presentation.products.ProductItem
 import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
@@ -67,13 +73,15 @@ import com.harish.b2c.ui.theme.White
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun CheckoutScreenPreview() {
-    GradientBackground { CheckoutScreen(onBackClick = {}) }
+    GradientBackground { CheckoutScreen(navController = NavController(LocalContext.current)) }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
-    onBackClick: () -> Unit
+    navController: NavController,
 ) {
+    var showAddressSheet by remember { mutableStateOf(false) }
     // Dummy Data
     var checkoutItems by remember {
         mutableStateOf(
@@ -116,7 +124,7 @@ fun CheckoutScreen(
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(top = Spacing.mediumLarge),
-                onBackClick = onBackClick
+                onBackClick = { navController.popBackStack() }
             )
         }
     ) { innerPadding ->
@@ -124,7 +132,6 @@ fun CheckoutScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .navigationBarsPadding()
         ) {
             // Top section elements
             Column(
@@ -260,7 +267,7 @@ fun CheckoutScreen(
                         DeliveryAddressCard(
                             modifier = Modifier.padding(horizontal = Spacing.large),
                             address = "S12, Kira Rd, Kampala Capital City, Central Region, 2121",
-                            onChangeClick = { /* Handle Change Address */ }
+                            onChangeClick = { showAddressSheet = true}
                         )
                     }
 
@@ -268,10 +275,22 @@ fun CheckoutScreen(
                     item {
                         CheckoutBottomBar(
                             totalAmount = "AED 16860.00",
-                            onPlaceOrder = { /* Handle Place Order */ }
+                            onPlaceOrder = { navController.navigate(NavigationScreen.SuccessScreen.route)}
                         )
                     }
                 }
+            }
+        }
+        if (showAddressSheet) {
+            ModalBottomSheet(
+                { showAddressSheet = false }, containerColor = White, // Make sure to import your White color
+                dragHandle = { BottomSheetDefaults.DragHandle() }
+            ) {
+                // Call AddressSelectionContent here
+                AddressSelectionContent(
+                    navController = navController,
+                    onDismiss = { showAddressSheet = false }
+                )
             }
         }
     }

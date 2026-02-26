@@ -22,18 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonPhoneNumberInput
-import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
@@ -74,7 +69,7 @@ fun LoginScreen(navController: NavController, isSignUp: Boolean = false) {
             Text(
                 text = "Enter Your Mobile Number",
                 color = MaterialTheme.colorScheme.onBackground, // Dynamic color
-                style = AppTypography.headlineLarge, // Signika Bold
+                style = AppTypography.headlineLarge.copy(fontSize = 24.sp), // Signika Bold
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )

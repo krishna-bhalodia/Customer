@@ -21,8 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonBottomBar
@@ -30,6 +31,7 @@ import com.harish.b2c.core.components.CommonChipRow
 import com.harish.b2c.core.components.CommonProductCard
 import com.harish.b2c.core.components.CommonSearchBar
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.White
 
@@ -40,7 +42,7 @@ import com.harish.b2c.ui.theme.White
 fun ProductsScreenPreview() {
     GradientBackground {
         ProductsScreen(
-            onBackClick = {}
+            navController = NavController(LocalContext.current),
         )
     }
 }
@@ -57,7 +59,7 @@ data class ProductItem(
 
 @Composable
 fun ProductsScreen(
-    onBackClick: () -> Unit
+    navController: NavController,
 ) {
     // Dummy Data mimicking your CSS values
     var productList by remember {
@@ -135,14 +137,21 @@ fun ProductsScreen(
             CommonAppBar(
                 title = "Products",
                 modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge),
-                onBackClick = onBackClick
+                onBackClick = { navController.popBackStack() }
             )
         },
         bottomBar = {
             CommonBottomBar(
                 selectedIndex = 1,
-                onItemSelected = { },
-                onFabClick = { },
+                onItemSelected = { index ->
+                    when (index) {
+                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
+                        1 -> { /* Already on Products */ }
+                        2 -> { navController.navigate(NavigationScreen.PromotionsScreen.route) }
+                        3 -> { navController.navigate(NavigationScreen.AccountScreen.route) }
+                    }
+                },
+                onFabClick = { navController.navigate(NavigationScreen.CheckoutScreen.route)},
                 modifier = Modifier.navigationBarsPadding()
             )
         }

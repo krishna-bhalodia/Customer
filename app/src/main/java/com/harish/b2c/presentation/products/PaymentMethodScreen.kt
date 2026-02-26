@@ -15,10 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonPaymentMethodRow
@@ -29,12 +31,12 @@ import com.harish.b2c.ui.theme.*
 @Composable
 fun PaymentMethodScreenPreview() {
     GradientBackground {
-    PaymentMethodScreen(onBackClick = {})}
+    PaymentMethodScreen(navController = NavController(LocalContext.current))}
 }
 
 @Composable
 fun PaymentMethodScreen(
-    onBackClick: () -> Unit
+    navController: NavController
 ) {
     // State to hold the currently selected payment method
     var selectedMethod by remember { mutableStateOf("COD") } // Default is Cash on Delivery
@@ -44,7 +46,7 @@ fun PaymentMethodScreen(
             topBar = {
                 CommonAppBar(
                     title = "Payment Method",
-                    onBackClick = onBackClick,
+                    onBackClick = { navController.popBackStack() },
                     modifier = Modifier
                         .statusBarsPadding()
                         .padding(top = Spacing.mediumLarge)

@@ -1,5 +1,6 @@
 package com.harish.b2c.presentation.products
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,13 +20,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonRecentOrderCard
 import com.harish.b2c.core.components.CommonSegmentedTab
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
 
 @Preview(
     showBackground = true,
@@ -36,7 +40,7 @@ fun OrdersScreenPreview() {
     GradientBackground {
 
         OrdersScreen(
-            onBackClick = {}
+           navController = NavController(LocalContext.current)
         )
 
     }
@@ -44,7 +48,7 @@ fun OrdersScreenPreview() {
 
 @Composable
 fun OrdersScreen(
-    onBackClick: () -> Unit
+    navController: NavController,
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Ongoing", "History")
@@ -54,7 +58,7 @@ fun OrdersScreen(
         topBar = {
             CommonAppBar(
                 title = "Your Orders",
-                onBackClick = onBackClick,
+                onBackClick = { navController.popBackStack() },
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(top = 20.dp)
@@ -93,6 +97,9 @@ fun OrdersScreen(
                         amount = "1240.00",
                         status = if (selectedTabIndex == 0) "Expected delivery on 18 Oct" else "Order Delivered",
                         deliveryIcon =if (selectedTabIndex == 0) R.drawable.truck_yellow else R.drawable.green_check,
+                        modifier = Modifier.clickable{
+                            navController.navigate(NavigationScreen.OrderDetailsScreen.route)
+                        }
                     )
                 }
             }

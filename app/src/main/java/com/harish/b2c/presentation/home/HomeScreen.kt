@@ -2,6 +2,7 @@ package com.harish.b2c.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
@@ -37,13 +38,13 @@ fun HomeScreen(navController: NavController) {
                 selectedIndex = bottomNavIndex,
                 onItemSelected = { index ->
                     when (index) {
-                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
+                        0 -> { /* Already on Home */ }
                         1 -> { navController.navigate(NavigationScreen.ProductsScreen.route) }
-                        2 -> { navController.navigate(NavigationScreen.CheckoutScreen.route) }
-                        3 -> { /* Navigate to Account */ }
+                        2 -> { navController.navigate(NavigationScreen.PromotionsScreen.route) }
+                        3 -> { navController.navigate(NavigationScreen.AccountScreen.route) }
                     }
                 },
-                onFabClick = { },
+                onFabClick = { navController.navigate(NavigationScreen.CheckoutScreen.route)},
                 modifier = Modifier.navigationBarsPadding()
             )
         }
@@ -200,7 +201,7 @@ fun HomeScreen(navController: NavController) {
 
             CommonLoyaltyCard(
                 points = 957,
-                onRedeemClick = { /* Handle */ },
+                onRedeemClick = {navController.navigate(NavigationScreen.LoyaltyPointsScreen.route) },
                 modifier = Modifier.padding(horizontal = Spacing.large)
             )
 

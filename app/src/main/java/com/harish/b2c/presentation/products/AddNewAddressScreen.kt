@@ -11,9 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.*
 import com.harish.b2c.ui.theme.*
@@ -23,16 +24,14 @@ import com.harish.b2c.ui.theme.*
 fun AddNewAddressScreenPreview() {
     GradientBackground {
         AddNewAddressScreen(
-            onBackClick = {},
-            onSubmitClick = {}
+            navController = NavController(LocalContext.current)
         )
     }
 }
 
 @Composable
 fun AddNewAddressScreen(
-    onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit
+    navController: NavController
 ) {
     var storeName by remember { mutableStateOf("") }
     var building by remember { mutableStateOf("") }
@@ -46,7 +45,7 @@ fun AddNewAddressScreen(
         topBar = {
             CommonAppBar(
                 title = "Add New Address",
-                onBackClick = onBackClick,
+                onBackClick = { navController.popBackStack()  },
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(top = Spacing.mediumLarge)
@@ -62,7 +61,7 @@ fun AddNewAddressScreen(
             ) {
                 CommonButton(
                     text = "Submit",
-                    onClick = onSubmitClick
+                    onClick = { }
                 )
             }
         }
