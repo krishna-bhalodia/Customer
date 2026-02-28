@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -67,8 +68,6 @@ fun <T> CommonChipRow(
     onSearchClick: () -> Unit = {},
     chipHeight: Dp = 32.dp, // Adjusted to align better with standard tap targets
 ) {
-    val chipShape = Shapes.large
-
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Spacing.small),
@@ -79,8 +78,8 @@ fun <T> CommonChipRow(
                 Box(
                     modifier = Modifier
                         .height(chipHeight)
-                        .clip(chipShape)
-                        .border(1.dp, BorderLight, chipShape)
+                        .clip(Shapes.large)
+                        .border(1.dp, BorderLight, Shapes.large)
                         .clickable { onSearchClick() }
                         .padding(horizontal = Spacing.medium),
                     contentAlignment = Alignment.Center
@@ -103,9 +102,9 @@ fun <T> CommonChipRow(
             Box(
                 modifier = Modifier
                     .height(chipHeight)
-                    .clip(chipShape)
+                    .clip(Shapes.large)
                     .background(bgColor)
-                    .border(1.dp, borderColor, chipShape)
+                    .border(1.dp, borderColor, Shapes.large)
                     .clickable { onCategorySelected(category) }
                     .padding(horizontal = Spacing.medium),
                 contentAlignment = Alignment.Center
@@ -113,7 +112,7 @@ fun <T> CommonChipRow(
                 Text(
                     text = categoryToString(category),
                     color = textColor,
-                    style = AppTypography.labelSmall // Using theme style instead of hardcoded 14.sp
+                    style = AppTypography.labelSmall.copy(fontWeight = FontWeight.SemiBold )// Using theme style instead of hardcoded 14.sp
                 )
             }
         }

@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,6 +36,8 @@ import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.core.components.QuickActionCard
 import com.harish.b2c.ui.theme.*
 import com.harish.b2c.R
+import com.harish.b2c.core.components.CommonAppBar
+import com.harish.b2c.core.utils.glassShadow
 import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.presentation.products.LogoutBottomSheet
 
@@ -49,83 +52,53 @@ fun AccountScreenPreview() {
 @Composable
 fun AccountScreen(navController: NavController) {
     var showLogoutSheet by remember { mutableStateOf(false) }
-    Scaffold(
-        containerColor = Color.Transparent,
-        bottomBar = {
-            CommonBottomBar(
-                selectedIndex = 3,
-                onItemSelected = { index ->
-                    when (index) {
-                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
-                        1 -> { navController.navigate(NavigationScreen.ProductsScreen.route) }
-                        2 -> { navController.navigate(NavigationScreen.PromotionsScreen.route) }
-                        3 -> { /* Already on Account */ }
-                    }
-                },
-                onFabClick = {navController.navigate(NavigationScreen.CheckoutScreen.route) },
-                modifier = Modifier.navigationBarsPadding()
-            )
-        }
-    ) { paddingValues ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
+            // ✅ Stack AppBar and Profile Image to allow overlapping
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                   // .padding(top = Spacing.mediumLarge)
-                    .statusBarsPadding(),
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Row(
+                CommonAppBar(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Spacing.large),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(Spacing.extraExtraLarge).clickable( onClick = { navController.popBackStack() } )
-                            .border(1.dp, TextBlack.copy(alpha = 0.08f), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                            contentDescription = "back",
-                            tint = TextBlack
-                        )
+                        .statusBarsPadding()
+                        .align(Alignment.TopCenter), // Keep bar at top
+                    onBackClick = { navController.popBackStack() },
+                    trailingContent = {
+                        Row(
+                            modifier = Modifier
+                                .background(LoyaltyBg, Shapes.medium)
+                                .border(2.dp, LoyaltyBorder, Shapes.medium)
+                                .padding(horizontal = Spacing.small, vertical = 6.dp)
+                                .clickable { navController.navigate(NavigationScreen.LoyaltyPointsScreen.route) },
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "Coin",
+                                tint = OrderIconOrange,
+                                modifier = Modifier.size(Spacing.mediumLarge)
+                            )
+                            Text(
+                                text = "1080",
+                                style = AppTypography.titleMedium.copy(fontSize = 15.sp),
+                                color = DarkGrey
+                            )
+                        }
                     }
+                )
 
-                    Row(
-                        modifier = Modifier
-                            .background(LoyaltyBg, Shapes.medium)
-                            .border(2.dp, LoyaltyBorder, Shapes.medium)
-                            .padding(horizontal = Spacing.small, vertical = 6.dp).clickable{navController.navigate(NavigationScreen.LoyaltyPointsScreen.route)} ,
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(Spacing.extraSmall)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "Coin",
-                            tint = OrderIconOrange,
-                            modifier = Modifier.size(Spacing.mediumLarge)
-                        )
-                        Text(
-                            text = "1080",
-                            style = AppTypography.titleMedium.copy(fontSize = 15.sp),
-                            color = DarkGrey
-                        )
-                    }
-                }
-
+                // ✅ Profile Image Box
                 Box(
                     modifier = Modifier
                         .size(124.dp)
-                        .align(Alignment.BottomCenter)
-                        .offset(y = Spacing.mediumLarge)
+                        // This offset moves it "up" into the AppBar area
+                        .offset(y = 40.dp)
                         .background(White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
@@ -137,7 +110,7 @@ fun AccountScreen(navController: NavController) {
                     )
                 }
             }
-
+            Spacer(modifier = Modifier.height(48.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -221,4 +194,3 @@ fun AccountScreen(navController: NavController) {
             )
         }
     }
-}

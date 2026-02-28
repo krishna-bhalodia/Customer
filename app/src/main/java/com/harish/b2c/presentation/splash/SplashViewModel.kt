@@ -28,7 +28,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             delay(2000)
 
-            val destination = NavigationScreen.Login
+            val destination = NavigationScreen.OnBoardScreen
             _navigationEvent.send(destination)
         }
     }

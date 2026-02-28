@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.harish.b2c.presentation.MainContainerScreen
 import com.harish.b2c.presentation.account.AccountScreen
 import com.harish.b2c.presentation.account.AddNewAddressScreen
 import com.harish.b2c.presentation.checkout.CheckoutScreen
@@ -59,7 +60,7 @@ fun AppNavHost(
     }
 
     NavHost(
-        navController = navController, startDestination = NavigationScreen.HomeScreen.route,
+        navController = navController, startDestination = NavigationScreen.SplashScreen.route,
         // Forward: New screen slides in from right
         enterTransition = {
             slideInHorizontally(initialOffsetX = { it })
@@ -104,6 +105,9 @@ fun AppNavHost(
             DeliveryAddressScreen(navController)
         }
         // --- Bottom Bar Screens ---
+        composable(NavigationScreen.MainContainer.route) {
+            MainContainerScreen(rootNavController = navController)
+        }
         composable(NavigationScreen.HomeScreen.route) {
             HomeScreen(navController)
         }

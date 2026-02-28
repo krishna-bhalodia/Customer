@@ -28,34 +28,15 @@ fun PromotionsScreen(navController: NavController) {
         if (searchQuery.isEmpty()) allBanners else allBanners.filter { it.contains(searchQuery, ignoreCase = true) }
     }
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        topBar = {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
             CommonAppBar(
                 title = "Checkout",
                 onBackClick = { navController.popBackStack() },
-                modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge)
+                modifier = Modifier.statusBarsPadding()
             )
-        },
-        bottomBar = {
-            CommonBottomBar(
-                selectedIndex = 2,
-                onItemSelected = { index ->
-                    when (index) {
-                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
-                        1 -> { navController.navigate(NavigationScreen.ProductsScreen.route) }
-                        2 -> { /* Already on Promotions */ }
-                        3 -> { navController.navigate(NavigationScreen.AccountScreen.route) }
-                    }
-                },
-                onFabClick = { navController.navigate(NavigationScreen.CheckoutScreen.route)},
-                modifier = Modifier.navigationBarsPadding()
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.fillMaxSize().padding(paddingValues)
-        ) {
+            Spacer(modifier = Modifier.height(Spacing.medium))
             CommonSearchBar(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
@@ -92,7 +73,6 @@ fun PromotionsScreen(navController: NavController) {
             }
         }
     }
-}
 
 @Preview(showSystemUi = true)
 @Composable

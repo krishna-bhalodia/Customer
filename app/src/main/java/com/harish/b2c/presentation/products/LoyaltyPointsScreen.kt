@@ -24,9 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +51,7 @@ fun LoyaltyPointsScreenPreview() {
 
 @Composable
 fun LoyaltyPointsScreen(
-   navController: NavController
+    navController: NavController
 ) {
     var showRedeemPopup by remember { mutableStateOf(false) }
 
@@ -64,38 +66,48 @@ fun LoyaltyPointsScreen(
         ) {
 
             val canvasWidth = size.width
-            val ellipseWidth = canvasWidth * 1.8f
-            val ellipseHeight = size.height * 1.6f
+            val ellipseWidth = canvasWidth * 2f
+            val ellipseHeight = size.height * 1.1f
+
+            // Calculate exact bounding boxes for our shapes
+            val leftBound = (canvasWidth - ellipseWidth) / 2f
+            val topBound = -ellipseHeight * 0.48f
+            val rightBound = leftBound + ellipseWidth
+            val bottomBound = topBound + ellipseHeight
 
             // 1️⃣ Beige Background Ellipse
             drawOval(
                 color = Color(0xFFFFF5DC),
-                topLeft = Offset(
-                    x = (canvasWidth - ellipseWidth) / 2f,
-                    y = -ellipseHeight * 0.65f
-                ),
-                size = Size(
-                    width = ellipseWidth,
-                    height = ellipseHeight
-                )
+                topLeft = Offset(x = leftBound, y = topBound),
+                size = Size(width = ellipseWidth, height = ellipseHeight)
             )
 
-            // 2️⃣ Thin Yellow Arc (Stroke Only)
-            drawOval(
-                color = Color(0xFFFFC50B),
-                topLeft = Offset(
-                    x = (canvasWidth - ellipseWidth) / 2f,
-                    y = -ellipseHeight * 0.65f
-                ),
-                size = Size(
-                    width = ellipseWidth,
-                    height = ellipseHeight
-                ),
-                style = Stroke(
-                    width = 6.dp.toPx()   // 🔥 Control arc thickness here
-                )
+            // 2️⃣ Tapered Yellow Arc (Sharp ends, thick center)
+            val centerThickness = 8.dp.toPx() // 🔥 Control center thickness here
+
+            val outerPath = Path().apply {
+                addOval(Rect(left = leftBound, top = topBound, right = rightBound, bottom = bottomBound))
+            }
+
+            val innerPath = Path().apply {
+                addOval(Rect(
+                    left = leftBound,
+                    top = topBound + centerThickness,
+                    right = rightBound,
+                    bottom = bottomBound - centerThickness
+                ))
+            }
+
+            val taperedLinePath = Path().apply {
+                op(outerPath, innerPath, PathOperation.Difference)
+            }
+
+            drawPath(
+                path = taperedLinePath,
+                color = Color(0xFFFFC50B)
             )
         }
+
         Scaffold(
             containerColor = Color.Transparent,
             topBar = {
@@ -173,85 +185,86 @@ fun LoyaltyPointsScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(Spacing.extraLarge))
+                Spacer(modifier = Modifier.height(Spacing.extrahuge))
 
-                    // Reward Items Grid
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(horizontal = Spacing.large, vertical = Spacing.small),
-                        horizontalArrangement = Arrangement.spacedBy(19.dp),
-                        verticalArrangement = Arrangement.spacedBy(19.dp),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        // 1. Green Card
-                        item {
-                            CommonRewardCard(
-                                title = "Honeymoon Package Free Tickets",
-                                coinCost = "2500",
-                                imageRes = R.drawable.sm_tang, // Sample Image
-                                backgroundColor = Color(0xFFD9FFE3), // RewardGreen
-                                onClick = { showRedeemPopup = true}
-                            )
-                        }
+                // Reward Items Grid
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(horizontal = Spacing.large, vertical = Spacing.small),
+                    horizontalArrangement = Arrangement.spacedBy(19.dp),
+                    verticalArrangement = Arrangement.spacedBy(19.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    // 1. Green Card
+                    item {
+                        CommonRewardCard(
+                            title = "Honeymoon Package Free Tickets",
+                            coinCost = "2500",
+                            imageRes = R.drawable.sm_tang, // Sample Image
+                            backgroundColor = Color(0xFFD9FFE3), // RewardGreen
+                            onClick = { showRedeemPopup = true}
+                        )
+                    }
 
-                        // 2. Purple Card
-                        item {
-                            CommonRewardCard(
-                                title = "On All Oner Products 3 Carton free",
-                                coinCost = "3000",
-                                imageRes = R.drawable.oner_apple, // Sample Image
-                                backgroundColor = Color(0xFFD7D7FF), // RewardPurple
-                                onClick = { showRedeemPopup = true }
-                            )
-                        }
+                    // 2. Purple Card
+                    item {
+                        CommonRewardCard(
+                            title = "On All Oner Products 3 Carton free",
+                            coinCost = "3000",
+                            imageRes = R.drawable.oner_apple, // Sample Image
+                            backgroundColor = Color(0xFFD7D7FF), // RewardPurple
+                            onClick = { showRedeemPopup = true }
+                        )
+                    }
 
-                        // 3. Orange Card
-                        item {
-                            CommonRewardCard(
-                                title = "2 Days, 1 Night Free on Hotel Taj",
-                                coinCost = "10000",
-                                imageRes = R.drawable.orchid, // Sample Image
-                                backgroundColor = Color(0xFFFFEACA), // RewardOrange
-                                onClick = { showRedeemPopup = true }
-                            )
-                        }
+                    // 3. Orange Card
+                    item {
+                        CommonRewardCard(
+                            title = "2 Days, 1 Night Free on Hotel Taj",
+                            coinCost = "10000",
+                            imageRes = R.drawable.orchid, // Sample Image
+                            backgroundColor = Color(0xFFFFEACA), // RewardOrange
+                            onClick = { showRedeemPopup = true }
+                        )
+                    }
 
-                        // 4. Blue Card
-                        item {
-                            CommonRewardCard(
-                                title = "2 Chocolate Carton Free of ICAM",
-                                coinCost = "1500",
-                                imageRes = R.drawable.predator, // Sample Image
-                                backgroundColor = Color(0xFFCAE7FF), // RewardBlue
-                                onClick = { showRedeemPopup = true }
-                            )
-                        }
+                    // 4. Blue Card
+                    item {
+                        CommonRewardCard(
+                            title = "2 Chocolate Carton Free of ICAM",
+                            coinCost = "1500",
+                            imageRes = R.drawable.predator, // Sample Image
+                            backgroundColor = Color(0xFFCAE7FF), // RewardBlue
+                            onClick = { showRedeemPopup = true }
+                        )
+                    }
 
-                        // 5. Disabled / Grey Card
-                        item {
-                            CommonRewardCard(
-                                title = "Honeymoon Package Free Tickets",
-                                coinCost = "2500",
-                                imageRes = R.drawable.sm_tang,
-                                backgroundColor = Color(0xFFF0F0F0), // RewardDisabled
-                                isEnabled = false
-                            )
-                        }
+                    // 5. Disabled / Grey Card
+                    item {
+                        CommonRewardCard(
+                            title = "Honeymoon Package Free Tickets",
+                            coinCost = "2500",
+                            imageRes = R.drawable.sm_tang,
+                            backgroundColor = Color(0xFFF0F0F0), // RewardDisabled
+                            isEnabled = false
+                        )
+                    }
 
-                        // 6. Disabled / Grey Card
-                        item {
-                            CommonRewardCard(
-                                title = "On All Oner Products 3 Carton free",
-                                coinCost = "3000",
-                                imageRes = R.drawable.oner_apple,
-                                backgroundColor = Color(0xFFF0F0F0), // RewardDisabled
-                                isEnabled = false
-                            )
-                        }
+                    // 6. Disabled / Grey Card
+                    item {
+                        CommonRewardCard(
+                            title = "On All Oner Products 3 Carton free",
+                            coinCost = "3000",
+                            imageRes = R.drawable.oner_apple,
+                            backgroundColor = Color(0xFFF0F0F0), // RewardDisabled
+                            isEnabled = false
+                        )
                     }
                 }
             }
         }
+    }
+
     if (showRedeemPopup) {
         RedeemPointsPopup(
             onDismiss = { showRedeemPopup = false },
@@ -261,4 +274,4 @@ fun LoyaltyPointsScreen(
             }
         )
     }
-    }
+}

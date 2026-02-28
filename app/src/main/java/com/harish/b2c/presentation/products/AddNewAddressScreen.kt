@@ -128,7 +128,7 @@ fun AddNewAddressScreen(
 
             InputSection(label = "Location") {
                 CommonInput(
-                    value = "",
+                    value = "7878945610",
                     onValueChange = {},
                     placeholder = "7878945610",
                     leadingIcon = {

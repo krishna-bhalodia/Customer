@@ -130,7 +130,7 @@ fun OrderSuccessScreen(
         )
 
         TextButton(
-            onClick = { navController.navigate(NavigationScreen.HomeScreen.route)},
+            onClick = { navController.navigate(NavigationScreen.MainContainer.route)},
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = Spacing.small)

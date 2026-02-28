@@ -131,34 +131,15 @@ fun ProductsScreen(
     var searchQuery by remember { mutableStateOf("") }
 
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        topBar = {
+
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
             CommonAppBar(
                 title = "Products",
-                modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge),
+                modifier = Modifier.statusBarsPadding(),
                 onBackClick = { navController.popBackStack() }
             )
-        },
-        bottomBar = {
-            CommonBottomBar(
-                selectedIndex = 1,
-                onItemSelected = { index ->
-                    when (index) {
-                        0 -> { navController.navigate(NavigationScreen.HomeScreen.route) }
-                        1 -> { /* Already on Products */ }
-                        2 -> { navController.navigate(NavigationScreen.PromotionsScreen.route) }
-                        3 -> { navController.navigate(NavigationScreen.AccountScreen.route) }
-                    }
-                },
-                onFabClick = { navController.navigate(NavigationScreen.CheckoutScreen.route)},
-                modifier = Modifier.navigationBarsPadding()
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
-        ) {
             Box(modifier = Modifier.padding(horizontal = Spacing.large, vertical = Spacing.small)) {
                 CommonSearchBar(value = searchQuery, onValueChange = { searchQuery = it }, placeholder = "Search...")
             }
@@ -214,4 +195,3 @@ fun ProductsScreen(
             }
         }
     }
-}

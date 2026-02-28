@@ -15,10 +15,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.harish.b2c.core.utils.glassShadow
 import com.harish.b2c.ui.theme.AppTypography
+import com.harish.b2c.ui.theme.Shapes
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.White
 
@@ -78,11 +81,16 @@ fun QuickActionCard(
     Surface(
         modifier = modifier
             .height(100.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }.glassShadow(
+                color = Color(0xFF000000),
+                alpha = 0.08f,
+                shape = Shapes.extraLarge,
+                shadowRadius = 24.dp,
+                offsetY = 8.dp
+            ).clip(Shapes.extraLarge),
         color = White.copy(alpha = 0.5f),
-        shape = RoundedCornerShape(24.dp),
+//        shape = RoundedCornerShape(24.dp),
         border = BorderStroke(1.dp, White.copy(alpha = 0.5f)),
-        shadowElevation = 0.dp // To match the soft drop shadow from Figma, consider using your GlassShadow utility here if needed
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.harish.b2c.core.utils.glassShadow
 import com.harish.b2c.ui.theme.AppTypography
 import com.harish.b2c.ui.theme.BrandRed
 import com.harish.b2c.ui.theme.Shapes
@@ -102,11 +103,12 @@ fun CommonSearchBar(
                 .weight(1f) // Takes up all remaining space so the icon can sit next to it
                 .height(48.dp) // Height specified in CSS
                 // Replicating: box-shadow: 0px 8px 24px rgba(234, 10, 42, 0.08);
-                .shadow(
-                    elevation = 8.dp,
-                    shape = Shapes.large ,
-                    spotColor = BrandRed.copy(alpha = 0.08f),
-                    ambientColor = BrandRed.copy(alpha = 0.08f)
+                .glassShadow(
+                    color = Color(0xFF000000),
+                    alpha = 0.08f,
+                    shape = Shapes.large,
+                    shadowRadius = 24.dp,
+                    offsetY = 8.dp
                 )
                 // Replicating: background: rgba(255, 255, 255, 0.3);
                 .background(White.copy(alpha = 0.3f), Shapes.large )

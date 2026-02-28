@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -22,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.harish.b2c.R
+import com.harish.b2c.core.utils.glassShadow
 import com.harish.b2c.ui.theme.*
 
 // ----------------------
@@ -70,94 +73,59 @@ fun CommonBottomBar(
     onFabClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    // The entire menu block is 120dp tall according to the CSS.
+    val barShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(94.dp) // Structural component height (kept hardcoded)
+            .wrapContentHeight()
     ) {
-
-        // 1. Bottom White Curved Bar
-        Surface(
+        // ✅ Material 3 NavigationBar
+        NavigationBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(94.dp)
+                .height(74.dp)
                 .align(Alignment.BottomCenter)
-                .shadow(
-                    elevation = Spacing.medium, // 16.dp
-                    shape = RoundedCornerShape(topStart = Spacing.extraLarge, topEnd = Spacing.extraLarge), // 32.dp
-                    ambientColor = Color.Black.copy(alpha = 0.08f),
-                    spotColor = Color.Black.copy(alpha = 0.08f)
-                ),
-            color = White,
-            shape = RoundedCornerShape(topStart = Spacing.extraLarge, topEnd = Spacing.extraLarge)
+                // 1. Apply Shadow FIRST so it can draw outside the shape
+                .glassShadow(
+                    color = Color(0xFF000000),
+                    alpha = 0.08f,
+                    shape = barShape,
+                    shadowRadius = 24.dp,
+                    offsetY = -8.dp
+                )
+                // 2. Apply Clip SECOND so the background color respects the corners
+                .clip(barShape),
+            containerColor = White,
+            tonalElevation = 0.dp,
+            windowInsets = WindowInsets(0, 0, 0, 0) // Manual padding control
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = Spacing.large, end = 88.dp) // 24.dp -> Spacing.large
-                    .padding(bottom = 12.dp),
+                    .padding(start = 24.dp, end = 88.dp), // Keeping space for the FAB
+                  //  .padding(bottom = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                BottomBarItem(
-                    icon = R.drawable.home,
-                    label = "Home",
-                    isSelected = selectedIndex == 0,
-                    onClick = { onItemSelected(0) }
-                )
-
-                BottomBarItem(
-                    icon = R.drawable.products,
-                    label = "Products",
-                    isSelected = selectedIndex == 1,
-                    onClick = { onItemSelected(1) }
-                )
-
-                BottomBarItem(
-                    icon = R.drawable.promotions,
-                    label = "Promotions",
-                    isSelected = selectedIndex == 2,
-                    onClick = { onItemSelected(2) }
-                )
-
-                BottomBarItem(
-                    icon = R.drawable.person,
-                    label = "Account",
-                    isSelected = selectedIndex == 3,
-                    onClick = { onItemSelected(3) }
-                )
+                BottomBarNavigationItem(R.drawable.home, "Home", selectedIndex == 0) { onItemSelected(0) }
+                BottomBarNavigationItem(R.drawable.products, "Products", selectedIndex == 1) { onItemSelected(1) }
+                BottomBarNavigationItem(R.drawable.promotions, "Promotions", selectedIndex == 2) { onItemSelected(2) }
+                BottomBarNavigationItem(R.drawable.person, "Account", selectedIndex == 3) { onItemSelected(3) }
             }
         }
 
-        // 2. FAB (Positioned at TopEnd)
+        // ✅ Floating FAB (Remains custom to keep the exact offset/badge UI)
         Box(
             modifier = Modifier
-                .align(Alignment.TopEnd).offset(y = (-24).dp)
-                .padding(top = 2.dp, end = Spacing.large) // 24.dp -> Spacing.large
+                .align(Alignment.TopEnd)
+                .offset(y = (-20).dp) // Adjusted slightly for M3 alignment
+                .padding(end = 24.dp)
         ) {
-            // Main FAB Circle (48x48)
             Box(
                 modifier = Modifier
-                    .padding(top = Spacing.extraSmall, end = Spacing.extraSmall) // 4.dp
-                    .size(48.dp) // Structural size
-                    .shadow(
-                        elevation = Spacing.medium, // 16.dp
-                        shape = CircleShape,
-                        spotColor = Color.Black.copy(alpha = 0.16f)
-                    )
+                    .size(56.dp)
+                    .shadow(16.dp, CircleShape, spotColor = Color.Black.copy(alpha = 0.16f))
                     .background(BrandRed, CircleShape)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                White.copy(alpha = 0.4f),
-                                Color.Transparent
-                            )
-                        ),
-                        shape = CircleShape
-                    )
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
@@ -169,26 +137,24 @@ fun CommonBottomBar(
                     painter = painterResource(R.drawable.cart),
                     contentDescription = "Cart",
                     tint = White,
-                    modifier = Modifier.size(Spacing.large) // 24.dp
+                    modifier = Modifier.size(24.dp)
                 )
             }
 
-            // 3. FAB Badge
-            Box(
+            // Badge
+            Surface(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp)
-                    .background(TextBlack, RoundedCornerShape(Spacing.medium)) // 16.dp
-                    .padding(horizontal = Spacing.extraSmall, vertical = 2.dp), // 4.dp
-                contentAlignment = Alignment.Center
+                    .offset(x = 4.dp, y = (-4).dp)
+                    .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp),
+                color = TextBlack,
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "0",
-                    style = AppTypography.labelSmall.copy(
-                        fontSize = 12.sp,
-                        color = White,
-                        lineHeight = 12.sp
-                    ),
+                    fontSize = 11.sp,
+                    color = White,
+                    modifier = Modifier.padding(horizontal = 4.dp),
                     textAlign = TextAlign.Center
                 )
             }
@@ -197,38 +163,38 @@ fun CommonBottomBar(
 }
 
 @Composable
-private fun BottomBarItem(
+private fun BottomBarNavigationItem(
     icon: Int,
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    // 🔴 Replaced hardcoded hex with TextGrey from your Color.kt
     val iconColor = if (isSelected) BrandRed else TextGrey
     val textColor = if (isSelected) BrandRed else TextBlack
 
+    // We use a Column inside the NavigationBar's Row scope to keep your custom spacing
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall), // 4.dp
-        modifier = Modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-            onClick = onClick
-        )
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick
+            )
     ) {
         Icon(
             painter = painterResource(icon),
             contentDescription = label,
             tint = iconColor,
-            modifier = Modifier.size(Spacing.large) // 24.dp
+            modifier = Modifier.size(24.dp)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
             color = textColor,
-            style = AppTypography.bodyLarge.copy( // 🔴 Used AppTypography instead of MaterialTheme
-                fontSize = 12.sp,
-                lineHeight = 12.sp
-            )
+            fontSize = 12.sp,
+            style = AppTypography.bodyLarge.copy(lineHeight = 12.sp)
         )
     }
 }

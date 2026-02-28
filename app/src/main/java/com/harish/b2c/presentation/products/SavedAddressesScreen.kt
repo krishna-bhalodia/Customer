@@ -17,6 +17,7 @@ import com.harish.b2c.core.components.CommonAddressCard
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.GradientBackground
+import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.BrandRed
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -62,7 +63,7 @@ fun SavedAddressesScreen(
                                 modifier = Modifier.size(20.dp)
                             )
                         },
-                        onClick = { }
+                        onClick = { navController.navigate(NavigationScreen.AddNewAddressScreen.route) }
                     )
                 }
             }

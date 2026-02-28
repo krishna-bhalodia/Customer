@@ -27,6 +27,8 @@ sealed class NavigationScreen(
     data object OtpforSignUp : NavigationScreen("otp_for_sign_up_screen")
     data object DeliveryAddress : NavigationScreen("delivery_address_screen")
     data object HomeScreen : NavigationScreen("home_screen")
+
+    data object MainContainer : NavigationScreen("main_container")
     data object ProductsScreen : NavigationScreen("products_screen")
     data object PromotionsScreen : NavigationScreen("promotions_screen")
     data object AccountScreen : NavigationScreen("account_screen")
@@ -45,4 +47,6 @@ sealed class NavigationScreen(
     data object RaiseComplaintForm : NavigationScreen("raise_complaint_form_screen")
     data object RedeemHistory : NavigationScreen("redeem_history_screen")
     data object AddNewAddressScreen : NavigationScreen("add_new_address_screen")
+
+
 }

@@ -21,6 +21,7 @@ val Gray900 = Color(0xFF181D27)
 //val GradientSoftPurple = Color(0xFFB49EF4)  // white
 //
 val TextBlack = Color(0xFF030304)
+val darkShadow =Color(0xFF000000)
 val DisabledGray = Color(0xFF91989D)
 val GradientSoftPink = Color(0xFFFFEBF2) // Very light pink
 val GradientSoftPurple = Color(0xFFF3E8FF)

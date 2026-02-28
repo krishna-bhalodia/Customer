@@ -19,7 +19,8 @@ data class AppSpacing(
     val large: Dp = 24.dp,
     val extraLarge: Dp = 32.dp,
     val extraExtraLarge: Dp = 40.dp,
-    val huge: Dp = 48.dp
+    val huge: Dp = 48.dp,
+    val extrahuge: Dp = 56.dp
 )
 
 val LocalSpacing = staticCompositionLocalOf { AppSpacing() }

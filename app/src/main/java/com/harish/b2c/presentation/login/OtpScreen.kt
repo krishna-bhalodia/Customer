@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonOtpInput
-import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.ui.theme.*
 
@@ -27,7 +26,6 @@ fun OtpScreen(
 ) {
     var otpValue by remember { mutableStateOf("") }
 
-    GradientBackground {
         Scaffold(
             containerColor = Color.Transparent,
             topBar = {
@@ -80,7 +78,7 @@ fun OtpScreen(
                     isEnabled = otpValue.length == 5,
                     onClick = {
                         if (isSignUp) navController.navigate(NavigationScreen.DeliveryAddress.route)
-                        else navController.navigate(NavigationScreen.HomeScreen.route)
+                        else navController.navigate(NavigationScreen.MainContainer.route)
                     }
                 )
 
@@ -109,4 +107,3 @@ fun OtpScreen(
             }
         }
     }
-}
