@@ -68,7 +68,7 @@ fun ProductsScreen(
                     "Oner Apple 1 LTR * 6",
                     "10 CSE • 12 PCS",
                     "240.00",
-                    0,
+                    -1,
                     R.drawable.oner_apple
                 ),
                 ProductItem(
@@ -92,7 +92,7 @@ fun ProductsScreen(
                     "Predator Energy Gold, 250ml",
                     "5 CSE • 120 PCS",
                     "2400.00",
-                    0,
+                    -1,
                     R.drawable.predator
                 ),
                 ProductItem(
@@ -100,7 +100,7 @@ fun ProductsScreen(
                     "Oner Apple 1 LTR * 6",
                     "10 CSE • 12 PCS",
                     "240.00",
-                    0,
+                    -1,
                     R.drawable.oner_apple
                 ),
                 ProductItem(
@@ -108,7 +108,7 @@ fun ProductsScreen(
                     "SM Tang Orange Tub (6x2kg)",
                     "1 CSE • 1 PCS",
                     "30.00",
-                    1,
+                    -1,
                     R.drawable.sm_tang
                 ),
                 ProductItem(

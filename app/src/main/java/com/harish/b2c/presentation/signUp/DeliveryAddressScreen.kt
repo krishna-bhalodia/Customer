@@ -58,7 +58,11 @@ fun DeliveryAddressScreen(navController: NavController) {
                     text = if (currentStep == 1) "Next" else "Submit",
                     onClick = {
                         if (currentStep == 1) currentStep = 2
-                        else navController.navigate(NavigationScreen.MainContainer.route)
+                        else  navController.navigate(NavigationScreen.MainContainer.route) {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }

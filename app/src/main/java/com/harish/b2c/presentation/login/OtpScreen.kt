@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
@@ -21,10 +22,14 @@ import com.harish.b2c.ui.theme.*
 @Composable
 fun OtpScreen(
     navController: NavController,
-    isSignUp: Boolean = false,
-    phoneNumber: String = "+256 94*****53"
-) {
+    isSignUp: Boolean = false,viewModel: LoginViewModel) {
+
+    val phoneNumber by viewModel.phoneNumber.collectAsState()
     var otpValue by remember { mutableStateOf("") }
+    // Timer State
+    val timeLeft by viewModel.timerValue.collectAsState()
+    val isResendEnabled by viewModel.isResendEnabled.collectAsState()
+
 
         Scaffold(
             containerColor = Color.Transparent,
@@ -32,7 +37,9 @@ fun OtpScreen(
                 CommonAppBar(
                     title = "Verify Number",
                     onBackClick = { navController.navigateUp() },
-                    modifier = Modifier.statusBarsPadding().padding(top = Spacing.mediumLarge)
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .padding(top = Spacing.mediumLarge)
                 )
             }
         ) { innerPadding ->
@@ -78,7 +85,13 @@ fun OtpScreen(
                     isEnabled = otpValue.length == 5,
                     onClick = {
                         if (isSignUp) navController.navigate(NavigationScreen.DeliveryAddress.route)
-                        else navController.navigate(NavigationScreen.MainContainer.route)
+                        else {
+                            navController.navigate(NavigationScreen.MainContainer.route) {
+                                popUpTo(navController.graph.id) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     }
                 )
 
@@ -93,13 +106,15 @@ fun OtpScreen(
                         text = "Send code again",
                         color = TextBlack,
                         style = AppTypography.bodyLarge,
-                        modifier = Modifier.clickable { /* Handle Resend */ }
+                        modifier = Modifier.clickable(enabled = isResendEnabled) {
+                            viewModel.startTimer() // Use ViewModel to reset timer
+                        }
                     )
 
                     Spacer(modifier = Modifier.width(Spacing.mediumSmall))
-
                     Text(
-                        text = "00:20",
+                        // Format number to always show two digits (e.g., 00:05)
+                        text = "00:${timeLeft.toString().padStart(2, '0')}",
                         color = TextGrey,
                         style = AppTypography.bodyLarge
                     )

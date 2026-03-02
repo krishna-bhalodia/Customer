@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,9 +38,9 @@ import com.harish.b2c.ui.theme.TextGrey
 
 
 @Composable
-fun LoginScreen(navController: NavController, isSignUp: Boolean = false) {
+fun LoginScreen(navController: NavController, isSignUp: Boolean = false,viewModel: LoginViewModel) {
     val spacing = Spacing // Using your custom Spacing accessor
-    var phoneNumber by remember { mutableStateOf("") }
+    val phoneNumber by viewModel.phoneNumber.collectAsState()
 
     val screenTitle = if (isSignUp) "Create an Account" else "Login"
     val bottomPrimaryText = if (isSignUp) "Already have an account?" else "Are you a new user?"
@@ -88,7 +89,9 @@ fun LoginScreen(navController: NavController, isSignUp: Boolean = false) {
 
             CommonPhoneNumberInput(
                 value = phoneNumber,
-                onValueChange = { phoneNumber = it }
+                onValueChange = { newValue ->
+                    viewModel.updatePhoneNumber(newValue)
+                }
             )
 
             Spacer(modifier = Modifier.height(spacing.mediumLarge))
@@ -97,10 +100,10 @@ fun LoginScreen(navController: NavController, isSignUp: Boolean = false) {
                 text = "Continue",
                 isEnabled = phoneNumber.length == 10,
                 onClick = {
-                    navController.navigate(
-                        if (isSignUp) NavigationScreen.OtpforSignUp.route
-                        else NavigationScreen.Otp.route
-                    )
+                    viewModel.startTimer()
+                    val route = if (isSignUp) NavigationScreen.OtpforSignUp.route
+                    else NavigationScreen.Otp.route
+                    navController.navigate(route)
                 }
             )
 

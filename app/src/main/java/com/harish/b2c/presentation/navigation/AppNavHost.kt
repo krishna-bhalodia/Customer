@@ -11,6 +11,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.harish.b2c.presentation.MainContainerScreen
 import com.harish.b2c.presentation.account.AccountScreen
@@ -20,6 +21,7 @@ import com.harish.b2c.presentation.checkout.OrderSuccessScreen
 import com.harish.b2c.presentation.home.HomeScreen
 import com.harish.b2c.presentation.splash.SplashScreen
 import com.harish.b2c.presentation.login.LoginScreen
+import com.harish.b2c.presentation.login.LoginViewModel
 import com.harish.b2c.presentation.login.OtpScreen
 import com.harish.b2c.presentation.loyalty.LoyaltyPointsScreen
 import com.harish.b2c.presentation.onboarding.OnboardingScreen
@@ -37,7 +39,7 @@ import com.harish.b2c.presentation.promotions.PromotionsScreen
 import com.harish.b2c.presentation.signUp.DeliveryAddressScreen
 import com.harish.b2c.presentation.splash.SplashViewModel
 
-
+const val AUTH_GRAPH_ROUTE = "auth_graph"
 @Composable
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
@@ -84,25 +86,30 @@ fun AppNavHost(
         composable(NavigationScreen.OnBoardScreen.route) {
             OnboardingScreen(navController)
         }
-        composable(NavigationScreen.Login.route) {
-            //  val vm: LoginViewModel = hiltViewModel()
-            LoginScreen(navController = navController, isSignUp = false)
-        }
-        composable(NavigationScreen.SignUp.route) {
-            //  val vm: LoginViewModel = hiltViewModel()
-            LoginScreen(navController = navController, isSignUp = true)
-        }
-        composable(NavigationScreen.Otp.route) {
-            //  val vm: LoginViewModel = hiltViewModel()
-            OtpScreen(navController, isSignUp = false)
-        }
-        composable(NavigationScreen.OtpforSignUp.route) {
-            //  val vm: LoginViewModel = hiltViewModel()
-            OtpScreen(navController, isSignUp = true)
-        }
-        composable(NavigationScreen.DeliveryAddress.route) {
-            //  val vm: LoginViewModel = hiltViewModel()
-            DeliveryAddressScreen(navController)
+        navigation(
+            startDestination = NavigationScreen.Login.route,
+            route = AUTH_GRAPH_ROUTE
+        ) {
+            composable(NavigationScreen.Login.route) { entry ->
+                // Use the extension function to scope ViewModel to the AUTH_GRAPH_ROUTE
+                val vm: LoginViewModel = entry.sharedViewModel(navController, AUTH_GRAPH_ROUTE)
+                LoginScreen(navController = navController, isSignUp = false, viewModel = vm)
+            }
+            composable(NavigationScreen.SignUp.route) { entry ->
+                val vm: LoginViewModel = entry.sharedViewModel(navController, AUTH_GRAPH_ROUTE)
+                LoginScreen(navController = navController, isSignUp = true, viewModel = vm)
+            }
+            composable(NavigationScreen.Otp.route) { entry ->
+                val vm: LoginViewModel = entry.sharedViewModel(navController, AUTH_GRAPH_ROUTE)
+                OtpScreen(navController = navController, isSignUp = false, viewModel = vm)
+            }
+            composable(NavigationScreen.OtpforSignUp.route) { entry ->
+                val vm: LoginViewModel = entry.sharedViewModel(navController, AUTH_GRAPH_ROUTE)
+                OtpScreen(navController = navController, isSignUp = true, viewModel = vm)
+            }
+            composable(NavigationScreen.DeliveryAddress.route) {
+                DeliveryAddressScreen(navController)
+            }
         }
         // --- Bottom Bar Screens ---
         composable(NavigationScreen.MainContainer.route) {
