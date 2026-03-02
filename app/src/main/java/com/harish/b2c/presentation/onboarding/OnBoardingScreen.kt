@@ -121,7 +121,7 @@ fun OnboardingScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(57.dp), // Matched CSS 57px height
-                onClick = { navController.navigate(NavigationScreen.Login.route) }
+                onClick = { navController.navigate(NavigationScreen.SignUp.route) }
             )
 
             Spacer(modifier = Modifier.height(Spacing.large)) // 24px gap

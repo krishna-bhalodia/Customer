@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
-import com.harish.b2c.core.components.CommonRecentOrderCard
+import com.harish.b2c.core.components.CommonItemCard
 import com.harish.b2c.core.components.CommonSegmentedTab
 import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
@@ -91,13 +91,21 @@ fun OrdersScreen(
             ) {
                 // Dummy items loop based on Figma
                 items(5) {
-                    CommonRecentOrderCard(
-                        orderId = "#MHO00300010",
-                        date = "Placed on 17 Oct, 2025",
-                        amount = "1240.00",
-                        status = if (selectedTabIndex == 0) "Expected delivery on 18 Oct" else "Order Delivered",
-                        deliveryIcon =if (selectedTabIndex == 0) R.drawable.truck_yellow else R.drawable.green_check,
-                        modifier = Modifier.clickable{
+                    CommonItemCard(
+                        title = "#MHO00300010",
+                        subtitle = "Placed on 17 Oct, 2025",
+                        price = "1240.00",
+                        imageUrl = R.drawable.cart, // The generic order icon
+
+                        // Tells the card to render the arrow on the right
+                        showTrailingArrow = true,
+
+                        // Bottom row status
+                        statusText = if (selectedTabIndex == 0) "Expected delivery on 18 Oct" else "Order Delivered",
+                        statusIcon = if (selectedTabIndex == 0) R.drawable.truck_yellow else R.drawable.green_check,
+
+                        // Use the built-in onClick for better ripple effect handling
+                        onClick = {
                             navController.navigate(NavigationScreen.OrderDetailsScreen.route)
                         }
                     )

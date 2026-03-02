@@ -145,7 +145,7 @@ fun CommonBottomBar(
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = 4.dp, y = (-4).dp)
+                    .offset(x = 2.dp, y = (-1).dp)
                     .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp),
                 color = TextBlack,
                 shape = RoundedCornerShape(16.dp)

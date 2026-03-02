@@ -2,6 +2,7 @@ package com.harish.b2c.presentation.account
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.harish.b2c.R
@@ -76,69 +78,68 @@ fun AddNewAddressScreen(
         ) {
             Spacer(modifier = Modifier.height(Spacing.extraSmall))
 
-            InputSection(label = "Title of the Address") {
-                CommonInput(
-                    value = storeName,
-                    onValueChange = { storeName = it },
-                    placeholder = "e.g. Store Name, Address 1, etc..."
+            AppInput(
+                label = "Title of the Address",
+                value = storeName,
+                onValueChange = { storeName = it },
+                placeholder = "e.g. Store Name, Address 1, etc..."
+            )
+
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
+                AppInput(
+                    label = "Address",
+                    value = building,
+                    onValueChange = { building = it },
+                    placeholder = "Street Address"
+                )
+                AppInput(
+                    value = street,
+                    onValueChange = { street = it },
+                    placeholder = "Apt, suite, etc"
                 )
             }
 
-            InputSection(label = "Address") {
-                Column(verticalArrangement = Arrangement.spacedBy(Spacing.medium)) {
-                    CommonInput(
-                        value = building,
-                        onValueChange = { building = it },
-                        placeholder = "Street Address"
+            AppInput(
+                label = "City",
+                value = city,
+                onValueChange = { city = it },
+                placeholder = "e.g. Abu Dhabi"
+            )
+
+            // 4. Postal Code
+            AppInput(
+                label = "Postal Code",
+                value = zipCode,
+                onValueChange = { zipCode = it },
+                placeholder = "e.g. 20004",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            AppInput(
+                label = "State",
+                value = region,
+                onValueChange = {}, // Handled by onOptionSelected
+                placeholder = "Select",
+                options = listOf("Jaunpur", "Kampala", "Abu Dhabi", "Dubai"),
+                onOptionSelected = { region = it },
+                trailingIcon = { Icon(Icons.Default.KeyboardArrowDown, null, tint = TextBlack) }
+            )
+
+            AppInput(
+                label = "Delivery Contact Number",
+                value = "7878945610",
+                isEditable = false,
+                onValueChange = {},
+                placeholder = "",
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.telephone),
+                        contentDescription = null,
+                        tint = TextBlack
                     )
-                    CommonInput(
-                        value = street,
-                        onValueChange = { street = it },
-                        placeholder = "Apt, suite, etc"
-                    )
-                }
-            }
-
-            InputSection(label = "City") {
-                CommonInput(
-                    value = city,
-                    onValueChange = { city = it },
-                    placeholder = "e.g. Abu Dhabi"
-                )
-            }
-
-            InputSection(label = "Postal Code") {
-                CommonInput(
-                    value = zipCode,
-                    onValueChange = { zipCode = it },
-                    placeholder = "e.g. 20004"
-                )
-            }
-
-            InputSection(label = "State") {
-                CommonActionInput(
-                    value = region,
-                    placeholder = "Select",
-                    options = listOf("Jaunpur", "Kampala"),
-                    icon = Icons.Default.KeyboardArrowDown,
-                    iconPosition = ActionIconPosition.Trailing,
-                    onOptionSelected = { region = it }
-                )
-            }
-
-            InputSection(label = "Location") {
-                CommonInput(
-                    value = "7878945610",
-                    onValueChange = {},
-                    placeholder = "7878945610",
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.telephone),
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+            )
 
             Spacer(modifier = Modifier.height(Spacing.large))
         }

@@ -26,6 +26,7 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,14 +37,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.harish.b2c.R
+import com.harish.b2c.core.components.CommonItemCard
 import com.harish.b2c.core.components.CommonLoyaltyCard
-import com.harish.b2c.core.components.CommonRecentOrderCard
 import com.harish.b2c.core.components.CommonSearchBar
 import com.harish.b2c.core.components.CommonSectionHeader
 import com.harish.b2c.core.utils.glassShadow
@@ -53,7 +52,6 @@ import com.harish.b2c.ui.theme.BorderLight
 import com.harish.b2c.ui.theme.BorderWhite
 import com.harish.b2c.ui.theme.BrandRed
 import com.harish.b2c.ui.theme.DisabledGray
-import com.harish.b2c.ui.theme.ShadowRed
 import com.harish.b2c.ui.theme.Shapes
 import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
@@ -233,7 +231,7 @@ fun HomeScreen(navController: NavController) {
         CommonSectionHeader(
             title = "Recent Order",
             actionText = "View All",
-            onActionClick = { /* Handle */ },
+            onActionClick = { navController.navigate(NavigationScreen.OrdersScreen.route) },
             modifier = Modifier.padding(horizontal = Spacing.large)
         )
 
@@ -244,12 +242,15 @@ fun HomeScreen(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
         ) {
             items(2) {
-                CommonRecentOrderCard(
-                    orderId = "#MHO00300010",
-                    date = "Placed on 17 Oct, 2025",
-                    amount = "1240.00",
-                    status = "Order delivered",
-                    modifier = Modifier.width(327.dp)
+                CommonItemCard(
+                    title = "#MHO00300010",
+                    subtitle = "Placed on 17 Oct, 2025",
+                    price = "1240.00",
+                    statusText = "Order Delivered",
+                    showTrailingArrow = true,
+                    imageUrl = R.drawable.cart,
+                    modifier = Modifier.width(327.dp),
+                    onClick = { navController.navigate(NavigationScreen.OrderDetailsScreen.route) }
                 )
             }
         }

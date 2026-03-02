@@ -38,8 +38,8 @@ import androidx.navigation.NavController
 import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonInvoiceSummaryCard
+import com.harish.b2c.core.components.CommonItemCard
 import com.harish.b2c.core.components.CommonOrderInfoCard
-import com.harish.b2c.core.components.CommonOrderItemCard
 import com.harish.b2c.core.components.CommonSupportCard
 import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
@@ -173,31 +173,36 @@ fun OrderDetailsScreen(
                                 .padding(Spacing.medium),
                             verticalArrangement = Arrangement.spacedBy(Spacing.medium)
                         ) {
-                            CommonOrderItemCard(
+                            CommonItemCard(
                                 title = "SM Tang Orange Tub (6x2kg)",
                                 subtitle = "1 CSE • 1 PCS",
                                 price = "30.00",
                                 imageUrl = R.drawable.sm_tang,
                                 sku = "HFG0000136 • Juice",
-                                quantity = 100
+                                quantity = 100,
+                                showBorder = false
                             )
                             HorizontalDivider(color = TextBlack.copy(alpha = 0.1f))
-                            CommonOrderItemCard(
+                            CommonItemCard(
                                 title = "Orchid Valley Guava Delight",
                                 subtitle = "1 CSE • 24 PCS",
                                 price = "360.00",
                                 imageUrl = R.drawable.orchid,
                                 sku = "HFG0000136 • Juice",
-                                quantity = 10
+                                quantity = 10,
+                                showBorder = false
+
                             )
                             HorizontalDivider(color = TextBlack.copy(alpha = 0.1f))
-                            CommonOrderItemCard(
+                            CommonItemCard(
                                 title = "Predator Energy Gold, 250ml",
                                 subtitle = "5 CSE • 120 PCS",
                                 price = "2400.00",
                                 imageUrl = R.drawable.predator,
                                 sku = "HFG0000136 • Energy Drink",
-                                quantity = 5
+                                quantity = 5,
+                                showBorder = false
+
                             )
                         }
                     }
@@ -246,13 +251,14 @@ fun OrderDetailsScreen(
                             }
                             // Free Item Body
                             Box(modifier = Modifier.padding(Spacing.medium)) {
-                                CommonOrderItemCard(
+                                CommonItemCard(
                                     title = "SM Tang Orange Tub (6x2kg)",
                                     subtitle = "1 CSE • 1 PCS",
                                     price = "00.00", // Free
                                     imageUrl = R.drawable.sm_tang,
                                     sku = "HFG0000136 • Juice",
-                                    quantity = 10
+                                    quantity = 10,
+                                    showBorder = false
                                 )
                             }
                         }

@@ -24,6 +24,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -31,6 +33,8 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +58,7 @@ import com.harish.b2c.R
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
 import com.harish.b2c.core.components.CommonInvoiceSummaryCard
-import com.harish.b2c.core.components.CommonProductCard
+import com.harish.b2c.core.components.CommonItemCard
 import com.harish.b2c.core.components.GradientBackground
 import com.harish.b2c.presentation.navigation.NavigationScreen
 import com.harish.b2c.presentation.products.ProductItem
@@ -66,6 +70,9 @@ import com.harish.b2c.ui.theme.Spacing
 import com.harish.b2c.ui.theme.TextBlack
 import com.harish.b2c.ui.theme.TextGrey
 import com.harish.b2c.ui.theme.White
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // Local constant for the promo code section
 // Dummy Data Class specific to Checkout
@@ -81,6 +88,8 @@ fun CheckoutScreenPreview() {
 fun CheckoutScreen(
     navController: NavController,
 ) {
+    val datePickerState = rememberDatePickerState()
+    var showDatePicker by remember { mutableStateOf(false) }
     var showAddressSheet by remember { mutableStateOf(false) }
     // Dummy Data
     var checkoutItems by remember {
@@ -92,7 +101,8 @@ fun CheckoutScreen(
                     "10 CSE • 12 PCS",
                     "240.00",
                     10,
-                    R.drawable.oner_apple
+                    R.drawable.oner_apple,
+                    sku = "HFG0000136 • Juice"
                 ),
                 ProductItem(
                     2,
@@ -100,7 +110,8 @@ fun CheckoutScreen(
                     "1 CSE • 1 PCS",
                     "30.00",
                     5,
-                    R.drawable.sm_tang
+                    R.drawable.sm_tang,
+                    sku = "HFG0000136 • Juice"
                 ),
                 ProductItem(
                     3,
@@ -108,7 +119,8 @@ fun CheckoutScreen(
                     "5 CSE • 120 PCS",
                     "2400.00",
                     5,
-                    R.drawable.predator
+                    R.drawable.predator,
+                    sku = "HFG0000136 • Energy Drink"
                 )
             )
         )
@@ -146,12 +158,39 @@ fun CheckoutScreen(
                 // Specific Input Field
                 CheckoutInputField(
                     label = "Choose delivery date",
-                    placeholder = "Today, 28 Dec 2025",
+                    placeholder = "Select Date",
                     value = orderNote,
                     onValueChange = { orderNote = it },
                     leadingIcon = R.drawable.truck,
-                    trailingIcon = R.drawable.calender
+                    trailingIcon = R.drawable.calender,
+                    readOnly = true,
+                    onClick = { showDatePicker = true } // Open dialog on click
                 )
+
+                // 4. Add the Dialog at the bottom of the Screen
+                if (showDatePicker) {
+                    DatePickerDialog(
+                        onDismissRequest = { showDatePicker = false },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                datePickerState.selectedDateMillis?.let { millis ->
+                                    val formatter =
+                                        SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                                    orderNote = formatter.format(Date(millis))
+                                }
+                                showDatePicker = false
+                            }) {
+                                Text("OK")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDatePicker = false }) {
+                                Text("Cancel")
+                            }
+                        }
+                    ) {
+                        DatePicker(state = datePickerState)
+                    }}
 
                 Spacer(modifier = Modifier.height(Spacing.small))
             }
@@ -184,12 +223,14 @@ fun CheckoutScreen(
                             verticalArrangement = Arrangement.spacedBy(Spacing.medium)
                         ) {
                             checkoutItems.forEachIndexed { index, product ->
-                                CommonProductCard(
+                                CommonItemCard(
                                     title = product.title,
                                     subtitle = product.subtitle,
                                     price = product.price,
                                     imageUrl = product.imageUrl,
                                     quantity = product.quantity,
+                                    sku = product.sku,
+                                    isEditableQuantity = true,
                                     showBorder = false,
                                     onIncrease = {
                                         checkoutItems = checkoutItems.map {
@@ -324,16 +365,21 @@ private fun CheckoutInputField(
     value: String,
     onValueChange: (String) -> Unit,
     leadingIcon: Int? = null,
-    trailingIcon: Int? = null
+    trailingIcon: Int? = null,
+    readOnly: Boolean = false,
+    onClick: (() -> Unit)? = null
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            // MOVE CLICKABLE HERE to cover the entire component area
+            ,
         verticalArrangement = Arrangement.spacedBy(Spacing.small)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(20.dp),
+                .height(20.dp), // Remove the .then(clickable) from here
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.small)
         ) {
@@ -355,7 +401,7 @@ private fun CheckoutInputField(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(Spacing.huge) // 48.dp
+                .height(Spacing.huge)
                 .background(White.copy(alpha = 0.3f), Shapes.medium)
                 .border(1.dp, TextBlack.copy(alpha = 0.16f), Shapes.medium)
                 .padding(horizontal = Spacing.mediumLarge, vertical = 12.dp)
@@ -368,6 +414,10 @@ private fun CheckoutInputField(
                 BasicTextField(
                     value = value,
                     onValueChange = onValueChange,
+                    readOnly = readOnly,
+                    // If readOnly is true, we disable internal interaction
+                    // so the outer Column click takes priority
+                    enabled = !readOnly,
                     textStyle = AppTypography.bodyLarge.copy(color = TextBlack),
                     modifier = Modifier.weight(1f),
                     singleLine = true,
@@ -388,7 +438,7 @@ private fun CheckoutInputField(
                         painter = painterResource(id = trailingIcon),
                         contentDescription = null,
                         tint = TextBlack,
-                        modifier = Modifier.size(Spacing.large)
+                        modifier = Modifier.size(Spacing.large).then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
                     )
                 }
             }
@@ -475,14 +525,23 @@ private fun PromoCodeCard(
                 .background(White)
                 .padding(Spacing.mediumLarge)
         ) {
-            CommonProductCard(
+            CommonItemCard(
                 title = "SM Tang Orange Tub (6x2kg)",
                 subtitle = "1 CSE • 1 PCS",
                 price = "00.00",
                 imageUrl = R.drawable.sm_tang,
+
+                // Pass the quantity
                 quantity = 10,
+
+                // TELL it to use the interactive +/- widget instead of just text "Qty. 10"
+                isEditableQuantity = true,
+
+                // Your exact modifier and border settings
                 showBorder = false,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                sku = "HFG0000136 • Item",
+
             )
         }
     }

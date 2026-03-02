@@ -1,5 +1,6 @@
 package com.harish.b2c.core.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +40,8 @@ fun CommonSectionHeader(
                 style = AppTypography.titleLarge.copy(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
-                )
+                ),
+                modifier = Modifier.clickable { onActionClick() }
             )
         }
     }

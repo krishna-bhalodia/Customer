@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,8 +25,7 @@ import com.harish.b2c.presentation.promotions.PromotionsScreen
 fun MainContainerScreen(
     rootNavController: NavHostController, // To navigate to screens OUTSIDE the bottom bar (like Checkout)
 ) {
-    var selectedIndex by remember { mutableIntStateOf(0) }
-
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
     Scaffold(
         containerColor = Color.Transparent,
         bottomBar = {

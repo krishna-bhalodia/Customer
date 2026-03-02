@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,14 +23,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.harish.b2c.core.components.AppInput
 import com.harish.b2c.core.components.CommonAppBar
 import com.harish.b2c.core.components.CommonButton
-import com.harish.b2c.core.components.CommonInput
-import com.harish.b2c.core.components.CommonMultilineInput
-import com.harish.b2c.ui.theme.AppTypography
-import com.harish.b2c.ui.theme.TextBlack
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -86,36 +81,23 @@ fun RaiseComplaintFormScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Subject Field
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "What is your complaint related to?",
-                    style = AppTypography.bodyLarge.copy(fontSize = 18.sp),
-                    color = TextBlack
-                )
-                CommonInput(
-                    value = subjectText,
-                    onValueChange = { subjectText = it },
-                    placeholder = "e.g., Service, Product, Payment, etc"
-                )
-            }
+            // Subject Selection Field (Standard Input)
+            AppInput(
+                label = "What is your complaint related to?",
+                value = subjectText,
+                onValueChange = { subjectText = it },
+                placeholder = "e.g., Service, Product, Payment, etc"
+            )
 
-            // Description Field
-            // Description Field
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "Tell us what went wrong in detail",
-                    style = AppTypography.bodyLarge.copy(fontSize = 18.sp),
-                    color = TextBlack
-                )
-
-                // Using the new multiline component
-                CommonMultilineInput(
-                    value = descriptionText,
-                    onValueChange = { descriptionText = it },
-                    placeholder = "Describe your concern clearly...",
-                    componentHeight = 200.dp
-                )
-            }
+            // Detail Description Field (Multiline Input)
+            AppInput(
+                label = "Tell us what went wrong in detail",
+                value = descriptionText,
+                onValueChange = { descriptionText = it },
+                placeholder = "Describe your concern clearly...",
+                isMultiline = true,
+                componentHeight = 200.dp
+            )
         }
     }
 }

@@ -105,25 +105,63 @@ fun DeliveryAddressScreen(navController: NavController) {
 
             if (currentStep == 1) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.mediumLarge)) {
-                    FormInputGroup("Store Name", storeName, "Enter Store Name", R.drawable.store_front) { storeName = it }
-                    FormInputGroup("Owner Name", ownerName, "Enter Owner Name", R.drawable.person) { ownerName = it }
-                    FormInputGroup("Email Address", email, "Enter Email Address", R.drawable.email) { email = it }
+                    AppInput(
+                        label = "Store Name",
+                        value = storeName,
+                        onValueChange = { storeName = it },
+                        placeholder = "Enter Store Name",
+                        leadingIcon = { Icon(painterResource(R.drawable.store_front), null, tint = TextBlack) }
+                    )
+                    AppInput(
+                        label = "Owner Name",
+                        value = ownerName,
+                        onValueChange = { ownerName = it },
+                        placeholder = "Enter Owner Name",
+                        leadingIcon = { Icon(painterResource(R.drawable.person), null, tint = TextBlack) }
+                    )
+                    AppInput(
+                        label = "Email Address",
+                        value = email,
+                        onValueChange = { email = it },
+                        placeholder = "Enter Email Address",
+                        leadingIcon = { Icon(painterResource(R.drawable.email), null, tint = TextBlack) }
+                    )
                 }
             } else {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.mediumLarge)) {
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
-                        Text("Address", style = labelStyle)
-                        CommonInput(addressLine1, { addressLine1 = it }, "Street Address")
-                        CommonInput(addressLine2, { addressLine2 = it }, "Apt, suite, etc")
+                        AppInput(
+                            label = "Address",
+                            value = addressLine1,
+                            onValueChange = { addressLine1 = it },
+                            placeholder = "Street Address"
+                        )
+                        AppInput(
+                            value = addressLine2,
+                            onValueChange = { addressLine2 = it },
+                            placeholder = "Apt, suite, etc"
+                        )
                     }
-                    FormInputGroup("City", city, "e.g. Abu Dhabi", null) { city = it }
-                    FormInputGroup("Postal code", postalCode, "e.g. 20004", null) { postalCode = it }
+                    AppInput(
+                        label = "City",
+                        value = city,
+                        onValueChange = { city = it },
+                        placeholder = "e.g. Abu Dhabi"
+                    )
 
+                    AppInput(
+                        label = "Postal code",
+                        value = postalCode,
+                        onValueChange = { postalCode = it },
+                        placeholder = "e.g. 20004"
+                    )
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
-                        Text("State", style = labelStyle)
-                        CommonInput(
+                        AppInput(
+                            label = "State",
                             value = state,
-                            onValueChange = { state = it },
+                            options = listOf("Jaunpur", "Kampala", "Abu Dhabi", "Dubai"),
+                            onOptionSelected = { state = it }
+                            ,onValueChange = {}, // Handled by onOptionSelected
                             placeholder = "Select",
                             trailingIcon = { Icon(Icons.Default.KeyboardArrowDown, null, tint = TextBlack) }
                         )
@@ -134,15 +172,3 @@ fun DeliveryAddressScreen(navController: NavController) {
     }
 }
 
-@Composable
-private fun FormInputGroup(label: String, value: String, placeholder: String, iconRes: Int?, onValueChange: (String) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
-        Text(label, style = AppTypography.bodyLarge.copy(fontSize = 18.sp, color = TextBlack))
-        CommonInput(
-            value = value,
-            onValueChange = onValueChange,
-            placeholder = placeholder,
-            leadingIcon = iconRes?.let { { Icon(painterResource(it), label, tint = TextBlack) } }
-        )
-    }
-}

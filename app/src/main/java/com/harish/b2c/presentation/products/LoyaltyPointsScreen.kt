@@ -71,7 +71,7 @@ fun LoyaltyPointsScreen(
 
             // Calculate exact bounding boxes for our shapes
             val leftBound = (canvasWidth - ellipseWidth) / 2f
-            val topBound = -ellipseHeight * 0.48f
+            val topBound = -ellipseHeight * 0.58f
             val rightBound = leftBound + ellipseWidth
             val bottomBound = topBound + ellipseHeight
 
@@ -112,7 +112,6 @@ fun LoyaltyPointsScreen(
             containerColor = Color.Transparent,
             topBar = {
                 CommonAppBar(
-                    title = "Loyalty Points",
                     onBackClick = { navController.popBackStack() },
                     modifier = Modifier
                         .statusBarsPadding()
@@ -123,12 +122,10 @@ fun LoyaltyPointsScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize().offset(y = (-35).dp)
                     .padding(paddingValues),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Spacer(modifier = Modifier.height(Spacing.large))
 
                 Image(
                     painter = painterResource(id = R.drawable.coin),
@@ -172,8 +169,7 @@ fun LoyaltyPointsScreen(
 
                     Box(
                         modifier = Modifier
-                            .size(18.dp)
-                            .border(1.dp, TextBlack, CircleShape),
+                            .size(18.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
