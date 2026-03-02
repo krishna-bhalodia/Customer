@@ -41,10 +41,12 @@ import com.harish.b2c.ui.theme.TextGrey
 fun LoginScreen(navController: NavController, isSignUp: Boolean = false,viewModel: LoginViewModel) {
     val spacing = Spacing // Using your custom Spacing accessor
     val phoneNumber by viewModel.phoneNumber.collectAsState()
+    val countryCode by viewModel.countryCode.collectAsState()
 
     val screenTitle = if (isSignUp) "Create an Account" else "Login"
     val bottomPrimaryText = if (isSignUp) "Already have an account?" else "Are you a new user?"
     val bottomActionText = if (isSignUp) "Login" else "Sign Up"
+
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -89,9 +91,9 @@ fun LoginScreen(navController: NavController, isSignUp: Boolean = false,viewMode
 
             CommonPhoneNumberInput(
                 value = phoneNumber,
-                onValueChange = { newValue ->
-                    viewModel.updatePhoneNumber(newValue)
-                }
+                onValueChange = { viewModel.updatePhoneNumber(it) },
+                selectedCountryCode = countryCode, // Pass from ViewModel
+                onCountryCodeChange = { viewModel.updateCountryCode(it) } // Update ViewModel
             )
 
             Spacer(modifier = Modifier.height(spacing.mediumLarge))

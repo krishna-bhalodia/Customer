@@ -24,6 +24,17 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     val isResendEnabled: StateFlow<Boolean> = _isResendEnabled.asStateFlow()
 
     private var timerJob: Job? = null
+    private val _countryCode = MutableStateFlow("+91") // Default country code
+    val countryCode: StateFlow<String> = _countryCode.asStateFlow()
+
+    fun updateCountryCode(code: String) {
+        _countryCode.value = code
+    }
+
+    // Optional helper function to get the full number for API calls
+    fun getFullPhoneNumber(): String {
+        return "${_countryCode.value}${_phoneNumber.value}"
+    }
 
     fun updatePhoneNumber(number: String) {
         _phoneNumber.value = number

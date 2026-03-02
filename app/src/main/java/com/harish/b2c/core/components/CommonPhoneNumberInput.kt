@@ -1,11 +1,17 @@
 package com.harish.b2c.core.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -23,8 +29,9 @@ import com.harish.b2c.ui.theme.regularBody
 fun CommonPhoneNumberInput(
     value: String,
     onValueChange: (String) -> Unit,
+    selectedCountryCode: String, // NEW: Pass the selected code
+    onCountryCodeChange: (String) -> Unit, // NEW: Callback for when user selects a code
     modifier: Modifier = Modifier,
-    countryCode: String = "+91",
     componentHeight: Dp = 56.dp,
     placeholderText: String = "000 000 0000"
 ) {
@@ -36,6 +43,11 @@ fun CommonPhoneNumberInput(
         lineHeight = 22.sp,
         color = TextBlack
     )
+
+    // State to control dropdown visibility
+    var expanded by remember { mutableStateOf(false) }
+    // List of supported country codes
+    val countryCodes = listOf("+91", "+1", "+44", "+61", "+971")
 
     Row(
         modifier = modifier
@@ -49,13 +61,44 @@ fun CommonPhoneNumberInput(
             .padding(horizontal = Spacing.mediumLarge),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = countryCode,
-            style = textStyle
-        )
+        // Dropdown Container
+        Box {
+            Row(
+                modifier = Modifier
+                    .clickable { expanded = true }
+                    .padding(end = Spacing.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = selectedCountryCode,
+                    style = textStyle
+                )
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "Select Country Code",
+                    tint = TextBlack
+                )
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                countryCodes.forEach { code ->
+                    DropdownMenuItem(
+                        text = { Text(text = code, style = textStyle) },
+                        onClick = {
+                            onCountryCodeChange(code)
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.width(Spacing.medium))
 
+        // Phone Number Input
         BasicTextField(
             value = value,
             onValueChange = { newValue ->
